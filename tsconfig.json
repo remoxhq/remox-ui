@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Others */
+    "types": ["vite/client"],
+    "strictNullChecks":true,
+    "noImplicitAny": false,
+    /* ShadCN and Path Aliasing */
+    "baseUrl": ".",
+    "paths": {
+      "@components/*":["./src/components/*"],
+      "@styling/*":["./src/styling/*"],
+      "@lib/*":["./src/lib*"],
+      "@pages/*":["./src/pages/*"],
+      "@redux/*":["./src/redux/*"],
+      "@routes/*":["./src/routes/*"],
+      "@utils/*":["./src/utils/*"],
+      "@public/*":["./public/*"],
+      "@assets/*":["./src/assets/*"],
+      "@types/*":["./src/types/*"],
+      "@/*": ["./src/*"],
+    }
+  },
+  "include": ["src","./*"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
