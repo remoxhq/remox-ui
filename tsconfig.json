@@ -37,9 +37,11 @@
       "@public/*":["./public/*"],
       "@assets/*":["./src/assets/*"],
       "@types/*":["./src/types/*"],
+      "@connector/*":["./src/connector/*"],
       "@/*": ["./src/*"],
     }
   },
   "include": ["src","./*"],
+  "exclude": ["dist", "build", "node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
