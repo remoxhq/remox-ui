@@ -21,6 +21,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
   },
   settings: {
+    cache:false,
     react: {
       version: "detect",
     },
