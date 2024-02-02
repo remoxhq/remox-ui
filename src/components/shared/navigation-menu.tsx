@@ -23,14 +23,27 @@ const NavigationMenu = React.forwardRef<
 ))
 NavigationMenu.displayName = NavigationMenuPrimitive.Root.displayName
 
+const navigationListType = cva('',
+  {variants:{
+    type:{
+      mobile:"flex-col items-center justify-center gap-5 my-8",
+      desktop:"items-center justify-center flex flex-1"
+    }
+  },
+  defaultVariants:{
+    type:"desktop"
+  }
+}
+)
+
 const NavigationMenuList = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof NavigationMenuPrimitive.List>
 >(({ className, ...props }, ref) => (
   <NavigationMenuPrimitive.List
     ref={ref}
-    className={cn(
-      "group flex flex-1 list-none items-center justify-center ",
+    className={cn(navigationListType(),
+      "group list-none",
       className
     )}
     {...props}
@@ -41,7 +54,18 @@ NavigationMenuList.displayName = NavigationMenuPrimitive.List.displayName
 const NavigationMenuItem = NavigationMenuPrimitive.Item
 
 const navigationMenuTriggerStyle = cva(
-  "group h-10 w-max  mx-4 pb-[25px] focus:text-brand focus:border-brand disabled:pointer-events-none disabled:opacity-50 data-[active]:text-brand data-[active]:border-brand data-[state=open]:text-brand data-[state=open]:border-brand bg-transparent hover:bg-transparent hover:text-brand transition-all duration-200 ease-in font-semibold text-base border-b-2 border-transparent hover:border-brand overflow-hidden aria-[current=page]:text-brand aria-[current=page]:border-brand "
+  "group h-10 w-max focus:text-brand focus:border-brand disabled:pointer-events-none disabled:opacity-50 data-[active]:text-brand data-[active]:border-brand data-[state=open]:text-brand data-[state=open]:border-brand bg-transparent hover:bg-transparent hover:text-brand transition-all duration-200 ease-in font-semibold border-transparent hover:border-brand overflow-hidden aria-[current=page]:text-brand aria-[current=page]:border-brand",
+  {
+    variants:{
+      type:{
+        mobile:"text-base",
+        desktop:"mx-4 pb-[25px] text-sm lg:text-base border-b-2"
+      }
+    },
+    defaultVariants:{
+      type:"desktop"
+    }
+  }
 )
 
 const NavigationMenuTrigger = React.forwardRef<
@@ -117,6 +141,7 @@ NavigationMenuIndicator.displayName =
 
 export {
   navigationMenuTriggerStyle,
+  navigationListType,
   NavigationMenu,
   NavigationMenuList,
   NavigationMenuItem,
