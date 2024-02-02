@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap ring-offset-background transition-all duration-200 ease-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:text-foreground",
+  "inline-flex items-center overflow-hidden justify-center whitespace-nowrap ring-offset-background transition-all duration-200 ease-in focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:text-foreground",
   {
     variants: {
       variant: {
@@ -18,17 +18,19 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         create:
-        "border border-input bg-background hover:text-brand text-sm font-semibold text-whitish ml-4 rounded-brandPrimary disabled:opacity-70 ",
+        "border border-input bg-background hover:text-brand text-base lg:text-sm font-semibold text-whitish ml-2 lg:ml-4 rounded-brandPrimary disabled:opacity-70 ",
         logout:
         "bg-transparent hover:text-brand rounded-brandPrimary",
         connect:
-        "border border-input bg-background hover:text-brand text-sm rounded-brandPrimary font-semibold text-whitish",
-        
+        "border border-input bg-background hover:text-brand text-base lg:text-sm rounded-brandPrimary font-semibold text-whitish",
+        mobileDrawer:
+        "bg-transparent hover:text-brand rounded-brandPrimary",
       },
       size: {
+        mobileDrawer:"h-6 w-6 md:h-7 md:w-7",
         logout: "h-4 w-4",
-        connect:"h-8 px-3 py-2",
-        create:"h-8 px-3 py-2",
+        connect:"h-7 lg:h-8 px-3 py-2",
+        create:"h-7 lg:h-8 px-3 py-2",
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",

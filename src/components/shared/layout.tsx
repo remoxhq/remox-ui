@@ -17,13 +17,15 @@ function Layout() {
   return (
     <>
       <Navbar />
-      <main className="container mt-8">
+      <main className="container mt-8 ">
         <AnimatePresence>
-          <LazyMotion features={domAnimation}>
+          <LazyMotion  features={domAnimation}>
             <m.div
               key={location.pathname}
-              initial={{ opacity: 0, transform: "translateX(50px)" }}
-              animate={{ opacity: 1, transform: "translateX(0px)", transition: { duration: 0.8, ease: "easeInOut" } }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.7, ease: "backInOut" } }}
+              exit={{opacity:0}}
+              
             >
               <AnimatedOutlet />
             </m.div>
