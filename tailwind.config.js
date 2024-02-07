@@ -16,16 +16,24 @@ module.exports = {
       },
     },
     extend: {
+      screens:{
+        "xs":"576px"
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-
+        
         darkBlue:"hsl(var(--darkBlue))",
         whitish:"hsl(var(--whitish))",
         brand:"hsl(var(--brand))",
+        avatarbg:"hsl(var(--avatarbg))",
+        removeRed:"hsl(var(--removeRed))",
+        removeRedHover:"hsl(var(--removeRedHover))",
+        
+
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -80,5 +88,5 @@ module.exports = {
       }
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),require('tailwind-scrollbar')],
 }
