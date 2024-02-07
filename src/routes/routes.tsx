@@ -1,4 +1,4 @@
-import Layout from "@components/shared/layout";
+import Layout from "@components/core/layout";
 import About from "@pages/about/about";
 import Dashboard from "@pages/dashboard/dashboard";
 import Explore from "@pages/explore/explore";

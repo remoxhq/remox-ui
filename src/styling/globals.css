@@ -10,6 +10,9 @@
     --darkBlue:210 34% 13%;
     --brand:14 100% 64%;
     --whitish:0 0% 97%;
+    --avatarbg:212 25% 20%;
+    --removeRed:355 45% 34%;
+    --removeRedHover:360 78% 58% ;
 
     --card: 209 35% 15%;
     --card-foreground: 213 21% 28%;
@@ -29,7 +32,7 @@
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 75% 53%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 213 21% 28%;
@@ -45,7 +48,6 @@
 @layer base {
   :root {
     @apply antialiased;
-    @apply leading-tight;
     @apply font-normal;
   }
   html {
@@ -62,12 +64,13 @@
 		'Apple Color Emoji',
 		'Segoe UI Emoji',
 		'Segoe UI Symbol';
+    @apply scroll-smooth;
   }
   * {
     @apply border-border box-border relative min-w-0 m-0 p-0;
   }
   body {
-    @apply bg-background text-foreground min-h-dvh bg-pattern;
+    @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal ;
   }
   h1,
   h2,
@@ -82,7 +85,7 @@
     @apply no-underline;
   }
   w3m-modal{
-    @apply bg-black/40  backdrop-blur-sm absolute inset-0;
+    @apply bg-black/50  backdrop-blur-sm absolute inset-0;
   }
   
 }

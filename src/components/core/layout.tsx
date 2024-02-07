@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useOutlet } from "react-router-dom";
-import Navbar from "@components/shared/navbar";
+import Header from "@components/core/header";
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
+import { Toaster } from "@components/shadcn/toaster";
 const AnimatedOutlet = () => {
   const o = useOutlet();
   const [outlet] = useState(o);
@@ -16,7 +17,7 @@ function Layout() {
 
   return (
     <>
-      <Navbar />
+      <Header />
       <main className="container mt-8 ">
         <AnimatePresence>
           <LazyMotion  features={domAnimation}>
@@ -28,6 +29,7 @@ function Layout() {
               
             >
               <AnimatedOutlet />
+              <Toaster />
             </m.div>
           </LazyMotion>
         </AnimatePresence>

@@ -1,0 +1,46 @@
+export const chains = [
+    {
+        id:0,
+        name:"Ethereum",
+        value:"ethereum",
+        logo:"/img/chains/eth.png"
+    },
+    {
+        id:1,
+        name:"Celo",
+        value:"celo",
+        logo:"/img/chains/celo.png"
+    },
+    {
+        id:2,
+        name:"Arbitrum",
+        value:"arbitrum",
+        logo:"/img/chains/arb.png"
+    },
+    {
+        id:3,
+        name:"Avalanche",
+        value:"avalanche",
+        logo:"/img/chains/avax.png"
+    },
+    {
+        id:4,
+        name:"Binance",
+        value:"binance",
+        logo:"/img/chains/bnb.png"
+    },
+    {
+        id:5,
+        name:"Polygon",
+        value:"polygon",
+        logo:"/img/chains/matic.png"
+    },
+    {
+        id:6,
+        name:"Optimism",
+        value:"optimism",
+        logo:"/img/chains/op.png"
+    },
+] 
+
+
