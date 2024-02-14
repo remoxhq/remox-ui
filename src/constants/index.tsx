@@ -41,6 +41,12 @@ export const chains = [
         value:"optimism",
         logo:"/img/chains/op.png"
     },
+    {
+        id:7,
+        name:"Gnosis",
+        value:"gnosis",
+        logo:"/img/chains/gnosis.png"
+    },
 ] 
 
 
