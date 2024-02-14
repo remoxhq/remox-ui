@@ -37,7 +37,7 @@ function OrgCart({ name, balance, image, isAccessed, isDisabled, isFav, isVerify
   const [alertOpen, setAlertOpen] = useState(false);
   const [formOpen,setFormOpen] = useState(false)
   return (
-    <div
+    <article
       className={`${
         isDisabled
           ? "after:absolute after:block after:top-0 after:left-0 pointer-events-none after:backdrop-blur-[1px] after:z-10 after:opacity-90 after:bg-darkBlue/70 cursor-not-allowed after:w-full after:h-full after:rounded-[32px]"
@@ -177,7 +177,7 @@ function OrgCart({ name, balance, image, isAccessed, isDisabled, isFav, isVerify
           </Tooltip>
         </TooltipProvider>
       )}
-    </div>
+    </article>
   );
 }
 

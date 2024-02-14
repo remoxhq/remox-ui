@@ -1,5 +1,9 @@
+import OrgInfo from "@components/core/orgInfo";
+
 function Dashboard() {
-  return <div>Dashboard</div>;
+  return (
+    <OrgInfo/>
+  );
 }
 
 export default Dashboard;
