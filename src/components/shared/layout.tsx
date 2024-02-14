@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useOutlet } from "react-router-dom";
-import Header from "@components/core/header";
+import Header from "@components/shared/header";
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import { Toaster } from "@components/shadcn/toaster";
 const AnimatedOutlet = () => {
@@ -18,7 +18,7 @@ function Layout() {
   return (
     <>
       <Header />
-      <main className="container mt-8 ">
+      <main className="container my-8">
         <AnimatePresence>
           <LazyMotion  features={domAnimation}>
             <m.div

@@ -7,12 +7,14 @@
     --background: 209 35% 15%;
     --foreground: 213 21% 28%;
 
-    --darkBlue:210 34% 13%;
-    --brand:14 100% 64%;
-    --whitish:0 0% 97%;
-    --avatarbg:212 25% 20%;
-    --removeRed:355 45% 34%;
-    --removeRedHover:360 78% 58% ;
+    --darkBlue: 210 34% 13%;
+    --brand: 14 100% 64%;
+    --whitish: 0 0% 97%;
+    --avatarbg: 212 25% 20%;
+    --removeRed: 355 45% 34%;
+    --removeRedHover: 360 78% 58%;
+    --cardHover: 210 28% 17%;
+    --cancelButtonHover:208 28% 18%; 
 
     --card: 209 35% 15%;
     --card-foreground: 213 21% 28%;
@@ -41,8 +43,6 @@
 
     --radius: 0.5rem;
   }
-
-  
 }
 
 @layer base {
@@ -51,26 +51,15 @@
     @apply font-normal;
   }
   html {
-    font-family:
-    'Geist Sans',
-		'-apple-system',
-		'system-ui',
-		'BlinkMacSystemFont',
-		'Segoe UI',
-		'Roboto',
-		'Helvetica Neue',
-		'Arial',
-		'sans-serif',
-		'Apple Color Emoji',
-		'Segoe UI Emoji',
-		'Segoe UI Symbol';
+    font-family: "Geist Sans", "-apple-system", "system-ui", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif",
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     @apply scroll-smooth;
   }
   * {
-    @apply border-border box-border relative min-w-0 m-0 p-0;
+    @apply border-border box-border relative min-w-0 m-0 p-0 scrollbar-thin scrollbar-thumb-foreground scrollbar-track-transparent;
   }
   body {
-    @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal ;
+    @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal;
   }
   h1,
   h2,
@@ -84,8 +73,11 @@
   a {
     @apply no-underline;
   }
-  w3m-modal{
+  w3m-modal {
     @apply bg-black/50  backdrop-blur-sm absolute inset-0;
   }
-  
+
+  .gradientBorder {
+    background: linear-gradient(90deg, #a86aa3 0%, #d6616e 52.57%, #f1906d 102.08%);
+  }
 }

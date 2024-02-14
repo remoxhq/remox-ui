@@ -6,7 +6,7 @@ import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react"
 import { Loader2, LogOut, Menu, Wallet } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { useDisconnect, useAccount } from "wagmi"
-import OrgForm from "@components/none-core/org-form";
+import OrgForm from "@components/core/org-form";
 
 function MobileMenu() {
   const { open } = useWeb3Modal();
@@ -55,7 +55,7 @@ function MobileMenu() {
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
-              <OrgForm tooltip={false}/>
+              <OrgForm/>
             <div className="flex items-center justify-center mt-4 ">
               <Button variant="connect" size="connect" onClick={() => open()}>
                 {(isConnecting || isReconnecting) && ModalOpen ? (

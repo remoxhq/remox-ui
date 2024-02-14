@@ -1,9 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import formStateReducer from "./slices/formState"
 
 export const store = configureStore({
-    reducer:{},
+    reducer:{
+        formModalState:formStateReducer
+    },
     middleware:(getDefaultMiddleware) => getDefaultMiddleware()
 })
 

@@ -32,6 +32,8 @@ module.exports = {
         avatarbg:"hsl(var(--avatarbg))",
         removeRed:"hsl(var(--removeRed))",
         removeRedHover:"hsl(var(--removeRedHover))",
+        cardHover:"hsl(var(--cardHover))",
+        cancelButtonHover:"hsl(var(--cancelButtonHover))",
         
 
         primary: {
@@ -84,8 +86,10 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       backgroundImage:{
-        "pattern":"url('/img/pattern.svg')"
-      }
+        "pattern":"url('/img/pattern.svg')",
+        "featuresCardBG":"url('/img/featuresCardBG.svg')",
+        "investorsCardBG":"url('/img/investorsCardBG.svg')",
+      },
     },
   },
   plugins: [require("tailwindcss-animate"),require('tailwind-scrollbar')],
