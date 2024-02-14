@@ -59,7 +59,7 @@
     @apply border-border box-border relative min-w-0 m-0 p-0 scrollbar-thin scrollbar-thumb-foreground scrollbar-track-transparent;
   }
   body {
-    @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal;
+    @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal w-screen;
   }
   h1,
   h2,
@@ -74,10 +74,10 @@
     @apply no-underline;
   }
   w3m-modal {
-    @apply bg-black/50  backdrop-blur-sm absolute inset-0;
+    @apply bg-black/50  backdrop-blur-sm fixed inset-0;
   }
-
   .gradientBorder {
     background: linear-gradient(90deg, #a86aa3 0%, #d6616e 52.57%, #f1906d 102.08%);
   }
+  
 }

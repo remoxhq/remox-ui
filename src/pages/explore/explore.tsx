@@ -16,6 +16,41 @@ function Explore() {
         <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
         <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
         <OrgCartSkeleton/>
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={true} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={true} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={false} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCartSkeleton/>
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={true} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={true} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={false} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCartSkeleton/>
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={true} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={true} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={false} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCartSkeleton/>
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={true} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={true} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={false} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCartSkeleton/>
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={true} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={true} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido" balance={3423442} isFav={false} isAccessed isVerify isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={false} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCart name="Lido Foundation" balance={3423442} isFav={false} isAccessed={false} isVerify={true} isDisabled={false} link="lido" image="/img/orglogo.png" />
+        <OrgCartSkeleton/>
       </div>
       <div className="flex justify-center items-center">
       <Button className="w-32 h-9 lg:w-36 lg:h-11 text-sm lg:text-base font-medium rounded-[28px] text-whitish bg-brand hover:bg-brand/80 disabled:text-whitish/80">
