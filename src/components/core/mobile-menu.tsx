@@ -14,7 +14,7 @@ function MobileMenu() {
   const { disconnect } = useDisconnect();
   const { address, isConnecting, isDisconnected, isConnected, isReconnecting } = useAccount();
   return (
-    <Sheet>
+    <Sheet {...(ModalOpen ? { open: true } : null)}>
     <SheetTrigger asChild className="lg:hidden">
       <Button variant="mobileDrawer" size="mobileDrawer">
         <Menu className="h-full w-full" />
