@@ -1,7 +1,11 @@
-import { createWeb3Modal, defaultWagmiConfig } from "@web3modal/wagmi/react";
-import { WagmiConfig } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, avalanche, bsc, gnosis, fantom, aurora, Chain } from "viem/chains";
 import { ReactNode } from "react";
+import { createWeb3Modal } from "@web3modal/wagmi/react";
+import { defaultWagmiConfig } from "@web3modal/wagmi/react/config";
+import { WagmiProvider } from "wagmi";
+import { mainnet, polygon, optimism, arbitrum, avalanche, bsc, gnosis, fantom, aurora, Chain } from "wagmi/chains";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const celo = {
   id: 42220,
@@ -60,29 +64,34 @@ const metadata = {
   icons: ["/remox.png"],
 };
 
-const chains = [mainnet, polygon, optimism, arbitrum, avalanche, bsc, fantom, gnosis, celo, aurora, base];
-const wagmiConfig = defaultWagmiConfig({
-  chains,
+const chains = [mainnet, polygon, optimism, arbitrum, avalanche, bsc, fantom, gnosis, celo, aurora, base] as const;
+const config = defaultWagmiConfig({
+  chains, // required
+  projectId, // required
+  metadata, // required
+  enableWalletConnect: true, // Optional - true by default
+  enableInjected: true, // Optional - true by default
+  enableEIP6963: true, // Optional - true by default
+  enableCoinbase: true, // Optional - true by default
+});
+
+createWeb3Modal({
+  wagmiConfig: config,
   projectId,
-  metadata,
-});
-
-createWeb3Modal({ 
-  wagmiConfig, 
-  projectId, 
-  chains, 
-  defaultChain: mainnet, 
+  defaultChain: mainnet,
   enableAnalytics: true,
-  
-  themeMode:"dark",
-  themeVariables:{
-    "--w3m-font-family":'Geist Sans,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI',
-    "--w3m-z-index":100,
-    "--w3m-accent":"#FF7348"
-  }
+  themeMode: "dark",
+  themeVariables: {
+    "--w3m-font-family": "Geist Sans,-apple-system,system-ui,BlinkMacSystemFont,Segoe UI",
+    "--w3m-z-index": 100,
+    "--w3m-accent": "#FF7348",
+  },
 });
 
-export const Web3Modal = ({ children }: Props)=> {
-  return <WagmiConfig  config={wagmiConfig}>{children}</WagmiConfig>;
-}
-
+export const Web3Modal = ({ children }: Props) => {
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    </WagmiProvider>
+  );
+};

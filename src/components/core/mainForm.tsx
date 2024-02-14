@@ -137,7 +137,6 @@ function MainForm({ dialogOpener }: IProps) {
   };
 
   useEffect(() => {
-    console.log("start");
     if (form.formState.isSubmitSuccessful) {
       dialogOpener(false);
       form.reset(form.formState.defaultValues);
