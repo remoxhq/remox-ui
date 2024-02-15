@@ -1,6 +1,6 @@
-import OrgCart from "@components/shared/org-cart";
-import OrgCartSkeleton from "@components/shared/org-cart-skeleton";
-import SearchBar from "@components/shared/search-bar";
+import OrgCart from "@components/general/orgCart";
+import OrgCartSkeleton from "@components/general/orgCartSkeleton";
+import SearchBar from "@components/general/search-bar";
 import { Button } from "@components/shadcn/button";
 // import { Loader2 } from "lucide-react";
 

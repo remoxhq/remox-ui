@@ -29,7 +29,6 @@
     "paths": {
       "@components/*":["./src/components/*"],
       "@styling/*":["./src/styling/*"],
-      "@lib/*":["./src/lib*"],
       "@pages/*":["./src/pages/*"],
       "@redux/*":["./src/redux/*"],
       "@routes/*":["./src/routes/*"],

@@ -1,6 +1,6 @@
 // import OrgCart from "@components/core/org-cart";
 // import OrgCartSkeleton from "@components/core/org-cart-skeleton";
-import SearchBar from "@components/shared/search-bar"
+import SearchBar from "@components/general/search-bar"
 import EmptyOrg from "@components/core/emptyOrg"
 
 function MyCreations() {

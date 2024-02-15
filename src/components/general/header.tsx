@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import MobileMenu from "@components/core/mobile-menu";
-import DesktopMenu from "@components/core/desktop-menu";
-import WalletButtons from "@components/core/wallet-buttons";
+import MobileMenu from "@components/core/mobileMenu";
+import DesktopMenu from "@components/core/desktopMenu";
+import WalletButtons from "@components/core/walletButtons";
 function Header() {
   return (
     <>

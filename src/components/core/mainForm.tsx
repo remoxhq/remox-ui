@@ -161,7 +161,7 @@ function MainForm({ dialogOpener }: IProps) {
             return (
               <FormItem className="text-center ">
                 <Avatar className="mx-auto w-16 h-16 border-2 mb-3">
-                  <AvatarImage className="w-full h-full object-cover" src={selectedImage ?? ""} />
+                  <AvatarImage className="object-cover" src={selectedImage ?? ""} alt="Organization Logo" />
                   <AvatarFallback className="bg-avatarbg"></AvatarFallback>
                 </Avatar>
                 <FormLabel htmlFor="uploadIMG" className="text-xs font-semibold text-brand cursor-pointer">

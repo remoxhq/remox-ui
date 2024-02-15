@@ -44,7 +44,7 @@ function OrgCart({ name, balance, image, isAccessed, isDisabled, isFav, isVerify
           : "bg-background "
       } sm:max-w-[180px] lg:max-w-[190px] xl:max-w-none xl:w-[200px] h-[130px] sm:h-[140px] md:h-[150px] lg:h-[162px] border rounded-[32px] transition-all duration-200 ease-linear p-3 lg:p-4`}
     >
-      <Link to={`community/${link}`} target="_blank" className="w-fit block mx-auto group">
+      <Link to={`community/${link}`} target="_blank" replace className="w-fit block mx-auto group">
         <div className="text-center">
           <Avatar className="w-[50px] h-[50px] md:w-[60px] md:h-[60px] overflow-hidden object-cover mx-auto rounded-full group-hover:scale-110 transition-all duration-200 ease-in ">
             <AvatarImage className="w-full h-full object-cover" src={image} />

@@ -6,7 +6,7 @@ import { useWeb3Modal, useWeb3ModalState } from "@web3modal/wagmi/react"
 import { Loader2, LogOut, Menu, Wallet } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { useDisconnect, useAccount } from "wagmi"
-import OrgForm from "@components/core/org-form";
+import OrgForm from "@components/core/orgForm";
 
 function MobileMenu() {
   const { open } = useWeb3Modal();
