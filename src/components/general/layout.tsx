@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useOutlet } from "react-router-dom";
-import Header from "@components/shared/header";
+import Header from "@components/general/header";
 import { AnimatePresence, LazyMotion, domAnimation, m } from "framer-motion";
 import { Toaster } from "@components/shadcn/toaster";
 const AnimatedOutlet = () => {

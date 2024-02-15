@@ -16,7 +16,6 @@ export default defineConfig({
       "@public" : fileURLToPath(new URL('public/', import.meta.url)),
       "@assets" : fileURLToPath(new URL('src/assets', import.meta.url)),
       "@types" : fileURLToPath(new URL('src/types', import.meta.url)),
-      "@lib" : fileURLToPath(new URL('src/lib', import.meta.url)),
       "@connector" : fileURLToPath(new URL('src/connector', import.meta.url)),
       "@/" : fileURLToPath(new URL('src/', import.meta.url)),
     }
