@@ -12,7 +12,7 @@ module.exports = {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1440px",
       },
     },
     extend: {
@@ -25,7 +25,9 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        
+
+        transparentHover: "hsl(var(--transparentHover))",
+        foregroundHover: "hsl(var(--foregroundHover))",
         darkBlue:"hsl(var(--darkBlue))",
         whitish:"hsl(var(--whitish))",
         brand:"hsl(var(--brand))",
@@ -34,6 +36,10 @@ module.exports = {
         removeRedHover:"hsl(var(--removeRedHover))",
         cardHover:"hsl(var(--cardHover))",
         cancelButtonHover:"hsl(var(--cancelButtonHover))",
+        purple:"hsl(var(--purple))",
+        green:"hsl(var(--green))",
+        red:"hsl(var(--red))",
+        yellow:"hsl(var(--yellow))",
         
 
         primary: {

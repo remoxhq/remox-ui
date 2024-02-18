@@ -42,7 +42,7 @@ function OrgCart({ name, balance, image, isAccessed, isDisabled, isFav, isVerify
         isDisabled
           ? "after:absolute after:block after:top-0 after:left-0 pointer-events-none after:backdrop-blur-[1px] after:z-10 after:opacity-90 after:bg-darkBlue/70 cursor-not-allowed after:w-full after:h-full after:rounded-[32px]"
           : "bg-background "
-      } sm:max-w-[180px] lg:max-w-[190px] xl:max-w-none xl:w-[200px] h-[130px] sm:h-[140px] md:h-[150px] lg:h-[162px] border rounded-[32px] transition-all duration-200 ease-linear p-3 lg:p-4`}
+      } w-full h-[130px] sm:h-[140px] md:h-[150px] lg:h-[162px] border rounded-[32px] transition-all duration-200 ease-linear p-3 lg:p-4`}
     >
       <Link to={`community/${link}`} target="_blank" replace className="w-fit block mx-auto group">
         <div className="text-center">

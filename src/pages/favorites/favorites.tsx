@@ -1,6 +1,6 @@
 // import OrgCart from "@components/core/org-cart";
 // import OrgCartSkeleton from "@components/core/org-cart-skeleton";
-import SearchBar from "@components/general/search-bar";
+import SearchBar from "@components/general/searchBar";
 import EmptyOrg from "@components/core/emptyOrg";
 
 function Favorites() {

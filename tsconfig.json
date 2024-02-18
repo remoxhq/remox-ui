@@ -24,6 +24,8 @@
     "types": ["vite/client"],
     "strictNullChecks":true,
     "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     /* ShadCN and Path Aliasing */
     "baseUrl": ".",
     "paths": {

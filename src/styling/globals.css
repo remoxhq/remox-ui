@@ -7,6 +7,7 @@
     --background: 209 35% 15%;
     --foreground: 213 21% 28%;
 
+
     --darkBlue: 210 34% 13%;
     --brand: 14 100% 64%;
     --whitish: 0 0% 97%;
@@ -15,6 +16,12 @@
     --removeRedHover: 360 78% 58%;
     --cardHover: 210 28% 17%;
     --cancelButtonHover: 208 28% 18%;
+    --purple:225 100% 73%;
+    --green:120 25% 54%;
+    --red:360 78% 58%;
+    --yellow:36 100% 57%;
+    --foregroundHover:213 21% 37%;
+    --transparentHover:211 26% 17%;
 
     --card: 209 35% 15%;
     --card-foreground: 213 21% 28%;
@@ -59,7 +66,7 @@
     @apply border-border box-border relative min-w-0 m-0 p-0 scrollbar-thin scrollbar-thumb-foreground scrollbar-track-transparent;
   }
   body {
-    @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal w-screen overflow-x-hidden;
+    @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal w-screen overflow-x-hidden selection:bg-sky-900/80;
   }
   h1,
   h2,
