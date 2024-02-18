@@ -4,7 +4,7 @@ import { MoreHorizontal, Star } from "lucide-react";
 
 function OrgCartSkeleton() {
   return (
-    <div className={`sm:max-w-[180px] lg:max-w-[190px] xl:max-w-none xl:w-[200px] h-[130px] sm:h-[140px] md:h-[150px] lg:h-[162px] bg-foreground/25  border rounded-[32px] p-4 after:absolute after:block after:top-0 after:left-0 after:z-10 after:bg-darkBlue/60 after:w-full after:h-full after:rounded-[32px]`}>
+    <div className={`w-full h-[130px] sm:h-[140px] md:h-[150px] lg:h-[162px] bg-foreground/25  border rounded-[32px] p-4 after:absolute after:block after:top-0 after:left-0 after:z-10 after:bg-darkBlue/60 after:w-full after:h-full after:rounded-[32px]`}>
       <div className="flex flex-col items-center">
         <Skeleton className="w-[60px] h-[60px] overflow-hidden rounded-full object-cover bg-foreground" />
 
