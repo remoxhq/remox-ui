@@ -2,7 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/shadcn/tab
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@components/shadcn/table";
 import { Zap } from "lucide-react";
 import NR from "@utils/numberReducer";
-import EmptyCard from "../../../components/general/emptyCard";
+import EmptyCard from "@components/general/emptyCard";
 
 function Governance() {
   const openLink = (url: string) => {
@@ -15,19 +15,19 @@ function Governance() {
         <TabsList className="w-full bg-transparent gap-10 p-0 h-auto">
           <TabsTrigger
             value="proposals"
-            className="font-medium text-sm text-whitish hover:text-brand duration-200 ease-in data-[state=active]:bg-transparent data-[state=active]:text-brand p-0 m-0 border-b-2 pb-1 rounded-none border-transparent data-[state=active]:border-brand"
+            className="font-medium text-sm text-whitish hover:text-brand duration-200 ease-in data-[state=active]:bg-transparent data-[state=active]:text-brand p-0 m-0 lg:border-b-2  pb-1 rounded-none border-transparent data-[state=active]:border-brand"
           >
             Proposals
           </TabsTrigger>
           <TabsTrigger
             value="voters"
-            className="font-medium text-sm text-whitish hover:text-brand duration-200 ease-in data-[state=active]:bg-transparent data-[state=active]:text-brand p-0 m-0 border-b-2 pb-1 rounded-none border-transparent data-[state=active]:border-brand"
+            className="font-medium text-sm text-whitish hover:text-brand duration-200 ease-in data-[state=active]:bg-transparent data-[state=active]:text-brand p-0 m-0 lg:border-b-2  pb-1 rounded-none border-transparent data-[state=active]:border-brand"
           >
             Voters
           </TabsTrigger>
         </TabsList>
         <TabsContent value="proposals" className="overflow-auto h-full w-full">
-          <Table className="mt-3 mb-8">
+          <Table className="mt-3 mb-8 ">
             <TableCaption className="hidden">A list of recent proposals.</TableCaption>
             <TableHeader>
               <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
