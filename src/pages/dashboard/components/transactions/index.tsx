@@ -9,7 +9,7 @@ function Transactions() {
   const openLink = (url: string) => {
     window.open(`${url}`, "_blank");
   };
-  
+
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="transactions" className="w-full h-full">
@@ -32,273 +32,58 @@ function Transactions() {
           >
             Outflow
           </TabsTrigger>
-          <TxPagination className="xxxs:absolute static right-0 top-0 z-10 mr-1"/>
+          <TxPagination className="xxxs:absolute static right-0 top-0 z-10 mr-1" />
         </TabsList>
         <TabsContent value="transactions" className="overflow-auto h-full w-full">
-          <Table className="mt-3 mb-8 min-w-[640px]">
-            <TableCaption className="hidden">A list of recent transactions.</TableCaption>
-            <TableHeader>
-              <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
-                <TableHead></TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>From</TableHead>
-                <TableHead >To</TableHead>
-                <TableHead>Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody className="[&>*:nth-child(odd)]:bg-foreground [&>*:nth-child(odd):hover]:bg-foregroundHover [&>*]:transition-all [&>*]:duration-200 [&>*]:ease-in [&>*:nth-child(even):hover]:bg-transparentHover [&>*]:cursor-pointer ">
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-red text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-red text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-red text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-green text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-green text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-red text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-red text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-red text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-red text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-              <TableRow
-                className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap "
-                onClick={() => openLink("https://blockscan.org")}
-              >
-                <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                  <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
-                    <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                  </Avatar>
-                </TableCell>
-                <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                  <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
-                  <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
-                </TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
-                <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
-                <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                  <div className="flex items-center gap-1">
-                    <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
-                    <p className="text-red text-sm">15,000</p>
-                    <span className="text-sm">USDC</span>
-                  </div>   
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+            <Table className="mt-3 mb-8">
+              <TableCaption className="hidden">A list of recent transactions.</TableCaption>
+              <TableHeader>
+                <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
+                  <TableHead></TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>From</TableHead>
+                  <TableHead>To</TableHead>
+                  <TableHead>Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="[&>*:nth-child(odd)]:bg-foreground [&>*:nth-child(odd):hover]:bg-foregroundHover [&>*]:transition-all [&>*]:duration-200 [&>*]:ease-in [&>*:nth-child(even):hover]:bg-transparentHover [&>*]:cursor-pointer ">
+                <TableRow
+                  className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-1 *:text-nowrap"
+                  onClick={() => openLink("https://blockscan.org")}
+                >
+                  <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
+                    <Avatar className="w-4 h-4 object-cover rounded-full">
+                      <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
+                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                    </Avatar>
+                  </TableCell>
+                  <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
+                    <p className="">{dayjs("2017-12-18T13:25:43Z").format("MMM DD")}</p>
+                    <span className="text-[8px] leading-[10px]">{dayjs("2017-12-18T13:25:43Z").format("HH:MM")}</span>
+                  </TableCell>
+                  <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">Treasury vault 2</TableCell>
+                  <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">0x0C37B714054E9...</TableCell>
+                  <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
+                    <div className="flex items-center">
+                      <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full mr-1" />
+                      <p className="text-red text-sm mr-3 xl:mr-1">15,000</p>
+                      <span className="text-sm block">USDC</span>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          
         </TabsContent>
         <TabsContent value="inflow" className="overflow-auto h-full w-full">
-          <Table className="mt-3 mb-8 min-w-[640px]">
+          <Table className="mt-3 mb-8">
             <TableCaption className="hidden">A list of recent transactions.</TableCaption>
             <TableHeader>
               <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
                 <TableHead></TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>From</TableHead>
-                <TableHead >To</TableHead>
+                <TableHead>To</TableHead>
                 <TableHead>Amount</TableHead>
               </TableRow>
             </TableHeader>
@@ -309,7 +94,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -324,7 +109,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-red text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -333,7 +118,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -348,7 +133,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-red text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -357,7 +142,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -372,7 +157,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-red text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -381,7 +166,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -396,7 +181,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-green text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -405,7 +190,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -420,7 +205,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-green text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -429,7 +214,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -444,7 +229,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-red text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -453,7 +238,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -468,7 +253,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-red text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -477,7 +262,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -492,7 +277,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-red text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -501,7 +286,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -516,7 +301,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-red text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
               <TableRow
@@ -525,7 +310,7 @@ function Transactions() {
               >
                 <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                   <Avatar className="w-4 h-4 object-cover rounded-full">
-                    <AvatarImage src="/img/chains/eth.png"alt="Organization Logo" className="object-cover" />
+                    <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
                     <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                   </Avatar>
                 </TableCell>
@@ -540,7 +325,7 @@ function Transactions() {
                     <img src="/img/coin.png" alt="Coin" className="w-4 h-4 object-cover rounded-full" />
                     <p className="text-red text-sm">15,000</p>
                     <span className="text-sm">USDC</span>
-                  </div>   
+                  </div>
                 </TableCell>
               </TableRow>
             </TableBody>
