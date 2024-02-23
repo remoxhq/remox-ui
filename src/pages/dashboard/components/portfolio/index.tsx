@@ -12,6 +12,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@components/shadcn/popo
 import { Button } from "@components/shadcn/button";
 import { format } from "date-fns";
 import ND from "@utils/numberDecider";
+import { Separator } from "@components/shadcn/separator";
 
 function Portfolio() {
   const [dateOne, setDateOne] = useState<Date | undefined>();
@@ -39,8 +40,8 @@ function Portfolio() {
             Portfolio Archive
           </TabsTrigger>
         </TabsList>
-        <TabsContent value="portfolio" className="overflow-auto w-full">
-          <Table className="mt-3 mb-8 min-w-[640px]">
+        <TabsContent value="portfolio" className="w-full h-full">
+          <Table className="mt-3 mb-8 ">
             <TableCaption className="hidden">A list of recent portfolio.</TableCaption>
             <TableHeader>
               <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
@@ -52,7 +53,7 @@ function Portfolio() {
             </TableHeader>
             <TableBody className="[&>*:nth-child(odd)]:bg-foreground ">
               <TableRow className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-2 *:text-nowrap">
-                <TableCell className="rounded-l-[4px] overflow-hidden w-[220px] max-w-[220px]">
+                <TableCell className="rounded-l-[4px] overflow-hidden w-[140px] max-w-[140px] md:w-[180px] md:max-w-[180px] lg:w-[220px] lg:max-w-[220px]">
                   <div className="flex items-center gap-1">
                     <Avatar className="w-4 h-4 object-cover rounded-full">
                       <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
@@ -61,7 +62,7 @@ function Portfolio() {
                     <p>USDC</p>
                   </div>
                 </TableCell>
-                <TableCell className="text-left w-[160px] max-w-[160px] ">
+                <TableCell className="text-left w-[240px] max-w-[240px] lg:w-[160px] lg:max-w-[160px] ">
                   <NR value={1} currency short={false} />
                 </TableCell>
                 <TableCell className="text-left">42</TableCell>
@@ -73,7 +74,7 @@ function Portfolio() {
           </Table>
         </TabsContent>
         <TabsContent value="holdings" className="overflow-auto h-full w-full ">
-          <div className="mt-3 mb-8 min-w-[640px]">
+          <div className="mt-3 mb-8 min-w-[350px]">
             <div className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap border-none *:px-3 *:pb-2 flex items-center">
               <p className="w-[220px]">Chain</p>
               <p className="w-[160px]">Price</p>
@@ -706,7 +707,7 @@ function Portfolio() {
           </div>
         </TabsContent>
         <TabsContent value="archive" className="overflow-auto h-full scrollbar-none w-full">
-          <div className="mb-8 min-w-[640px]">
+          <div className="mb-8 min-w-[630px]">
             <div className="flex items-center border-b *:pb-2 *:overflow-hidden w-full sticky top-2 mb-2 left-0 bg-darkBlue z-10">
               <div className="w-[214px] pr-3 border-r ">
                 <div className="flex items-center gap-2 h-[26px] mb-4">
@@ -780,10 +781,10 @@ function Portfolio() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center *:overflow-hidden w-full *:pb-2">
-              <div className="w-[214px] pr-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center *:overflow-hidden w-full h-12 group">
+              <div className="w-[213.5px] pr-2 ">
+                <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
+                  <div className="flex items-center gap-1">
                     <Avatar className="w-4 h-4 object-cover rounded-full">
                       <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
                       <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
@@ -806,9 +807,10 @@ function Portfolio() {
                   </div>
                 </div>
               </div>
-              <div className="w-[226px] px-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
+              <Separator orientation="vertical"/>
+              <div className="w-[225.5px] px-2">
+                <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
+                  <div className="flex items-center gap-1">
                     <Avatar className="w-4 h-4 object-cover rounded-full">
                       <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
                       <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
@@ -831,8 +833,9 @@ function Portfolio() {
                   </div>
                 </div>
               </div>
-              <div className="w-[calc(100%_-_440px)] pl-3">
-                <div className="flex items-center justify-between mb-2">
+              <Separator orientation="vertical"/>
+              <div className="w-[calc(100%_-_439.5px)] pl-2 ">
+                <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
                   <div className="flex items-center gap-2">
                     <div>
                       <p className="uppercase font-medium text-xs text-whitish mb-1">
@@ -863,255 +866,7 @@ function Portfolio() {
                 </div>
               </div>
             </div>
-            <div className="flex items-center *:overflow-hidden w-full *:pb-2">
-              <div className="w-[214px] pr-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">BTC</p>
-                      <p className="uppercase font-medium text-xs text-whitish">
-                        <NR value={2232323} short={false} />
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="uppercase font-medium text-xs text-whitish mb-1">
-                      <NR value={2232323} />
-                    </p>
-                    <p className="uppercase font-medium text-xs text-whitish">
-                      <NR value={22323} currency={false} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="w-[226px] px-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">BTC</p>
-                      <p className="uppercase font-medium text-xs text-whitish">
-                        <NR value={2232323} short={false} />
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="uppercase font-medium text-xs text-whitish mb-1">
-                      <NR value={2232323} />
-                    </p>
-                    <p className="uppercase font-medium text-xs text-whitish">
-                      <NR value={22323} currency={false} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="w-[calc(100%_-_440px)] pl-3">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center *:overflow-hidden w-full *:pb-2">
-              <div className="w-[214px] pr-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">BTC</p>
-                      <p className="uppercase font-medium text-xs text-whitish">
-                        <NR value={2232323} short={false} />
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="uppercase font-medium text-xs text-whitish mb-1">
-                      <NR value={2232323} />
-                    </p>
-                    <p className="uppercase font-medium text-xs text-whitish">
-                      <NR value={22323} currency={false} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="w-[226px] px-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">BTC</p>
-                      <p className="uppercase font-medium text-xs text-whitish">
-                        <NR value={2232323} short={false} />
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="uppercase font-medium text-xs text-whitish mb-1">
-                      <NR value={2232323} />
-                    </p>
-                    <p className="uppercase font-medium text-xs text-whitish">
-                      <NR value={22323} currency={false} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="w-[calc(100%_-_440px)] pl-3">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center *:overflow-hidden w-full *:pb-2">
-              <div className="w-[214px] pr-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">BTC</p>
-                      <p className="uppercase font-medium text-xs text-whitish">
-                        <NR value={2232323} short={false} />
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="uppercase font-medium text-xs text-whitish mb-1">
-                      <NR value={2232323} />
-                    </p>
-                    <p className="uppercase font-medium text-xs text-whitish">
-                      <NR value={22323} currency={false} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="w-[226px] px-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">BTC</p>
-                      <p className="uppercase font-medium text-xs text-whitish">
-                        <NR value={2232323} short={false} />
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="text-right">
-                    <p className="uppercase font-medium text-xs text-whitish mb-1">
-                      <NR value={2232323} />
-                    </p>
-                    <p className="uppercase font-medium text-xs text-whitish">
-                      <NR value={22323} currency={false} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="w-[calc(100%_-_440px)] pl-3">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </TabsContent>
       </Tabs>

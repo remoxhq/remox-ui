@@ -27,7 +27,7 @@ function Governance() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="proposals" className="overflow-auto h-full w-full">
-          <Table className="mt-3 mb-8 ">
+          <Table className="mt-3 mb-8">
             <TableCaption className="hidden">A list of recent proposals.</TableCaption>
             <TableHeader>
               <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
