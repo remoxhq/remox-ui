@@ -2,49 +2,49 @@ export const chains = [
     {
         id:0,
         name:"Ethereum",
-        value:"ethereum",
+        value:"eth-mainnet",
         logo:"/img/chains/eth.png"
     },
     {
         id:1,
         name:"Celo",
-        value:"celo",
+        value:"celo-mainnet",
         logo:"/img/chains/celo.png"
     },
     {
         id:2,
         name:"Arbitrum",
-        value:"arbitrum",
+        value:"arbitrum-mainnet",
         logo:"/img/chains/arb.png"
     },
     {
         id:3,
         name:"Avalanche",
-        value:"avalanche",
+        value:"avalanche-mainnet",
         logo:"/img/chains/avax.png"
     },
     {
         id:4,
         name:"Binance",
-        value:"binance",
+        value:"bsc-mainnet",
         logo:"/img/chains/bnb.png"
     },
     {
         id:5,
         name:"Polygon",
-        value:"polygon",
+        value:"matic-mainnet",
         logo:"/img/chains/matic.png"
     },
     {
         id:6,
         name:"Optimism",
-        value:"optimism",
+        value:"optimism-mainnet",
         logo:"/img/chains/op.png"
     },
     {
         id:7,
         name:"Gnosis",
-        value:"gnosis",
+        value:"gnosis-mainnet",
         logo:"/img/chains/gnosis.png"
     },
 ] 

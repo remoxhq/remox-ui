@@ -56,7 +56,7 @@ function MobileMenu() {
               </NavigationMenuList>
             </NavigationMenu>
               <OrgForm/>
-            <div className="flex items-center justify-center mt-4 ">
+            <div className="flex items-center justify-center mt-4 relative">
               <Button variant="connect" size="connect" onClick={() => open()}>
                 {(isConnecting || isReconnecting) && ModalOpen ? (
                   <>

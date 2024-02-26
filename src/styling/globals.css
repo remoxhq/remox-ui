@@ -63,7 +63,7 @@
     @apply scroll-smooth;
   }
   * {
-    @apply border-border box-border relative min-w-0 m-0 p-0 scrollbar-thin scrollbar-thumb-foreground scrollbar-track-transparent;
+    @apply border-border box-border min-w-0 m-0 p-0 scrollbar-thin scrollbar-thumb-foreground scrollbar-track-transparent;
   }
   body {
     @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal w-screen overflow-x-hidden selection:bg-sky-900/80;

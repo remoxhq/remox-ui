@@ -159,7 +159,7 @@ function MainForm({ dialogOpener }: IProps) {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           render={({ field: { value, onChange, ...field } }) => {
             return (
-              <FormItem className="text-center ">
+              <FormItem className="text-center relative">
                 <Avatar className="mx-auto w-16 h-16 border-2 mb-3">
                   <AvatarImage className="object-cover" src={selectedImage ?? ""} alt="Organization Logo" />
                   <AvatarFallback className="bg-avatarbg"></AvatarFallback>
@@ -200,7 +200,7 @@ function MainForm({ dialogOpener }: IProps) {
             control={form.control}
             name="orgname"
             render={({ field, fieldState }) => (
-              <FormItem className="basis-2/4">
+              <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">Organization Name</FormLabel>
                 <FormControl>
                   <Input
@@ -222,7 +222,7 @@ function MainForm({ dialogOpener }: IProps) {
             control={form.control}
             name="slug"
             render={({ field, fieldState }) => (
-              <FormItem className="basis-2/4">
+              <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">
                   Dashboard Slug
                   <span className="text-[10px] ml-2 text-foreground">remox.io/community/org-name</span>
@@ -250,7 +250,7 @@ function MainForm({ dialogOpener }: IProps) {
             control={form.control}
             name="web"
             render={({ field, fieldState }) => (
-              <FormItem className="basis-2/4">
+              <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">Website</FormLabel>
                 <FormControl className="relative">
                   <>
@@ -275,7 +275,7 @@ function MainForm({ dialogOpener }: IProps) {
             control={form.control}
             name="github"
             render={({ field, fieldState }) => (
-              <FormItem className="basis-2/4">
+              <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">Github</FormLabel>
                 <FormControl className="relative">
                   <>
@@ -302,7 +302,7 @@ function MainForm({ dialogOpener }: IProps) {
             control={form.control}
             name="twitter"
             render={({ field, fieldState }) => (
-              <FormItem className="basis-2/4">
+              <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">X/Twitter</FormLabel>
                 <FormControl className="relative">
                   <>
@@ -327,7 +327,7 @@ function MainForm({ dialogOpener }: IProps) {
             control={form.control}
             name="discord"
             render={({ field, fieldState }) => (
-              <FormItem className="basis-2/4">
+              <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">Discord</FormLabel>
                 <FormControl className="relative">
                   <>
@@ -358,7 +358,7 @@ function MainForm({ dialogOpener }: IProps) {
                   control={form.control}
                   name={`wallets.${index}.walletChain`}
                   render={({ field }) => (
-                    <FormItem className="basis-1/3">
+                    <FormItem className="basis-1/3 relative">
                       <FormLabel className="text-xs font-medium text-whitish">Choose Chain</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value} disabled={form.formState.isSubmitting ? true : false}>
                         <FormControl>
@@ -393,7 +393,7 @@ function MainForm({ dialogOpener }: IProps) {
                   // key={item.id}
                   name={`wallets.${index}.walletAddress`}
                   render={({ field, fieldState }) => (
-                    <FormItem className="basis-1/3">
+                    <FormItem className="basis-1/3 relative">
                       <FormLabel className="text-xs font-medium text-whitish">Wallet Address</FormLabel>
                       <FormControl>
                         <Input
@@ -416,7 +416,7 @@ function MainForm({ dialogOpener }: IProps) {
                   // key={item.id}
                   name={`wallets.${index}.walletName`}
                   render={({ field, fieldState }) => (
-                    <FormItem className="basis-1/3">
+                    <FormItem className="basis-1/3 relative">
                       <FormLabel className="text-xs font-medium text-whitish">Wallet Name</FormLabel>
                       <FormControl>
                         <Input
@@ -462,7 +462,7 @@ function MainForm({ dialogOpener }: IProps) {
             control={form.control}
             name="isPrivate"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="relative">
                 <FormDescription className="text-[10px] font-medium text-whitish mb-1">Privacy</FormDescription>
                 <div className="flex items-center gap-2">
                   <FormControl className="relative">
@@ -488,7 +488,7 @@ function MainForm({ dialogOpener }: IProps) {
             control={form.control}
             name="isVerify"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="relative">
                 <FormDescription className="text-[10px] font-medium text-whitish mb-1">Verification</FormDescription>
                 <div className="flex items-center gap-2">
                   <FormControl className="relative">
