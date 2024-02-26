@@ -6,7 +6,7 @@ import EmptyOrg from "@components/core/emptyOrg"
 function MyCreations() {
   return (
     <>
-    <SearchBar title="My Creations" />
+    <SearchBar title="My Creations" type="my" />
     <section className="flex items-center justify-center">
       <EmptyOrg name="Creations"/>
     </section>

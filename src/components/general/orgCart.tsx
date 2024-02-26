@@ -29,20 +29,20 @@ interface IProps {
   link: string;
   balance: number;
   isVerify: boolean;
-  isDisabled: boolean;
+  isActive: boolean;
   isAccessed: boolean;
 }
 
-function OrgCart({ name, balance, image, isAccessed, isDisabled, isFav, isVerify, link }: IProps) {
+function OrgCart({ name, balance, image, isAccessed, isActive, isFav, isVerify, link }: IProps) {
   const [alertOpen, setAlertOpen] = useState(false);
   const [formOpen,setFormOpen] = useState(false)
   return (
     <article
       className={`${
-        isDisabled
+        !isActive
           ? "after:absolute after:block after:top-0 after:left-0 pointer-events-none after:backdrop-blur-[1px] after:z-10 after:opacity-90 after:bg-darkBlue/70 cursor-not-allowed after:w-full after:h-full after:rounded-[32px]"
           : "bg-background "
-      } w-full h-[130px] sm:h-[140px] md:h-[150px] lg:h-[162px] border rounded-[32px] transition-all duration-200 ease-linear p-3 lg:p-4`}
+      } w-full h-[130px] sm:h-[140px] md:h-[150px] lg:h-[162px] border rounded-[32px] transition-all duration-200 ease-linear p-3 lg:p-4 relative`}
     >
       <Link to={`community/${link}`} target="_blank" replace className="w-fit block mx-auto group">
         <div className="text-center">
@@ -74,7 +74,7 @@ function OrgCart({ name, balance, image, isAccessed, isDisabled, isFav, isVerify
           </span>
         </div>
       </Link>
-      {!isDisabled && (
+      {isActive && (
         <Button
           variant="ghost"
           className="absolute top-4 right-4 z-10 cursor-pointer w-5 h-5 p-0 hover:bg-transparent"
@@ -87,7 +87,7 @@ function OrgCart({ name, balance, image, isAccessed, isDisabled, isFav, isVerify
         </Button>
       )}
 
-      {!isDisabled && (
+      {isActive && (
         <TooltipProvider delayDuration={100}>
           <Tooltip>
             <TooltipTrigger asChild>
