@@ -4,17 +4,35 @@ import { AddressReducer } from "@utils/addressReducer";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { Loader2, LogOut, Wallet } from "lucide-react";
 import { useDisconnect, useAccount } from "wagmi";
-
+import Cookies from "js-cookie";
+import auth from "@/api/auth";
 function WalletButtons() {
   const { open } = useWeb3Modal();
   const { disconnect } = useDisconnect();
   const { address, isConnecting, isDisconnected, isConnected, isReconnecting } = useAccount();
+
+  console.log("isConnected", isConnected);
+  console.log("address", address);
+  const login = async () => {
+    try {
+      await open();
+      const token = Cookies.get("JWT");
+      if (!token && address) {
+        console.log("Girdi");
+        const response = await auth({ address: address! });
+        Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="lg:items-center gap-5 hidden lg:flex">
       <TooltipProvider delayDuration={100}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="connect" size="connect" onClick={() => open()}>
+            <Button variant="connect" size="connect" onClick={login}>
               {isConnecting || isReconnecting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
