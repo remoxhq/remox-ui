@@ -1,7 +1,6 @@
 import { useFetchAllOrgs } from "@/api/fetchAllOrgs";
 import { useChainFilter } from "@/zustand/chainFilter";
 import { useSearchFilter } from "@/zustand/searchFilter";
-
 import OrgCart from "@components/general/orgCart";
 import OrgCartSkeleton from "@components/general/orgCartSkeleton";
 import SearchBar from "@components/general/searchBar";
@@ -9,7 +8,6 @@ import { Button } from "@components/shadcn/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useAccount } from "wagmi";
-// import { Loader2 } from "lucide-react";
 
 function Explore() {
   const { address } = useAccount();
@@ -17,8 +15,10 @@ function Explore() {
   const chain = useChainFilter((state) => state.chainExplore);
   const search = useSearchFilter((state) => state.searchExplore);
 
-  const { data, isPending, isSuccess, isFetching } = useFetchAllOrgs({ size, chain, search });
-
+  const { data, isPending, isSuccess, isFetching } = useFetchAllOrgs({ size, chain, search,address });
+  
+  
+ 
   return (
     <>
       <SearchBar title="Explore Communities" type="explore" />
@@ -29,7 +29,7 @@ function Explore() {
               key={item._id}
               name={item.name}
               balance={Math.random() * 1000}
-              isFav={item.isFavorited}
+              isFav={item.isFavorited || false}
               isAccessed={address ? true : false}
               isVerify={item.isVerified}
               isActive={item.isActive}

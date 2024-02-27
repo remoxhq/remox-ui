@@ -45,7 +45,7 @@ function SearchInput({ type }: IProps) {
       }
       
       <Input
-        className="w-full rounded-[28px] h-8 md:h-10 text-whitish pl-9 text-sm font-medium"
+        className="w-full rounded-[28px] h-8 md:h-10 text-whitish pl-9 pr-8 text-sm font-medium"
         autoComplete="off"
         type="text"
         placeholder="Search"
