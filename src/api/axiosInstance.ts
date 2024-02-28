@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-
+import * as jose from "jose";
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_Base_API, 
@@ -16,6 +16,8 @@ instance.interceptors.request.use(
     const token = Cookies.get('JWT');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
+      const decodedToken = jose.decodeJwt(token)
+      config.headers['Address'] = decodedToken.publicKey;
     }
     return config;
   },

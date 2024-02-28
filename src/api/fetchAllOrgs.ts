@@ -44,19 +44,18 @@ type IProps = {
   size: number;
   chain: string;
   search: string;
-  address:string | undefined
 };
 
-const fetchAllOrgs = async ({ size, chain, search,address }: IProps): Promise<AllOrgRes> => {
+const fetchAllOrgs = async ({ size, chain, search}: IProps): Promise<AllOrgRes> => {
   const response = await instance
-    .get<AllOrgRes>(`/organization?searchParam=${search}&chain=${chain}&pageSize=${size}`,{headers:{Address:address}})
+    .get<AllOrgRes>(`/organization?searchParam=${search}&chain=${chain}&pageSize=${size}`)
     .then((res) => res.data);
   return response;
 };
-export const useFetchAllOrgs = ({ size, chain, search,address }: IProps) =>
+export const useFetchAllOrgs = ({ size, chain, search}: IProps) =>
   useQuery({
-    queryKey: ["allOrgs", size, chain, search,address],
-    queryFn: () => fetchAllOrgs({ size, chain, search,address }),
+    queryKey: ["allOrgs", size, chain, search],
+    queryFn: () => fetchAllOrgs({ size, chain, search}),
     staleTime: 10 * (60 * 1000), // 10 mins
     placeholderData: (previousData) => previousData,
   });

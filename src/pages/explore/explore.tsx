@@ -15,7 +15,7 @@ function Explore() {
   const chain = useChainFilter((state) => state.chainExplore);
   const search = useSearchFilter((state) => state.searchExplore);
 
-  const { data, isPending, isSuccess, isFetching } = useFetchAllOrgs({ size, chain, search,address });
+  const { data, isPending, isSuccess, isFetching } = useFetchAllOrgs({ size, chain, search });
   
   
  
@@ -30,11 +30,13 @@ function Explore() {
               name={item.name}
               balance={Math.random() * 1000}
               isFav={item.isFavorited || false}
-              isAccessed={address ? true : false}
               isVerify={item.isVerified}
               isActive={item.isActive}
               link={item.dashboardLink}
               image={item.image}
+              id = {item._id}
+              address = {address}
+              createdBy ={item.createdBy}
             />
           ))
         ) : (
