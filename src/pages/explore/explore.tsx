@@ -10,7 +10,7 @@ import { useState } from "react";
 import { useAccount } from "wagmi";
 
 function Explore() {
-  const { address } = useAccount();
+  
   const [size, setSize] = useState(24);
   const chain = useChainFilter((state) => state.chainExplore);
   const search = useSearchFilter((state) => state.searchExplore);
@@ -35,7 +35,6 @@ function Explore() {
               link={item.dashboardLink}
               image={item.image}
               id = {item._id}
-              address = {address}
               createdBy ={item.createdBy}
             />
           ))

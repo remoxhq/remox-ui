@@ -51,6 +51,11 @@ function WalletButtons() {
           setUser.address(userRole.publicKey as string);
           queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
         })();
+      } else {
+        const userRole = jose.decodeJwt(token);
+        setUser.role(userRole.role as string);
+        setUser.address(userRole.publicKey as string);
+        queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
