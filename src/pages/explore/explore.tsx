@@ -7,7 +7,7 @@ import SearchBar from "@components/general/searchBar";
 import { Button } from "@components/shadcn/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useAccount } from "wagmi";
+
 
 function Explore() {
   
