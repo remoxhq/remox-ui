@@ -18,9 +18,12 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import NT from "@utils/nameTrimmer";
 import NR from "@utils/numberReducer";
 import { BadgeCheck, MoreHorizontal, Pencil, Star, Trash } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Link } from "react-router-dom";
+
+import { Toggle } from "@components/shadcn/toggle";
+import { useUserInfo } from "@/zustand/userInfo";
 
 interface IProps {
   isFav: boolean;
@@ -30,12 +33,33 @@ interface IProps {
   balance: number;
   isVerify: boolean;
   isActive: boolean;
-  isAccessed: boolean;
+  id: string;
+  createdBy: string;
+  address:string | undefined
 }
 
-function OrgCart({ name, balance, image, isAccessed, isActive, isFav, isVerify, link }: IProps) {
+function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, createdBy,address }: IProps) {
   const [alertOpen, setAlertOpen] = useState(false);
-  const [formOpen,setFormOpen] = useState(false)
+  const [formOpen, setFormOpen] = useState(false);
+  const [pressed,setPressed] = useState(isFav)
+
+  const user = useUserInfo((state) => ({
+    role: state.role,
+    address: state.address,
+  }));
+  
+  const isAccessed = useMemo(() => {
+    let favAccess = false;
+    let settingAccess = false;
+    
+    if (user.role === "User" && createdBy === user.address) settingAccess = true;
+    else if (user.role === "Super Admin") settingAccess = true;
+
+    if (user.address) favAccess = true;
+    return { favAccess, settingAccess };
+  }, [createdBy, user.address, user.role]);
+
+  
   return (
     <article
       className={`${
@@ -75,16 +99,28 @@ function OrgCart({ name, balance, image, isAccessed, isActive, isFav, isVerify, 
         </div>
       </Link>
       {isActive && (
-        <Button
-          variant="ghost"
-          className="absolute top-4 right-4 z-10 cursor-pointer w-5 h-5 p-0 hover:bg-transparent"
-          disabled={isAccessed ? false : true}
+        <Toggle
+          className="absolute top-4 right-4 z-10 cursor-pointer w-5 h-5 p-0 hover:bg-transparent group"
+          variant="favorites"
+          disabled={!isAccessed.favAccess}
+          pressed={pressed}
+          onPressedChange={setPressed}
         >
           <Star
-            {...(isFav ? { fill: "#FF7348" } : null)}
-            className={`${isFav && "text-brand"}  w-full h-full object-cover hover:text-brand transition-all duration-200 ease-linear`}
+            className={`w-full h-full object-cover hover:text-brand transition-all duration-200 ease-linear group-data-[state=on]:text-brand group-data-[state=on]:fill-brand`}
           />
-        </Button>
+        </Toggle>
+
+        // <Button
+        //   variant="ghost"
+        //   className="absolute top-4 right-4 z-10 cursor-pointer w-5 h-5 p-0 hover:bg-transparent"
+        //   disabled={!isAccessed.favAccess}
+        // >
+        //   <Star
+        //     {...(isFav ? { fill: "#FF7348" } : null)}
+        //     className={`${isFav && "text-brand"}  w-full h-full object-cover hover:text-brand transition-all duration-200 ease-linear`}
+        //   />
+        // </Button>
       )}
 
       {isActive && (
@@ -94,7 +130,7 @@ function OrgCart({ name, balance, image, isAccessed, isActive, isFav, isVerify, 
               <span tabIndex={0} className="cursor-pointer absolute right-3 bottom-1 lg:bottom-2 z-10">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className=" p-0 m-0 w-7 h-7 hover:bg-transparent" disabled={isAccessed ? false : true}>
+                    <Button variant="ghost" className=" p-0 m-0 w-7 h-7 hover:bg-transparent" disabled={!isAccessed.settingAccess}>
                       <MoreHorizontal className="w-full h-full object-cover cursor-pointer hover:text-brand transition-all duration-200 ease-linear" />
                     </Button>
                   </DropdownMenuTrigger>
@@ -171,8 +207,8 @@ function OrgCart({ name, balance, image, isAccessed, isActive, isFav, isVerify, 
                 </Dialog>
               </span>
             </TooltipTrigger>
-            <TooltipContent className={`hidden ${isAccessed ? "lg:hidden" : "lg:block"}`} sideOffset={8}>
-              {isAccessed ? <p>Settings</p> : <p>You don’t have access</p>}
+            <TooltipContent className={`hidden ${isAccessed.settingAccess ? "lg:hidden" : "lg:block"}`} sideOffset={8}>
+              {isAccessed.settingAccess ? <p>Settings</p> : <p>You don’t have access</p>}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

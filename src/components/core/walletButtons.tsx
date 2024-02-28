@@ -6,33 +6,62 @@ import { Loader2, LogOut, Wallet } from "lucide-react";
 import { useDisconnect, useAccount } from "wagmi";
 import Cookies from "js-cookie";
 import auth from "@/api/auth";
+import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import * as jose from "jose";
+import { useUserInfo } from "@/zustand/userInfo";
 function WalletButtons() {
   const { open } = useWeb3Modal();
   const { disconnect } = useDisconnect();
   const { address, isConnecting, isDisconnected, isConnected, isReconnecting } = useAccount();
 
-  console.log("isConnected", isConnected);
-  console.log("address", address);
-  const login = async () => {
-    try {
-      await open();
-      const token = Cookies.get("JWT");
-      if (!token && address) {
-        console.log("Girdi");
+  const setUser = useUserInfo((state) => ({
+    role: state.setRole,
+    address: state.setAddress,
+  }));
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    const token = Cookies.get("JWT");
+
+    if (!token && address) {
+      (async () => {
+        console.log("Authing");
         const response = await auth({ address: address! });
         Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
+        const userRole = jose.decodeJwt(response.result);
+        setUser.role(userRole.role as string);
+        setUser.address(userRole.publicKey as string);
+        queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
+      })();
+    } else if (token && !address) {
+      console.log("Removed Cookie");
+      Cookies.remove("JWT");
+      setUser.role(undefined);
+      setUser.address(undefined);
+      queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
+    } else if (token && address) {
+      const oldAddress = jose.decodeJwt(token).publicKey;
+      if (oldAddress !== address) {
+        (async () => {
+          console.log("Re-Authing");
+          const response = await auth({ address: address! });
+          Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
+          const userRole = jose.decodeJwt(response.result);
+          setUser.role(userRole.role as string);
+          setUser.address(userRole.publicKey as string);
+          queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
+        })();
       }
-    } catch (error) {
-      console.log(error);
     }
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address]);
 
   return (
     <div className="lg:items-center gap-5 hidden lg:flex">
       <TooltipProvider delayDuration={100}>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="connect" size="connect" onClick={login}>
+            <Button variant="connect" size="connect" onClick={() => open()}>
               {isConnecting || isReconnecting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
