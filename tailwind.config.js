@@ -80,6 +80,12 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
         brandPrimary:"28px",
       },
+      width:{
+        "sameAsTriggerWidth":"var(--radix-popover-trigger-width)",
+      },
+      maxHeight:{
+        "aviableHeight":"var(--radix-popover-content-available-height)"
+      },
       keyframes: {
         "accordion-down": {
           from: { height: "0" },

@@ -1,4 +1,4 @@
-import MainForm from "@components/core/mainForm";
+import MainForm from "@components/form/mainForm";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,11 +18,13 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import NT from "@utils/nameTrimmer";
 import NR from "@utils/numberReducer";
 import { BadgeCheck, MoreHorizontal, Pencil, Star, Trash } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Toggle } from "@components/shadcn/toggle";
 import { useUserInfo } from "@/zustand/userInfo";
 import useAccessControl from "@/hooks/useAccessControl";
+import useCardMutation from "@/api/useCardMutation";
+import { useDebounce } from "@/hooks/useDebounce";
 
 interface IProps {
   isFav: boolean;
@@ -39,16 +41,34 @@ interface IProps {
 function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, createdBy }: IProps) {
   const [alertOpen, setAlertOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
-  const [pressed, setPressed] = useState(isFav);
+  const [pressed, setPressed] = useState(false);
 
+ 
   const user = useUserInfo((state) => ({
     role: state.role,
     address: state.address,
   }));
 
-  console.log(user)
-  const { favAccess, settingAccess } = useAccessControl(user, createdBy);
+  useEffect(() => {
+    setPressed(isFav); 
+  }, [isFav]);
 
+  const { favAccess, settingAccess } = useAccessControl(user, createdBy);
+  const {deleteMutation,favMutation} = useCardMutation(id)
+
+  const debouncedFav = useDebounce(() => {
+    favMutation.mutate()
+  });
+
+  const addRemoveFav = ()=>{
+    setPressed(!pressed);
+    debouncedFav()
+  }
+
+  const removeOrg = async ()=>{
+    await deleteMutation.mutateAsync()
+    setAlertOpen(false)
+  }
   return (
     <article
       className={`${
@@ -93,23 +113,14 @@ function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, cr
           variant="favorites"
           disabled={!favAccess}
           pressed={pressed}
-          onPressedChange={setPressed}
+          onPressedChange={addRemoveFav}
         >
           <Star
-            className={`w-full h-full object-cover hover:text-brand transition-all duration-200 ease-linear group-data-[state=on]:text-brand group-data-[state=on]:fill-brand`}
+            className={`w-full h-full object-cover group-data-[state=on]:text-brand group-data-[state=on]:fill-brand`}
           />
         </Toggle>
 
-        // <Button
-        //   variant="ghost"
-        //   className="absolute top-4 right-4 z-10 cursor-pointer w-5 h-5 p-0 hover:bg-transparent"
-        //   disabled={!isAccessed.favAccess}
-        // >
-        //   <Star
-        //     {...(isFav ? { fill: "#FF7348" } : null)}
-        //     className={`${isFav && "text-brand"}  w-full h-full object-cover hover:text-brand transition-all duration-200 ease-linear`}
-        //   />
-        // </Button>
+        
       )}
 
       {isActive && (
@@ -166,14 +177,16 @@ function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, cr
                     </AlertDialogHeader>
                     <AlertDialogFooter className="mx-auto">
                       <AlertDialogCancel
-                        className="bg-transparent font-semibold border-transparent hover:border-border hover:text-whitish py-3 px-8 text-whitish text-base hover:bg-cancelButtonHover rounded-[20px]"
+                        disabled = {deleteMutation.isPending}
+                        className="bg-transparent font-semibold border-transparent hover:border-border hover:text-whitish py-3 px-8 text-whitish text-base hover:bg-cancelButtonHover rounded-[20px] disabled:text-whitish"
                         onClick={() => setAlertOpen(false)}
                       >
                         Cancel
                       </AlertDialogCancel>
                       <AlertDialogAction
-                        className="bg-removeRed font-semibold border-transparent hover:border-border hover:text-whitish py-3 px-8 text-whitish text-base hover:bg-removeRedHover rounded-[20px]"
-                        onClick={() => setAlertOpen(false)}
+                        disabled = {deleteMutation.isPending}
+                        className="bg-removeRed font-semibold border-transparent hover:border-border hover:text-whitish py-3 px-8 text-whitish text-base hover:bg-removeRedHover rounded-[20px] disabled:text-whitish"
+                        onClick={removeOrg}
                       >
                         Continue
                       </AlertDialogAction>

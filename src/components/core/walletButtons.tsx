@@ -31,14 +31,14 @@ function WalletButtons() {
         const userRole = jose.decodeJwt(response.result);
         setUser.role(userRole.role as string);
         setUser.address(userRole.publicKey as string);
-        queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
+        queryClient.invalidateQueries()
       })();
     } else if (token && !address) {
       console.log("Removed Cookie");
       Cookies.remove("JWT");
       setUser.role(undefined);
       setUser.address(undefined);
-      queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
+      queryClient.invalidateQueries()
     } else if (token && address) {
       const oldAddress = jose.decodeJwt(token).publicKey;
       if (oldAddress !== address) {
@@ -49,13 +49,13 @@ function WalletButtons() {
           const userRole = jose.decodeJwt(response.result);
           setUser.role(userRole.role as string);
           setUser.address(userRole.publicKey as string);
-          queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
+          queryClient.invalidateQueries()
         })();
       } else {
         const userRole = jose.decodeJwt(token);
         setUser.role(userRole.role as string);
         setUser.address(userRole.publicKey as string);
-        queryClient.invalidateQueries({ queryKey: ["allOrgs"] });
+        queryClient.invalidateQueries()
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
