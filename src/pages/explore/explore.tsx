@@ -1,4 +1,4 @@
-import { useFetchAllOrgs } from "@/api/fetchAllOrgs";
+import { useFetchOrgs } from "@/api/useFetchOrgs";
 import { useChainFilter } from "@/zustand/chainFilter";
 import { useSearchFilter } from "@/zustand/searchFilter";
 import OrgCart from "@components/general/orgCart";
@@ -8,17 +8,14 @@ import { Button } from "@components/shadcn/button";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
-
 function Explore() {
-  
   const [size, setSize] = useState(24);
   const chain = useChainFilter((state) => state.chainExplore);
   const search = useSearchFilter((state) => state.searchExplore);
 
-  const { data, isPending, isSuccess, isFetching } = useFetchAllOrgs({ size, chain, search });
-  
-  
- 
+  const { data, isPending, isSuccess, isFetching } = useFetchOrgs({ size, chain, search });
+
+  console.log(data)
   return (
     <>
       <SearchBar title="Explore Communities" type="explore" />
@@ -28,14 +25,14 @@ function Explore() {
             <OrgCart
               key={item._id}
               name={item.name}
-              balance={Math.random() * 1000}
-              isFav={item.isFavorited || false}
+              balance={item.balance}
+              isFav={item.isFavorited}
               isVerify={item.isVerified}
               isActive={item.isActive}
               link={item.dashboardLink}
               image={item.image}
-              id = {item._id}
-              createdBy ={item.createdBy}
+              id={item._id}
+              createdBy={item.createdBy}
             />
           ))
         ) : (

@@ -20,17 +20,20 @@ import { chains } from "@/constants";
 import { Checkbox } from "@components/shadcn/checkbox";
 import { useToast } from "@components/shadcn/use-toast";
 import { useNavigate } from "react-router-dom";
+import SelectWithSearch from "./selectWithSearch";
+import useAccessControl from "@/hooks/useAccessControl";
+import { useUserInfo } from "@/zustand/userInfo";
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1;
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
 
-const formSchema = z.object({
+export const formSchema = z.object({
   image: z
     .instanceof(File, { message: "Upload Img" })
     .refine((file) => ACCEPTED_FILE_TYPES.includes(file.type), { message: "Only png, jpg, jpeg and webp supported" })
     .refine((file) => file.size < MAX_UPLOAD_SIZE, { message: "Image must be less than 3MB" })
     .optional(),
-  orgname: z
+  name: z
     .string({
       required_error: "Name is required",
       invalid_type_error: "Name must be a string",
@@ -44,7 +47,7 @@ const formSchema = z.object({
     .max(40, {
       message: "Name must be maximum 40 characters",
     }),
-  slug: z
+  dashboardLink: z
     .string({
       required_error: "Link slug is required",
       invalid_type_error: "Link slug must be a string",
@@ -55,7 +58,9 @@ const formSchema = z.object({
     .min(3, {
       message: "Link slug must be minimum 3 characters",
     }),
-  web: z.union([
+  governanceSlug: z.string(),
+  // nativeToken: z.string(),
+  website: z.union([
     z.string().url({ message: "Invalid url type" }).startsWith("https://", { message: "Must provide secure URL (https://)" }).optional(),
     z.literal(""),
   ]),
@@ -71,10 +76,10 @@ const formSchema = z.object({
     z.string().url({ message: "Invalid url type" }).startsWith("https://", { message: "Must provide secure URL (https://)" }).optional(),
     z.literal(""),
   ]),
-  wallets: z
+  accounts: z
     .array(
       z.object({
-        walletAddress: z
+        address: z
           .string({
             required_error: "Address is required",
             invalid_type_error: "Address must be a string",
@@ -82,54 +87,92 @@ const formSchema = z.object({
           .length(42, { message: "Address is required" })
           .startsWith("0x", { message: "Address must starts with 0x" })
           .regex(/^[a-zA-Z0-9]+$/, { message: "Incorrect wallet address" }),
-        walletName: z
+        name: z
           .string({
             required_error: "Name is required",
             invalid_type_error: "Name must be a string",
           })
           .min(3, { message: "Minimum 3 characters" })
           .max(10, { message: "Maximum 10 characters" }),
-        walletChain: z.string().min(1, { message: "Choose Chain" }),
+        chain: z.string().min(1, { message: "Choose Chain" }),
       })
     )
     .max(5),
   isPrivate: z.boolean().default(true).optional(),
-  isVerify: z.boolean().default(false).optional(),
+  isVerified: z.boolean().default(false).optional(),
 });
 
 interface IProps {
   dialogOpener: React.Dispatch<React.SetStateAction<boolean>>;
+  // orgname?:string
+  // slug?:string
+  // governanceSlug?:string
+  // nativeToken?:string
+  // image?:undefined | File
+  // web?:string
+  // github?:string
+  // discord?:string
+  // twitter?:string
+  // isPrivate?:boolean
+  // isVerify?:boolean
+  // wallets?:{
+  //   walletAddress:string
+  //   walletChain:string
+  //   walletName:string
+  // }[]
 }
 function MainForm({ dialogOpener }: IProps) {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const user = useUserInfo((state) => ({
+    role: state.role,
+    address: state.address,
+  }));
+  const { verifyAccess } = useAccessControl(user);
   const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "onBlur",
-
     defaultValues: {
-      orgname: "",
-      slug: "",
+      name: "",
+      dashboardLink: "",
+      governanceSlug: "",
+      // nativeToken: "",
       image: undefined,
-      web: "",
+      website: "",
       github: "",
       discord: "",
       twitter: "",
-      wallets: [{ walletAddress: "", walletChain: "", walletName: "" }],
+      accounts: [{ address: "", chain: "", name: "" }],
       isPrivate: true,
-      isVerify: false,
+      isVerified: false,
     },
   });
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "wallets",
+    name: "accounts",
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
+    const formData = new FormData();
+
+    Object.entries(values).forEach(([key, value]) => {
+      if (key === "image" && value instanceof File) {
+        formData.append(key, value); // Dosyayı FormData'ya ekleyin
+      } else if (key === "wallets" && Array.isArray(value)) {
+        formData.append(key, JSON.stringify(value)); // JSON formatına dönüştürerek FormData'ya ekleyin
+      } else if (typeof value === "string" || typeof value === "boolean") {
+        formData.append(key, String(value)); // String veya boolean ise doğrudan FormData'ya ekleyin
+      }
+      // Diğer durumlar için istediğiniz eklemeyi yapabilirsiniz
+    });
+
+    for (const pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
   };
 
   const resetOnClose = () => {
@@ -152,7 +195,7 @@ function MainForm({ dialogOpener }: IProps) {
   }, [form.formState.isSubmitSuccessful]);
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 xs:space-y-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 xs:space-y-4">
         <FormField
           control={form.control}
           name="image"
@@ -198,7 +241,7 @@ function MainForm({ dialogOpener }: IProps) {
         <div className="flex justify-between xs:items-center pt-2 flex-col xs:flex-row gap-3 w-full">
           <FormField
             control={form.control}
-            name="orgname"
+            name="name"
             render={({ field, fieldState }) => (
               <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">Organization Name</FormLabel>
@@ -220,7 +263,7 @@ function MainForm({ dialogOpener }: IProps) {
           />
           <FormField
             control={form.control}
-            name="slug"
+            name="dashboardLink"
             render={({ field, fieldState }) => (
               <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">
@@ -245,10 +288,33 @@ function MainForm({ dialogOpener }: IProps) {
             )}
           />
         </div>
+        <div className="flex justify-between xs:items-center pt-2 flex-col xs:flex-row gap-3 w-full">
+          <div className="basis-1/2 relative space-y-2">
+            <span className="text-xs font-medium text-whitish">Native Token</span>
+            <SelectWithSearch type="nativeToken" disabled value={""} setValue={form.setValue} />
+          </div>
+          <FormField
+            control={form.control}
+            name="governanceSlug"
+            render={({ field: { value } }) => (
+              <FormItem className="basis-1/2 relative">
+                <FormLabel className="text-xs font-medium text-whitish">Governance</FormLabel>
+
+                <SelectWithSearch type="governance" value={value} setValue={form.setValue} />
+
+                <VisuallyHidden asChild>
+                  <FormDescription></FormDescription>
+                </VisuallyHidden>
+                <FormMessage className="text-[10px] absolute -bottom-4 text-nowrap overflow-hidden w-full" />
+              </FormItem>
+            )}
+          />
+        </div>
+
         <div className="flex justify-between xs:items-center gap-3  flex-col xs:flex-row w-full">
           <FormField
             control={form.control}
-            name="web"
+            name="website"
             render={({ field, fieldState }) => (
               <FormItem className="basis-2/4 relative">
                 <FormLabel className="text-xs font-medium text-whitish">Website</FormLabel>
@@ -352,11 +418,11 @@ function MainForm({ dialogOpener }: IProps) {
 
         {fields.map((item, index) => {
           return (
-            <div key={item.id} className={`flex justify-between items-center gap-4 xs:gap-2 flex-row w-full ${index !== 0 ? "my-3" : "pb-3"}`}>
+            <div key={item.id} className={`flex justify-between items-center gap-4 xs:gap-2 flex-row w-full ${index !== 0 ? "my-3" : "pb-1"}`}>
               <div className="flex-grow flex gap-2 xs:gap-3 flex-col xs:flex-row xs:items-center">
                 <FormField
                   control={form.control}
-                  name={`wallets.${index}.walletChain`}
+                  name={`accounts.${index}.chain`}
                   render={({ field }) => (
                     <FormItem className="basis-1/3 relative">
                       <FormLabel className="text-xs font-medium text-whitish">Choose Chain</FormLabel>
@@ -391,7 +457,7 @@ function MainForm({ dialogOpener }: IProps) {
                 <FormField
                   control={form.control}
                   // key={item.id}
-                  name={`wallets.${index}.walletAddress`}
+                  name={`accounts.${index}.address`}
                   render={({ field, fieldState }) => (
                     <FormItem className="basis-1/3 relative">
                       <FormLabel className="text-xs font-medium text-whitish">Wallet Address</FormLabel>
@@ -414,7 +480,7 @@ function MainForm({ dialogOpener }: IProps) {
                 <FormField
                   control={form.control}
                   // key={item.id}
-                  name={`wallets.${index}.walletName`}
+                  name={`accounts.${index}.name`}
                   render={({ field, fieldState }) => (
                     <FormItem className="basis-1/3 relative">
                       <FormLabel className="text-xs font-medium text-whitish">Wallet Name</FormLabel>
@@ -442,7 +508,7 @@ function MainForm({ dialogOpener }: IProps) {
                     type="button"
                     disabled={fields.length <= 9 ? false : true}
                     className="w-8 h-8 xs:w-5 xs:h-5 p-0"
-                    onClick={() => append({ walletAddress: "", walletChain: "", walletName: "" }, { shouldFocus: false })}
+                    onClick={() => append({ address: "", chain: "", name: "" }, { shouldFocus: false })}
                   >
                     <Plus className="w-[20px] h-[20px] xs:w-[14px] xs:h-[14px]" />
                   </Button>
@@ -484,32 +550,34 @@ function MainForm({ dialogOpener }: IProps) {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="isVerify"
-            render={({ field }) => (
-              <FormItem className="relative">
-                <FormDescription className="text-[10px] font-medium text-whitish mb-1">Verification</FormDescription>
-                <div className="flex items-center gap-2">
-                  <FormControl className="relative">
-                    <Checkbox
-                      id="isPrivate"
-                      className="rounded-[4px] border-input data-[state=checked]:text-brand "
-                      checked={field.value}
-                      disabled={form.formState.isSubmitting ? true : false}
-                      onCheckedChange={() => field.onChange(!field.value)}
-                    />
-                  </FormControl>
-                  <FormLabel htmlFor="isPrivate" className="text-xs font-medium text-whitish">
-                    Verify
-                  </FormLabel>
-                </div>
-                <VisuallyHidden asChild>
-                  <FormMessage className="text-[10px] absolute -bottom-4 text-nowrap overflow-hidden w-full" />
-                </VisuallyHidden>
-              </FormItem>
-            )}
-          />
+          {verifyAccess && (
+            <FormField
+              control={form.control}
+              name="isVerified"
+              render={({ field }) => (
+                <FormItem className="relative">
+                  <FormDescription className="text-[10px] font-medium text-whitish mb-1">Verification</FormDescription>
+                  <div className="flex items-center gap-2">
+                    <FormControl className="relative">
+                      <Checkbox
+                        id="isPrivate"
+                        className="rounded-[4px] border-input data-[state=checked]:text-brand "
+                        checked={field.value}
+                        disabled={form.formState.isSubmitting ? true : false}
+                        onCheckedChange={() => field.onChange(!field.value)}
+                      />
+                    </FormControl>
+                    <FormLabel htmlFor="isPrivate" className="text-xs font-medium text-whitish">
+                      Verify
+                    </FormLabel>
+                  </div>
+                  <VisuallyHidden asChild>
+                    <FormMessage className="text-[10px] absolute -bottom-4 text-nowrap overflow-hidden w-full" />
+                  </VisuallyHidden>
+                </FormItem>
+              )}
+            />
+          )}
         </div>
         <div className="flex items-center flex-wrap gap-3">
           <Button variant="brand" size="brand" type="submit">

@@ -1,6 +1,6 @@
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from "@components/shadcn/navigation";
 import { NavLink } from "react-router-dom";
-import OrgForm from "@components/core/orgForm";
+import OrgForm from "@components/form/orgForm";
 function DesktopMenu() {
   return (
     <>

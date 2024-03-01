@@ -24,7 +24,8 @@ type SingleOrg = {
   };
   isActive: boolean;
   isDeleted: boolean;
-  isFavorited?: boolean;
+  isFavorited: boolean;
+  balance:number
 };
 
 type AllOrgRes = {
@@ -41,21 +42,20 @@ type AllOrgRes = {
 };
 
 type IProps = {
-  size: number;
   chain: string;
   search: string;
 };
 
-const fetchAllOrgs = async ({ size, chain, search}: IProps): Promise<AllOrgRes> => {
+const fetch = async ({ chain, search}: IProps): Promise<AllOrgRes> => {
   const response = await instance
-    .get<AllOrgRes>(`/organization?searchParam=${search}&chain=${chain}&pageSize=${size}`)
+    .get<AllOrgRes>(`/organization?searchParam=${search}&chain=${chain}&favOnly=true`)
     .then((res) => res.data);
   return response;
 };
-export const useFetchAllOrgs = ({ size, chain, search}: IProps) =>
+export const useFetchFavorites = ({ chain, search}: IProps) =>
   useQuery({
-    queryKey: ["allOrgs", size, chain, search],
-    queryFn: () => fetchAllOrgs({ size, chain, search}),
+    queryKey: ["useFetchFavorites", chain, search],
+    queryFn: () => fetch({ chain, search}),
     staleTime: 10 * (60 * 1000), // 10 mins
-    placeholderData: (previousData) => previousData,
+    // placeholderData: (previousData) => previousData,
   });
