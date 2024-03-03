@@ -37,7 +37,7 @@
       "@utils/*":["./src/utils/*"],
       "@public/*":["./public/*"],
       "@assets/*":["./src/assets/*"],
-      "@types/*":["src/globalTypes/*"],
+      "@typeDecleration/*":["src/typeDecleration/*"],
       "@connector/*":["./src/connector/*"],
       "@/*": ["./src/*"],
     }

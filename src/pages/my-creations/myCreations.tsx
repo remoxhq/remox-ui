@@ -11,7 +11,6 @@ function MyCreations() {
   const search = useSearchFilter((state) => state.searchCreations);
 
   const { data, isPending, isSuccess } = useFetchMines({ chain, search });
-  console.log(data)
   return (
     <>
       <SearchBar title="My Creations" type="my" />
@@ -35,6 +34,7 @@ function MyCreations() {
               image={item.image}
               id={item._id}
               createdBy={item.createdBy}
+              item ={item}
             />
           ))
         ) : !isPending && isSuccess && data.result.items.length === 0 ? (
