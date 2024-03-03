@@ -15,7 +15,7 @@ function Explore() {
 
   const { data, isPending, isSuccess, isFetching } = useFetchOrgs({ size, chain, search });
 
-  console.log(data)
+  
   return (
     <>
       <SearchBar title="Explore Communities" type="explore" />
@@ -33,6 +33,8 @@ function Explore() {
               image={item.image}
               id={item._id}
               createdBy={item.createdBy}
+              item = {item}
+              
             />
           ))
         ) : (

@@ -29,6 +29,7 @@ function Favorites() {
               image={item.image}
               id={item._id}
               createdBy={item.createdBy}
+              item={item}
             />
           ))
         ) : !isPending && isSuccess && data.result.items.length === 0 ? <EmptyOrg name="Favorites" /> : (

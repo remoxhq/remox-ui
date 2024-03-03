@@ -11,6 +11,7 @@ function MyCreations() {
   const search = useSearchFilter((state) => state.searchCreations);
 
   const { data, isPending, isSuccess } = useFetchMines({ chain, search });
+  console.log(data)
   return (
     <>
       <SearchBar title="My Creations" type="my" />

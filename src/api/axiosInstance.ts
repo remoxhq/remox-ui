@@ -5,9 +5,6 @@ import * as jose from "jose";
 const instance = axios.create({
   baseURL: import.meta.env.VITE_Base_API, 
   timeout: 10 * 60 * 1000, // 10 mins
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 
