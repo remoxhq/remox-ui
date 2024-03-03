@@ -2,13 +2,11 @@ import { Button } from "@components/shadcn/button";
 import { DialogClose } from "@components/shadcn/dialog";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Plus, Trash } from "lucide-react";
-
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@components/shadcn/form";
 import { Input } from "@components/shadcn/input";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@components/shadcn/avatar";
 import Web from "@assets/icons/web";
 import Github from "@assets/icons/github";
@@ -18,21 +16,24 @@ import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@components/shadcn/select";
 import { chains } from "@/constants";
 import { Checkbox } from "@components/shadcn/checkbox";
-import { useToast } from "@components/shadcn/use-toast";
-import { useNavigate } from "react-router-dom";
 import SelectWithSearch from "./selectWithSearch";
 import useAccessControl from "@/hooks/useAccessControl";
 import { useUserInfo } from "@/zustand/userInfo";
+import useFormMutation from "@/api/useFormMutation";
+import { SingleOrgProp } from "@/globalTypes/types";
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1;
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
 
 export const formSchema = z.object({
-  image: z
-    .instanceof(File, { message: "Upload Img" })
-    .refine((file) => ACCEPTED_FILE_TYPES.includes(file.type), { message: "Only png, jpg, jpeg and webp supported" })
-    .refine((file) => file.size < MAX_UPLOAD_SIZE, { message: "Image must be less than 3MB" })
-    .optional(),
+  image: z.union([
+    z
+      .instanceof(File, { message: "Upload Img" })
+      .refine((file) => ACCEPTED_FILE_TYPES.includes(file.type), { message: "Only png, jpg, jpeg and webp supported" })
+      .refine((file) => file.size < MAX_UPLOAD_SIZE, { message: "Image must be less than 3MB" })
+      .optional(),
+    z.literal(""),
+  ]),
   name: z
     .string({
       required_error: "Name is required",
@@ -104,31 +105,17 @@ export const formSchema = z.object({
 
 interface IProps {
   dialogOpener: React.Dispatch<React.SetStateAction<boolean>>;
-  // orgname?:string
-  // slug?:string
-  // governanceSlug?:string
-  // nativeToken?:string
-  // image?:undefined | File
-  // web?:string
-  // github?:string
-  // discord?:string
-  // twitter?:string
-  // isPrivate?:boolean
-  // isVerify?:boolean
-  // wallets?:{
-  //   walletAddress:string
-  //   walletChain:string
-  //   walletName:string
-  // }[]
+  id?: string;
+  update?: boolean;
+  item?: SingleOrgProp;
 }
-function MainForm({ dialogOpener }: IProps) {
-  const { toast } = useToast();
-  const navigate = useNavigate();
+function MainForm({ dialogOpener, update = false, id, item }: IProps) {
   const user = useUserInfo((state) => ({
     role: state.role,
     address: state.address,
   }));
   const { verifyAccess } = useAccessControl(user);
+  const { createMutation, updateMutation } = useFormMutation();
   const [selectedImage, setSelectedImage] = useState<null | string>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -150,49 +137,71 @@ function MainForm({ dialogOpener }: IProps) {
     },
   });
 
+  useEffect(() => {
+    if (item && update) {
+      form.reset({
+        name: item.name,
+        dashboardLink: item.dashboardLink,
+        governanceSlug: item.governanceSlug,
+        // nativeToken: "",
+        image: undefined,
+        website: item.website,
+        github: item.github,
+        discord: item.discord,
+        twitter: item.twitter,
+        accounts: item.accounts,
+        isPrivate: item.isPrivate,
+        isVerified: item.isVerified,
+      });
+      setSelectedImage(item.image);
+    }
+  }, [form, id, item, update]);
+
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "accounts",
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
     const formData = new FormData();
-
     Object.entries(values).forEach(([key, value]) => {
-      if (key === "image" && value instanceof File) {
-        formData.append(key, value); // Dosyayı FormData'ya ekleyin
-      } else if (key === "wallets" && Array.isArray(value)) {
-        formData.append(key, JSON.stringify(value)); // JSON formatına dönüştürerek FormData'ya ekleyin
+      if (key === "image") {
+        if (value instanceof File) {
+          formData.append(key, value);
+        } else {
+          formData.append(key, String(""));
+        }
+      } else if (key === "accounts" && Array.isArray(value)) {
+        value.map((item, index) => {
+          formData.append(`${key}[${index}].name`, item.name);
+          formData.append(`${key}[${index}].chain`, item.chain);
+          formData.append(`${key}[${index}].address`, item.address);
+        });
       } else if (typeof value === "string" || typeof value === "boolean") {
-        formData.append(key, String(value)); // String veya boolean ise doğrudan FormData'ya ekleyin
+        formData.append(key, String(value));
       }
-      // Diğer durumlar için istediğiniz eklemeyi yapabilirsiniz
     });
-
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
+    if (id && update) {
+      await updateMutation.mutateAsync({ formData: formData, id: id });
+      if (!updateMutation.isPending) {
+        dialogOpener(false);
+        form.reset(form.formState.defaultValues);
+      }
+    } else {
+      await createMutation.mutateAsync(formData);
+      if (!createMutation.isPending) {
+        dialogOpener(false);
+        form.reset(form.formState.defaultValues);
+      }
     }
   };
 
   const resetOnClose = () => {
-    form.reset(form.formState.defaultValues);
+    dialogOpener(false);
+    // form.reset(form.formState.defaultValues);
   };
 
-  useEffect(() => {
-    if (form.formState.isSubmitSuccessful) {
-      dialogOpener(false);
-      form.reset(form.formState.defaultValues);
-      navigate("/my-creations");
-
-      toast({
-        title: "Organization created",
-        duration: 5000,
-        variant: "createOrg",
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.formState.isSubmitSuccessful]);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 xs:space-y-4">
@@ -426,7 +435,7 @@ function MainForm({ dialogOpener }: IProps) {
                   render={({ field }) => (
                     <FormItem className="basis-1/3 relative">
                       <FormLabel className="text-xs font-medium text-whitish">Choose Chain</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value} disabled={form.formState.isSubmitting ? true : false}>
+                      <Select onValueChange={field.onChange} value={field.value} disabled={form.formState.isSubmitting ? true : false}>
                         <FormControl>
                           <SelectTrigger className="text-whitish font-medium text-sm data-[placeholder]:text-muted-foreground cursor-pointer">
                             <SelectValue placeholder="Choose Chain" />

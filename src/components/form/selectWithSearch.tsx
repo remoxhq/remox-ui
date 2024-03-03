@@ -11,20 +11,18 @@ import { UseFormSetValue } from "react-hook-form";
 import { z } from "zod";
 import { formSchema } from "./mainForm";
 
-
 interface IProps {
   type: "nativeToken" | "governance";
   disabled?: boolean;
-  value:string
-  setValue:UseFormSetValue<z.infer<typeof formSchema>>
+  value: string;
+  setValue: UseFormSetValue<z.infer<typeof formSchema>>;
 }
 
-function SelectWithSearch({ type, disabled = false,value,setValue}: IProps) {
+function SelectWithSearch({ type, disabled = false, value, setValue,  }: IProps) {
   const [open, setOpen] = useState(false);
-  // const [value, setValue] = useState("");
 
-  const { data, isPending, isSuccess,isError } = useBoardroom();
-  
+  const { data, isPending, isSuccess, isError } = useBoardroom();
+
   const labels = {
     nativeToken: {
       name: disabled ? "Coming Soon" : "Select Native Token",
@@ -46,18 +44,24 @@ function SelectWithSearch({ type, disabled = false,value,setValue}: IProps) {
           <Button
             role="combobox"
             aria-expanded={open}
-            disabled={isPending || isError ? true : disabled}
+            disabled={isPending || isError  ? true : disabled}
             className="w-full justify-between rounded-md hover:bg-background text-whitish font-medium text-sm bg-background border px-3"
           >
             {selectedGovernance && !isPending && isSuccess ? (
               <div className="flex items-center gap-2">
                 <Avatar className="w-5 h-5 object-cover overflow-hidden rounded-full">
-                  <AvatarImage className="object-cover" src={selectedGovernance.icons[0]?.url || ""} alt={selectedGovernance.name} />
+                  <AvatarImage
+                    className="object-cover"
+                    src={"icons" in selectedGovernance ? selectedGovernance.icons[0].url : ""}
+                    alt={selectedGovernance.name}
+                  />
                   <AvatarFallback className="bg-avatarbg"></AvatarFallback>
                 </Avatar>
                 {selectedGovernance.name}
               </div>
-            ) : (isPending || isError )&& !disabled ? <span className="text-muted-foreground">Loading...</span> : (
+            ) : (isPending || isError) && !disabled ? (
+              <span className="text-muted-foreground">Loading...</span>
+            ) : (
               <span className="text-muted-foreground">{labels[type].name}</span>
             )}
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50 text-muted-foreground" />
@@ -78,7 +82,7 @@ function SelectWithSearch({ type, disabled = false,value,setValue}: IProps) {
                   value={item.cname}
                   className="cursor-pointer focus:bg-black/20 hover:bg-black/20 hover:text-whitish focus:text-whitish text-whitish font-medium text-sm aria-selected:bg-black/20 aria-selected:text-whitish"
                   onSelect={(currentValue) => {
-                    setValue("governanceSlug",currentValue);
+                    setValue("governanceSlug", currentValue);
                     setOpen(false);
                   }}
                 >

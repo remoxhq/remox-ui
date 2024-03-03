@@ -11,7 +11,7 @@ function OrgForm() {
   const { address } = useAccount();
   const[open,setOpen] = useState(false)
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen} modal={true}>
       <TooltipProvider delayDuration={100}>
         <Tooltip>
           <TooltipTrigger asChild>

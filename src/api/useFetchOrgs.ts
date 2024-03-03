@@ -26,6 +26,7 @@ type SingleOrg = {
   isDeleted: boolean;
   isFavorited: boolean;
   balance:number
+  governanceSlug:string
 };
 
 type AllOrgRes = {

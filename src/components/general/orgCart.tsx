@@ -25,6 +25,7 @@ import { useUserInfo } from "@/zustand/userInfo";
 import useAccessControl from "@/hooks/useAccessControl";
 import useCardMutation from "@/api/useCardMutation";
 import { useDebounce } from "@/hooks/useDebounce";
+import { SingleOrgProp } from "@/globalTypes/types";
 
 interface IProps {
   isFav: boolean;
@@ -36,39 +37,39 @@ interface IProps {
   isActive: boolean;
   id: string;
   createdBy: string;
+  item:SingleOrgProp
 }
 
-function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, createdBy }: IProps) {
+function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, createdBy,item }: IProps) {
   const [alertOpen, setAlertOpen] = useState(false);
   const [formOpen, setFormOpen] = useState(false);
   const [pressed, setPressed] = useState(false);
 
- 
   const user = useUserInfo((state) => ({
     role: state.role,
     address: state.address,
   }));
 
   useEffect(() => {
-    setPressed(isFav); 
+    setPressed(isFav);
   }, [isFav]);
 
   const { favAccess, settingAccess } = useAccessControl(user, createdBy);
-  const {deleteMutation,favMutation} = useCardMutation(id)
+  const { deleteMutation, favMutation } = useCardMutation(id);
 
   const debouncedFav = useDebounce(() => {
-    favMutation.mutate()
+    favMutation.mutate();
   });
 
-  const addRemoveFav = ()=>{
+  const addRemoveFav = () => {
     setPressed(!pressed);
-    debouncedFav()
-  }
+    debouncedFav();
+  };
 
-  const removeOrg = async ()=>{
-    await deleteMutation.mutateAsync()
-    setAlertOpen(false)
-  }
+  const removeOrg = async () => {
+    await deleteMutation.mutateAsync();
+    setAlertOpen(false);
+  };
   return (
     <article
       className={`${
@@ -77,7 +78,7 @@ function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, cr
           : "bg-background "
       } w-full h-[130px] sm:h-[140px] md:h-[150px] lg:h-[162px] border rounded-[32px] transition-all duration-200 ease-linear p-3 lg:p-4 relative`}
     >
-      <Link to={`community/${link}`} target="_blank" replace className="w-fit block mx-auto group">
+      <Link to={`/community/${link}`} target="_blank" replace className="w-fit block mx-auto group">
         <div className="text-center">
           <Avatar className="w-[50px] h-[50px] md:w-[60px] md:h-[60px] overflow-hidden object-cover mx-auto rounded-full group-hover:scale-110 transition-all duration-200 ease-in ">
             <AvatarImage className="w-full h-full object-cover" src={image} />
@@ -115,12 +116,8 @@ function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, cr
           pressed={pressed}
           onPressedChange={addRemoveFav}
         >
-          <Star
-            className={`w-full h-full object-cover group-data-[state=on]:text-brand group-data-[state=on]:fill-brand`}
-          />
+          <Star className={`w-full h-full object-cover group-data-[state=on]:text-brand group-data-[state=on]:fill-brand`} />
         </Toggle>
-
-        
       )}
 
       {isActive && (
@@ -167,7 +164,10 @@ function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, cr
                     <AlertDialogHeader>
                       <AlertDialogTitle asChild>
                         <>
-                          <img src={image} alt="Logo" className="w-[60px] h-[60px] object-cover overflow-hidden rounded-full mx-auto" />
+                          <Avatar className="w-[60px] h-[60px] object-cover overflow-hidden rounded-full mx-auto">
+                            <AvatarImage className="object-cover" src={image ?? ""} alt="Organization Logo" />
+                            <AvatarFallback className="bg-avatarbg"></AvatarFallback>
+                          </Avatar>
                           <p className="font-medium text-whitish text-lg text-center">{name}</p>
                         </>
                       </AlertDialogTitle>
@@ -177,14 +177,14 @@ function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, cr
                     </AlertDialogHeader>
                     <AlertDialogFooter className="mx-auto">
                       <AlertDialogCancel
-                        disabled = {deleteMutation.isPending}
+                        disabled={deleteMutation.isPending}
                         className="bg-transparent font-semibold border-transparent hover:border-border hover:text-whitish py-3 px-8 text-whitish text-base hover:bg-cancelButtonHover rounded-[20px] disabled:text-whitish"
                         onClick={() => setAlertOpen(false)}
                       >
                         Cancel
                       </AlertDialogCancel>
                       <AlertDialogAction
-                        disabled = {deleteMutation.isPending}
+                        disabled={deleteMutation.isPending}
                         className="bg-removeRed font-semibold border-transparent hover:border-border hover:text-whitish py-3 px-8 text-whitish text-base hover:bg-removeRedHover rounded-[20px] disabled:text-whitish"
                         onClick={removeOrg}
                       >
@@ -204,7 +204,7 @@ function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, cr
                       </VisuallyHidden>
                       <DialogDescription asChild></DialogDescription>
                     </DialogHeader>
-                    <MainForm dialogOpener={setFormOpen} />
+                    <MainForm dialogOpener={setFormOpen} id={id} update item={item}/>
                   </DialogContent>
                 </Dialog>
               </span>
