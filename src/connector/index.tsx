@@ -88,7 +88,7 @@ createWeb3Modal({
   },
 });
 
-export const Web3Modal = ({ children }: Props) => {
+export const Connector = ({ children }: Props) => {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

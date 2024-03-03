@@ -5,16 +5,16 @@ import "@styling/globals.css";
 import "@fontsource/geist-sans/400.css";
 import "@fontsource/geist-sans/500.css";
 import "@fontsource/geist-sans/600.css";
-import { Web3Modal } from "@connector/web3Modal";
+import { Connector } from "@connector/index";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <Web3Modal>
+    <Connector>
       <>
-      <App />
-      <ReactQueryDevtools initialIsOpen={false} />
+        <App />
+        <ReactQueryDevtools initialIsOpen={false} />
       </>
-    </Web3Modal>
+    </Connector>
   </React.StrictMode>
 );

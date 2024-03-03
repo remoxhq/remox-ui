@@ -20,7 +20,8 @@ import SelectWithSearch from "./selectWithSearch";
 import useAccessControl from "@/hooks/useAccessControl";
 import { useUserInfo } from "@/zustand/userInfo";
 import useFormMutation from "@/api/useFormMutation";
-import { SingleOrgProp } from "@/globalTypes/types";
+import { SingleOrgProp } from "@typeDecleration/index";
+
 
 const MAX_UPLOAD_SIZE = 1024 * 1024 * 1;
 const ACCEPTED_FILE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
@@ -163,7 +164,6 @@ function MainForm({ dialogOpener, update = false, id, item }: IProps) {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     const formData = new FormData();
     Object.entries(values).forEach(([key, value]) => {
       if (key === "image") {

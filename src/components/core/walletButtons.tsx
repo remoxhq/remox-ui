@@ -4,63 +4,10 @@ import { AddressReducer } from "@utils/addressReducer";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { Loader2, LogOut, Wallet } from "lucide-react";
 import { useDisconnect, useAccount } from "wagmi";
-import Cookies from "js-cookie";
-import auth from "@/api/auth";
-import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import * as jose from "jose";
-import { useUserInfo } from "@/zustand/userInfo";
 function WalletButtons() {
   const { open } = useWeb3Modal();
   const { disconnect } = useDisconnect();
   const { address, isConnecting, isDisconnected, isConnected, isReconnecting } = useAccount();
-
-  const setUser = useUserInfo((state) => ({
-    role: state.setRole,
-    address: state.setAddress,
-  }));
-  const queryClient = useQueryClient();
-  useEffect(() => {
-    const token = Cookies.get("JWT");
-
-    if (!token && address) {
-      (async () => {
-        console.log("Authing");
-        const response = await auth({ address: address! });
-        Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
-        const userRole = jose.decodeJwt(response.result);
-        setUser.role(userRole.role as string);
-        setUser.address(userRole.publicKey as string);
-        queryClient.invalidateQueries()
-      })();
-    } else if (token && !address) {
-      console.log("Removed Cookie");
-      Cookies.remove("JWT");
-      setUser.role(undefined);
-      setUser.address(undefined);
-      queryClient.invalidateQueries()
-    } else if (token && address) {
-      const oldAddress = jose.decodeJwt(token).publicKey;
-      if (oldAddress !== address) {
-        (async () => {
-          console.log("Re-Authing");
-          const response = await auth({ address: address! });
-          Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
-          const userRole = jose.decodeJwt(response.result);
-          setUser.role(userRole.role as string);
-          setUser.address(userRole.publicKey as string);
-          queryClient.invalidateQueries()
-        })();
-      } else {
-        const userRole = jose.decodeJwt(token);
-        setUser.role(userRole.role as string);
-        setUser.address(userRole.publicKey as string);
-        queryClient.invalidateQueries()
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address]);
-
   return (
     <div className="lg:items-center gap-5 hidden lg:flex">
       <TooltipProvider delayDuration={100}>
