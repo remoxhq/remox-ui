@@ -29,6 +29,12 @@ module.exports = {
   },
   plugins: ["react","react-hooks","unused-imports",'react-refresh'],
   rules: {
+    "@typescript-eslint/no-unused-vars":"warn",
+    "no-unused-vars":"warn",
+    "unused-imports/no-unused-imports":"warn",
+    "unused-imports/no-unused-imports-ts": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "react/no-unknown-property":"warn",
     'react-refresh/only-export-components': [
       'off',
       { allowConstantExport: true },
@@ -37,7 +43,6 @@ module.exports = {
     "react-hooks/exhaustive-deps": "warn",
     "no-unreachable-loop": "error",
     "no-void": "off",
-    "unused-imports/no-unused-imports-ts": 2,
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-key": "error",

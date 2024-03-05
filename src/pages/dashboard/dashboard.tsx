@@ -5,6 +5,7 @@ import Transactions from "@pages/dashboard/components/transactions";
 import Portfolio from "@pages/dashboard/components/portfolio";
 
 function Dashboard() {
+  
   return (
     <>
       <OrgInfo />

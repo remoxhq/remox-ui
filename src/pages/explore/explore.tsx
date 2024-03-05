@@ -15,7 +15,7 @@ function Explore() {
 
   const { data, isPending, isSuccess, isFetching } = useFetchOrgs({ size, chain, search });
 
-  
+  console.log(data)
   return (
     <>
       <SearchBar title="Explore Communities" type="explore" />
