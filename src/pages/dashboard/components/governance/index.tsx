@@ -66,8 +66,10 @@ function Governance() {
                     onClick={() => openLink(`${item.adapter === "snapshot" ? item.externalUrl : `https://boardroom.io/${data?.result.governanceSlug}/proposal/${item.refId}`}`)}
                   >
                     <TableCell className="rounded-l-[4px] w-[180px] max-w-[180px] overflow-ellipsis h-fit overflow-hidden">{item.title}</TableCell>
-                    <TableCell className="text-right">{item.startTimestamp !== "0" ? dayjs(Number(item.startTimestamp) * 1000).format("DD MMM,YYYY, HH:mm"):"-"}</TableCell>
-                    <TableCell className="text-right text-whitish">{item.endTimestamp !== "0" ? dayjs(Number(item.endTimestamp) * 1000).format("DD MMM,YYYY, HH:mm"):"-"}</TableCell>
+                    <TableCell className="text-right">{item.startTimestamp !== "0" ? dayjs(Number(item.startTimestamp) * 1000).format("DD MMM,YYYY, HH:mm") : "-"}</TableCell>
+                    <TableCell className="text-right text-whitish">
+                      {item.endTimestamp !== "0" ? dayjs(Number(item.endTimestamp) * 1000).format("DD MMM,YYYY, HH:mm") : "-"}
+                    </TableCell>
                     <TableCell
                       className={`text-right ${
                         item.currentState === "active"
@@ -76,16 +78,15 @@ function Governance() {
                           ? "text-green"
                           : item.currentState === "failed" || item.currentState === "canceled"
                           ? "text-red"
-                          : item.currentState === "closed" ? "text-orange-500":"text-yellow"
+                          : item.currentState === "closed"
+                          ? "text-orange-500"
+                          : "text-yellow"
                       }`}
                     >
                       {item.currentState}
                     </TableCell>
                     <TableCell className="text-right rounded-r-[4px] w-[200px]">
-                      {
-                        item.currentState === "active" ? "-" :<NR value={item.totalVotes} short currency={false} />
-                      }
-                      
+                      {(item.currentState === "active" || item.currentState === "pending") && item.totalVotes === 0 ? "-" : <NR value={item.totalVotes} short currency={false} />}
                     </TableCell>
                   </TableRow>
                 ))}
