@@ -10,14 +10,14 @@ type Response = {
   result: SingleOrgProp;
 };
 
-const fetch = async (id: string | undefined): Promise<Response> => {
-  const response = await instance.get<Response>(`/organization/${id}`).then((res) => res.data);
+const fetch = async (slug: string | undefined): Promise<Response> => {
+  const response = await instance.get<Response>(`/organization/${slug}`).then((res) => res.data);
   return response;
 };
-export const useFetchSingleOrg = (id: string|undefined) =>
+export const useFetchSingleOrg = (slug: string|undefined) =>
   useQuery({
-    queryKey: ["useFetchSingleOrg", id],
-    queryFn: () => fetch(id),
-    staleTime: 0,
-    enabled: !!id
+    queryKey: ["useFetchSingleOrg", slug],
+    queryFn: () => fetch(slug),
+    staleTime: 10 * (60 * 1000), //10 mins
+    enabled: !!slug
   });

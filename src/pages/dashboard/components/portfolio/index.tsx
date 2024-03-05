@@ -1,6 +1,6 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@components/shadcn/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/shadcn/tabs";
-import EmptyCard from "@components/general/emptyCard";
+// import EmptyCard from "@components/general/emptyCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@components/shadcn/avatar";
 import dayjs from "dayjs";
 import NR from "@utils/numberReducer";
@@ -10,7 +10,6 @@ import { Calendar } from "@components/shadcn/calendar";
 import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@components/shadcn/popover";
 import { Button } from "@components/shadcn/button";
-import { format } from "date-fns";
 import ND from "@utils/numberDecider";
 import { Separator } from "@components/shadcn/separator";
 
@@ -719,7 +718,7 @@ function Portfolio() {
                         className="rounded-[8px] bg-foreground text-whitish text-xs font-semibold p-0 h-auto py-1 px-1 w-[110px]"
                       >
                         <CalendarIcon className="mr-1 size-4" />
-                        {dateOne ? format(dateOne, "d/MM/y") : <span>Pick a date</span>}
+                        {dateOne ? dayjs(dateOne).format("DD/M/YYYY") : <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -741,7 +740,7 @@ function Portfolio() {
                         className="rounded-[8px] bg-foreground text-whitish text-xs font-semibold p-0 h-auto py-1 px-1 w-[110px]"
                       >
                         <CalendarIcon className="mr-1 size-4" />
-                        {dateTwo ? format(dateTwo, "d/MM/y") : <span>Pick a date</span>}
+                        {dateTwo ? dayjs(dateTwo).format("DD/M/YYYY"): <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">

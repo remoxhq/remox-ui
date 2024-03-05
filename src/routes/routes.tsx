@@ -15,7 +15,7 @@ export const routes  = createBrowserRouter([
             {path:"about",element:<About/>},
             {path:"favorites",element:<Favorites/>},
             {path:"my-creations",element:<MyCreations/>},
-            {path:"community/:name",element:<Dashboard/>}
+            {path:"community/:slug",element:<Dashboard/>}
         ]
     }
 ])

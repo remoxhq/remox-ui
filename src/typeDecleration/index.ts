@@ -24,4 +24,5 @@ export interface SingleOrgProp {
     isFavorited: boolean;
     balance:number
     governanceSlug:string
+    lastDayBalance:number
   }

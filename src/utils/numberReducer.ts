@@ -19,7 +19,7 @@ function NR({ value, short = true, currency = true }: IProps) {
         return Intl.NumberFormat("en-US", {
           notation: "compact",
           maximumFractionDigits: 2,
-          minimumFractionDigits: 1,
+          minimumFractionDigits: 0,
         }).format(Number(value));
       }
     } else {

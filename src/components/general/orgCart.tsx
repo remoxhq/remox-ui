@@ -25,7 +25,8 @@ import { useUserInfo } from "@/zustand/userInfo";
 import useAccessControl from "@/hooks/useAccessControl";
 import useCardMutation from "@/api/useCardMutation";
 import { useDebounce } from "@/hooks/useDebounce";
-import { SingleOrgProp } from "@types/index";
+import { SingleOrgProp } from "@typeDecleration/index";
+
 
 interface IProps {
   isFav: boolean;
