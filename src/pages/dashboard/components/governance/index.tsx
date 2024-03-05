@@ -18,14 +18,16 @@ function Governance() {
   };
   const { slug } = useParams();
   const { data } = useFetchSingleOrg(slug);
-  const { data: voters, isPending: votersPending, isSuccess: votersSuccess, isError: votersError,isLoading:votersLoading } = useFetchVoters(data?.result.governanceSlug);
-  const { data: proposols, isPending: proposalsPending, isSuccess: proposalsSuccess, isError: proposalsError,isLoading:proposolsLoading } = useFetchProposols(data?.result.governanceSlug);
-  
-  console.log(proposols)
-  console.log(proposalsPending)
-  console.log(proposalsError)
-  console.log(proposalsSuccess)
-  // console.log(isFetching)
+  const { data: voters, isPending: votersPending, isSuccess: votersSuccess, isError: votersError, isLoading: votersLoading } = useFetchVoters(data?.result.governanceSlug);
+  const {
+    data: proposols,
+    isPending: proposalsPending,
+    isSuccess: proposalsSuccess,
+    isError: proposalsError,
+    isLoading: proposolsLoading,
+  } = useFetchProposols(data?.result.governanceSlug);
+
+  console.log(proposols);
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="proposals" className="w-full h-full">
@@ -63,13 +65,28 @@ function Governance() {
                     className="[&>*:not(:nth-child(4))]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap "
                     onClick={() => openLink(`${item.adapter === "snapshot" ? item.externalUrl : `https://boardroom.io/${data?.result.governanceSlug}/proposal/${item.refId}`}`)}
                   >
-                    <TableCell className="rounded-l-[4px] w-[180px] max-w-[180px] overflow-ellipsis h-fit overflow-hidden">
-                    {item.title}
+                    <TableCell className="rounded-l-[4px] w-[180px] max-w-[180px] overflow-ellipsis h-fit overflow-hidden">{item.title}</TableCell>
+                    <TableCell className="text-right">{item.startTimestamp !== "0" ? dayjs(Number(item.startTimestamp) * 1000).format("DD MMM,YYYY, HH:mm"):"-"}</TableCell>
+                    <TableCell className="text-right text-whitish">{item.endTimestamp !== "0" ? dayjs(Number(item.endTimestamp) * 1000).format("DD MMM,YYYY, HH:mm"):"-"}</TableCell>
+                    <TableCell
+                      className={`text-right ${
+                        item.currentState === "active"
+                          ? "text-purple"
+                          : item.currentState === "executed"
+                          ? "text-green"
+                          : item.currentState === "failed" || item.currentState === "canceled"
+                          ? "text-red"
+                          : item.currentState === "closed" ? "text-orange-500":"text-yellow"
+                      }`}
+                    >
+                      {item.currentState}
                     </TableCell>
-                    <TableCell className="text-right">{dayjs(Number(item.startTimestamp) * 1000).format("DD MMM,YYYY, HH:mm")}</TableCell>
-                    <TableCell className="text-right text-whitish">{dayjs(Number(item.endTimestamp) * 1000).format("DD MMM,YYYY, HH:mm")}</TableCell>
-                    <TableCell className="text-right text-purple">{item.currentState}</TableCell>
-                    <TableCell className="text-right rounded-r-[4px] w-[200px]"><NR value={item.totalVotes} short currency={false}/></TableCell>
+                    <TableCell className="text-right rounded-r-[4px] w-[200px]">
+                      {
+                        item.currentState === "active" ? "-" :<NR value={item.totalVotes} short currency={false} />
+                      }
+                      
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

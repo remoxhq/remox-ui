@@ -77,7 +77,7 @@ function OrgInfo() {
             </div>
             <div className="py-1 px-5 border-l border-r flex items-center gap-3">
               <Link to={data.result.website} target="_blank" title="Website" className="group">
-                <Web className="w-4 h-4 object-cover  lg:group-hover:scale-110 transition-all duration-200 ease-in" />
+                <Web className="w-4 h-4 object-cover lg:group-hover:scale-110 transition-all duration-200 ease-in" />
               </Link>
               <Link to={data.result.twitter} title="Twitter" target="_blank" className="group">
                 <Twitter className="w-4 h-4 object-cover  lg:group-hover:scale-110 transition-all duration-200 ease-in" />
@@ -86,7 +86,7 @@ function OrgInfo() {
                 <Github className="w-4 h-4 object-cover  lg:group-hover:scale-110 transition-all duration-200 ease-in" />
               </Link>
               <Link to={data.result.discord} title="Discord" target="_blank" className="group">
-                <Discord className="w-4 h-4 object-cover  lg:group-hover:scale-110 transition-all duration-200 ease-in" />
+                <Discord className="w-4 h-4 object-cover lg:group-hover:scale-110 transition-all duration-200 ease-in" />
               </Link>
             </div>
             <Button
