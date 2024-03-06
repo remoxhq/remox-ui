@@ -10,7 +10,7 @@ function MyCreations() {
   const chain = useChainFilter((state) => state.chainCreations);
   const search = useSearchFilter((state) => state.searchCreations);
 
-  const { data, isPending, isSuccess } = useFetchMines({ chain, search });
+  const { data, isPending, isSuccess,isError } = useFetchMines({ chain, search });
   return (
     <>
       <SearchBar title="My Creations" type="my" />
@@ -37,7 +37,7 @@ function MyCreations() {
               item ={item}
             />
           ))
-        ) : !isPending && isSuccess && data.result.items.length === 0 ? (
+        ) : (!isPending && isSuccess && data.result.items.length === 0) || isError? (
           <EmptyOrg name="Creations" />
         ) : (
           <>
