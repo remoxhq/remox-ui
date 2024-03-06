@@ -27,7 +27,7 @@ function Governance() {
     isLoading: proposolsLoading,
   } = useFetchProposols(data?.result.governanceSlug);
 
-  console.log(proposols);
+  
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="proposals" className="w-full h-full">
@@ -62,7 +62,7 @@ function Governance() {
                 {proposols.data.map((item) => (
                   <TableRow
                     key={item.id}
-                    className="[&>*:not(:nth-child(4))]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap "
+                    className="[&>*:not(:nth-child(4))]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap border-b-0"
                     onClick={() => openLink(`${item.adapter === "snapshot" ? item.externalUrl : `https://boardroom.io/${data?.result.governanceSlug}/proposal/${item.refId}`}`)}
                   >
                     <TableCell className="rounded-l-[4px] w-[180px] max-w-[180px] overflow-ellipsis h-fit overflow-hidden">{item.title}</TableCell>
@@ -114,7 +114,7 @@ function Governance() {
               </TableHeader>
               <TableBody className="[&>*:nth-child(odd)]:bg-foreground ">
                 {voters.map((item) => (
-                  <TableRow key={item.address} className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap">
+                  <TableRow key={item.address} className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap border-b-0">
                     <TableCell className="rounded-l-[4px] w-[200px] max-w-[200px] overflow-ellipsis h-fit overflow-hidden">
                       <AddressReducer address={item.address} left={6} right={7} dots={3} />
                     </TableCell>

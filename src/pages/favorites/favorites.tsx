@@ -10,7 +10,7 @@ function Favorites() {
   const chain = useChainFilter((state) => state.chainFavorites);
   const search = useSearchFilter((state) => state.searchFavorites);
 
-  const { data, isPending, isSuccess } = useFetchFavorites({ chain, search });
+  const { data, isPending, isSuccess,isError } = useFetchFavorites({ chain, search });
 
   return (
     <>
@@ -32,7 +32,7 @@ function Favorites() {
               item={item}
             />
           ))
-        ) : !isPending && isSuccess && data.result.items.length === 0 ? <EmptyOrg name="Favorites" /> : (
+        ) : (!isPending && isSuccess && data.result.items.length === 0) || isError ? <EmptyOrg name="Favorites" /> : (
           <>
             <OrgCartSkeleton />
             <OrgCartSkeleton />

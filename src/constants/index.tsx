@@ -102,3 +102,24 @@ export const chainsKeyValue = {
 }
 
 
+export const chainsObj = {
+    "eth-mainnet":"/img/chains/eth.png",
+    "celo-mainnet":"/img/chains/celo.png",
+    "arbitrum-mainnet":"/img/chains/arb.png",
+    "avalanche-mainnet":"/img/chains/avax.png",
+    "bsc-mainnet":"/img/chains/bnb.png",
+    "matic-mainnet":"/img/chains/matic.png",
+    "optimism-mainnet":"/img/chains/op.png",
+    "gnosis-mainnet":"/img/chains/gnosis.png"
+}
+
+export const scans = {
+    "eth-mainnet":"https://etherscan.io/tx/",
+    "celo-mainnet":"https://celoscan.io/tx/",
+    "arbitrum-mainnet":"https://arbiscan.io/tx/",
+    "avalanche-mainnet":"https://snowtrace.io/tx/",
+    "bsc-mainnet":"https://bscscan.com/tx/",
+    "matic-mainnet":"https://polygonscan.com/tx/",
+    "optimism-mainnet":"https://optimistic.etherscan.io/tx/",
+    "gnosis-mainnet":"https://gnosisscan.io/tx/"
+}

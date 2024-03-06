@@ -401,7 +401,7 @@ function Portfolio() {
                               {item.tokenCount.amountChange > 0 && "+"}
                               <NR value={item.tokenCount.amountChange} currency={false} />
                             </p>
-                            <p className={`uppercase font-medium text-xs ${item.tokenCount.percentageChange > 0 ? 'text-green' : 'text-red'}`}>{item.tokenCount.percentageChange}%</p>
+                            <p className={`uppercase font-medium text-xs ${item.tokenCount.percentageChange > 0 ? 'text-green' : +item.tokenCount.percentageChange === 0 ? 'text-whitish' : 'text-red'}`}>{item.tokenCount.percentageChange}%</p>
                           </div>
                         </div>
                       </div>
