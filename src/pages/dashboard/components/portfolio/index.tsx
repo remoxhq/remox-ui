@@ -18,7 +18,7 @@ import { chainsKeyValue } from "@/constants";
 import EmptyCard from "@components/general/emptyCard";
 import SyncLoader from "react-spinners/SyncLoader";
 import { useFetchPortfolioHistory } from "@/api/useFetchPortfolioHistory";
-import { startDate } from "@utils/startDate";
+import { endDate, startDate } from "@utils/startDate";
 
 function Portfolio() {
   const { slug } = useParams();
@@ -27,7 +27,7 @@ function Portfolio() {
   const { data: archiveData, isPending: isArchiveDataPending, isSuccess: isArchiveDataSuccess, isError: isArchiveDataError, isLoading: isArchiveDataLoading } = useFetchPortfolioHistory(slug);
 
   const [dateOne, setDateOne] = useState<Date | undefined>(startDate());
-  const [dateTwo, setDateTwo] = useState<Date | undefined>(new Date());
+  const [dateTwo, setDateTwo] = useState<Date | undefined>(endDate());
 
   const archiveCalculation = useMemo(() => {
     if (!dateOne || !dateTwo) return undefined;
