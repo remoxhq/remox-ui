@@ -10,7 +10,6 @@ import { Calendar } from "@components/shadcn/calendar";
 import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@components/shadcn/popover";
 import { Button } from "@components/shadcn/button";
-import ND from "@utils/numberDecider";
 import { Separator } from "@components/shadcn/separator";
 import { useFetchSingleOrg } from "@/api/useFetchSingleOrg";
 import { useFetchAssets } from "@/api/useFetchAssets";
@@ -25,20 +24,64 @@ function Portfolio() {
   const { slug } = useParams();
   const { data } = useFetchSingleOrg(slug);
   const { data: assetsData, isPending, isSuccess, isError, isLoading } = useFetchAssets(data?.result.accounts);
-  const { data: archiveData, isArchiveDataPending, isArchiveDataSuccess, isArchiveDataError, isArchiveDataLoading } = useFetchPortfolioHistory(slug);
+  const { data: archiveData, isPending: isArchiveDataPending, isSuccess: isArchiveDataSuccess, isError: isArchiveDataError, isLoading: isArchiveDataLoading } = useFetchPortfolioHistory(slug);
 
   const [dateOne, setDateOne] = useState<Date | undefined>(startDate());
   const [dateTwo, setDateTwo] = useState<Date | undefined>(new Date());
 
   const archiveCalculation = useMemo(() => {
     if (!dateOne || !dateTwo) return undefined;
-    console.log(dateTwo.toLocaleString("en-US").split(",")[0].replaceAll("/", "-"));
 
-    const firstDateData = archiveData?.result.annual[dateOne?.toLocaleString()]
-    const secondDateData = archiveData?.result.annual[dateTwo?.toLocaleString()]
+    const assetDataMap = assetsData?.result.assets.reduce((assetMap: {}, item) => {
+      assetMap[item.symbol] = assetMap[item.symbol] || item
+      return assetMap;
+    }, {})
 
+    const firstDateData = archiveData?.result.annual[dayjs(dateOne).format("YYYY-MM-DD")];
+    const secondDateData = archiveData?.result.annual[dayjs(dateTwo).format("YYYY-MM-DD")];
+    const changes = {};
 
-  }, [archiveData, dateOne, dateTwo])
+    if (firstDateData && secondDateData && assetDataMap) {
+      for (const token in firstDateData.tokenBalances) {
+        const tokenData1 = firstDateData.tokenBalances[token];
+        const tokenData2 = secondDateData.tokenBalances[token];
+
+        if (!tokenData1.balanceUsd && !tokenData2.balanceUsd) continue;
+
+        changes[token] = {
+          firstDateData: tokenData1,
+          secondDateData: tokenData2,
+
+          netChange: secondDateData.totalTreasury - firstDateData.totalTreasury,
+          assetLogo: assetDataMap[token]?.logo,
+          asset: token
+        };
+
+        for (const field in tokenData1) {
+          const value1 = tokenData1[field];
+          const value2 = tokenData2[field];
+          const changeAmount = value2 - value1;
+          const changePercent = value1 ? (changeAmount / value1) * 100 : value2;
+
+          changes[token][field] = {
+            amountChange: changeAmount,
+            percentageChange: changePercent.toFixed(2),
+          };
+        }
+      }
+    }
+    console.log({
+      firstDayTotalUsdValue: firstDateData?.totalTreasury,
+      secondDateTotalUsdValue: secondDateData?.totalTreasury,
+      data: Object.values(changes) as []
+    });
+
+    return {
+      firstDayTotalUsdValue: firstDateData?.totalTreasury,
+      secondDateTotalUsdValue: secondDateData?.totalTreasury,
+      data: Object.values(changes) as []
+    }
+  }, [archiveData, dateOne, dateTwo, assetsData])
 
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
@@ -200,167 +243,180 @@ function Portfolio() {
             )}
         </TabsContent>
         <TabsContent value="archive" className="overflow-auto h-full scrollbar-none w-full">
-          <div className="mb-8 min-w-[630px]">
-            <div className="flex items-center border-b *:pb-2 *:overflow-hidden w-full sticky top-2 mb-2 left-0 bg-darkBlue z-10">
-              <div className="w-[214px] pr-3 border-r ">
-                <div className="flex items-center gap-2 h-[26px] mb-4">
-                  <p className="font-semibold text-xs text-whitish">HOLDINGS ON</p>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className="rounded-[8px] bg-foreground text-whitish text-xs font-semibold p-0 h-auto py-1 px-1 w-[110px]"
-                      >
-                        <CalendarIcon className="mr-1 size-4" />
-                        {dateOne ? dayjs(dateOne).format("DD/M/YYYY") : <span>Pick a date</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar mode="single" selected={dateOne} onSelect={setDateOne} initialFocus className="text-whitish" />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <span className="font-semibold text-xl text-whitish">
-                  <NR value={234342423} />
-                </span>
-              </div>
-              <div className="w-[226px] px-3 border-r ">
-                <div className="flex items-center gap-2  h-[26px] mb-4">
-                  <p className="font-semibold text-xs text-whitish">HOLDINGS ON</p>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className="rounded-[8px] bg-foreground text-whitish text-xs font-semibold p-0 h-auto py-1 px-1 w-[110px]"
-                      >
-                        <CalendarIcon className="mr-1 size-4" />
-                        {dateTwo ? dayjs(dateTwo).format("DD/M/YYYY") : <span>Pick a date</span>}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
-                      <Calendar mode="single" selected={dateTwo} onSelect={setDateTwo} initialFocus className="text-whitish" />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-                <span className="font-semibold text-xl text-whitish">
-                  <NR value={234342423} />
-                </span>
-              </div>
-              <div className="w-[78px] ml-3 ">
-                <div className="flex items-center gap-2  h-[26px] mb-4">
-                  <p className="font-semibold text-xs text-whitish">NET CHANGE</p>
-                </div>
-                <ND newValue={2323232} oldValue={223233} short className="font-semibold text-xl" />
-              </div>
-            </div>
-            <div className="flex items-center *:overflow-hidden w-full *:py-2 ">
-              <div className="w-[214px] pr-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-semibold text-xs text-whitish">Asset</p>
-                  <p className="font-semibold text-xs text-whitish">Holdings</p>
-                </div>
-              </div>
-              <div className="w-[226px] px-3 border-r">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-semibold text-xs text-whitish">Asset</p>
-                  <p className="font-semibold text-xs text-whitish">Holdings</p>
-                </div>
-              </div>
-              <div className="w-[calc(100%_-_440px)] pl-3">
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-semibold text-xs text-whitish">Asset</p>
-                  <p className="font-semibold text-xs text-whitish">USD</p>
-                  <p className="font-semibold text-xs text-whitish">Holdings</p>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center justify-center *:overflow-hidden w-full h-12 group">
-              <div className="w-[213.5px] pr-2 ">
-                <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
-                  <div className="flex items-center gap-1">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">BTC</p>
-                      <p className="uppercase font-medium text-xs text-whitish">
-                        <NR value={2232323} short={false} />
-                      </p>
-                    </div>
+          {archiveData && !isArchiveDataPending && isArchiveDataSuccess && archiveData.result.name ?
+            <div className="mb-8 min-w-[630px]">
+              <div className="flex items-center border-b *:pb-2 *:overflow-hidden w-full sticky top-2 mb-2 left-0 bg-darkBlue z-10">
+                <div className="w-[214px] pr-3 border-r ">
+                  <div className="flex items-center gap-2 h-[26px] mb-4">
+                    <p className="font-semibold text-xs text-whitish">HOLDINGS ON</p>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className="rounded-[8px] bg-foreground text-whitish text-xs font-semibold p-0 h-auto py-1 px-1 w-[110px]"
+                        >
+                          <CalendarIcon className="mr-1 size-4" />
+                          {dateOne ? dayjs(dateOne).format("DD/M/YYYY") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar mode="single" selected={dateOne} onSelect={setDateOne} initialFocus className="text-whitish" />
+                      </PopoverContent>
+                    </Popover>
                   </div>
+                  <span className="font-semibold text-xl text-whitish">
+                    <NR value={archiveCalculation?.firstDayTotalUsdValue ?? 0} />
+                  </span>
+                </div>
+                <div className="w-[226px] px-3 border-r ">
+                  <div className="flex items-center gap-2  h-[26px] mb-4">
+                    <p className="font-semibold text-xs text-whitish">HOLDINGS ON</p>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className="rounded-[8px] bg-foreground text-whitish text-xs font-semibold p-0 h-auto py-1 px-1 w-[110px]"
+                        >
+                          <CalendarIcon className="mr-1 size-4" />
+                          {dateTwo ? dayjs(dateTwo).format("DD/M/YYYY") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar mode="single" selected={dateTwo} onSelect={setDateTwo} initialFocus className="text-whitish" />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                  <span className="font-semibold text-xl text-whitish">
+                    <NR value={archiveCalculation?.secondDateTotalUsdValue ?? 0} />
+                  </span>
+                </div>
+                <div className="w-[88px] ml-3 ">
+                  <div className="flex items-center gap-2  h-[26px] mb-4">
+                    <p className="font-semibold text-xs text-whitish">NET CHANGE</p>
+                  </div>
+                  <span className={`font-semibold text-xl ${(archiveCalculation?.secondDateTotalUsdValue ?? 0) - (archiveCalculation?.firstDayTotalUsdValue ?? 0) > 0 ? 'text-green' : 'text-red'}`}>
+                    <NR value={(archiveCalculation?.secondDateTotalUsdValue ?? 0) - (archiveCalculation?.firstDayTotalUsdValue ?? 0)} />
+                  </span>
+                </div>
+              </div>
+              <div className="flex items-center *:overflow-hidden w-full *:py-2 ">
+                <div className="w-[214px] pr-3 border-r">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-semibold text-xs text-whitish">Asset</p>
+                    <p className="font-semibold text-xs text-whitish">Holdings</p>
+                  </div>
+                </div>
+                <div className="w-[226px] px-3 border-r">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-semibold text-xs text-whitish">Asset</p>
+                    <p className="font-semibold text-xs text-whitish">Holdings</p>
+                  </div>
+                </div>
+                <div className="w-[calc(100%_-_440px)] pl-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="font-semibold text-xs text-whitish">Asset</p>
+                    <p className="font-semibold text-xs text-whitish">USD</p>
+                    <p className="font-semibold text-xs text-whitish">Holdings</p>
+                  </div>
+                </div>
+              </div>
+              {
+                archiveCalculation && archiveCalculation.data.map((item: any) => (
+                  <div key={item.address} className="flex items-center justify-center *:overflow-hidden w-full h-12 group">
+                    <div className="w-[213.5px] pr-2 ">
+                      <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
+                        <div className="flex items-center gap-1">
+                          <Avatar className="w-4 h-4 object-cover rounded-full">
+                            <AvatarImage src={item.assetLogo} alt="Organization Logo" className="object-cover" />
+                            <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="uppercase font-medium text-xs text-whitish mb-1">{item.asset}</p>
+                            <p className="uppercase font-medium text-xs text-whitish">
+                              <NR value={item.firstDateData.tokenUsdValue} short={true} />
+                            </p>
+                          </div>
+                        </div>
 
-                  <div className="text-right">
-                    <p className="uppercase font-medium text-xs text-whitish mb-1">
-                      <NR value={2232323} />
-                    </p>
-                    <p className="uppercase font-medium text-xs text-whitish">
-                      <NR value={22323} currency={false} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <Separator orientation="vertical" />
-              <div className="w-[225.5px] px-2">
-                <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
-                  <div className="flex items-center gap-1">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">BTC</p>
-                      <p className="uppercase font-medium text-xs text-whitish">
-                        <NR value={2232323} short={false} />
-                      </p>
+                        <div className="text-right">
+                          <p className="uppercase font-medium text-xs text-whitish mb-1">
+                            <NR value={item.firstDateData.balanceUsd} short={true} />
+                          </p>
+                          <p className="uppercase font-medium text-xs text-whitish">
+                            <NR value={item.firstDateData.tokenCount} currency={false} />
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                    <Separator orientation="vertical" />
+                    <div className="w-[225.5px] px-2">
+                      <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
+                        <div className="flex items-center gap-1">
+                          <Avatar className="w-4 h-4 object-cover rounded-full">
+                            <AvatarImage src={item.assetLogo} alt="Organization Logo" className="object-cover" />
+                            <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="uppercase font-medium text-xs text-whitish mb-1">{item.asset}</p>
+                            <p className="uppercase font-medium text-xs text-whitish">
+                              <NR value={item.secondDateData.tokenUsdValue} short={true} />
+                            </p>
+                          </div>
+                        </div>
 
-                  <div className="text-right">
-                    <p className="uppercase font-medium text-xs text-whitish mb-1">
-                      <NR value={2232323} />
-                    </p>
-                    <p className="uppercase font-medium text-xs text-whitish">
-                      <NR value={22323} currency={false} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <Separator orientation="vertical" />
-              <div className="w-[calc(100%_-_439.5px)] pl-2 ">
-                <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
+                        <div className="text-right">
+                          <p className="uppercase font-medium text-xs text-whitish mb-1">
+                            <NR value={item.secondDateData.balanceUsd} short={true} />
+                          </p>
+                          <p className="uppercase font-medium text-xs text-whitish">
+                            <NR value={item.secondDateData.tokenCount} currency={false} />
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <Separator orientation="vertical" />
+                    <div className="w-[calc(100%_-_439.5px)] pl-2 ">
+                      <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
+                        <div className="flex items-center gap-2">
+                          <div>
+                            <p className="uppercase font-medium text-xs text-whitish mb-1">
+                              {item.tokenUsdValue.amountChange > 0 && "+"}
+                              <NR value={item.tokenUsdValue.amountChange} />
+                            </p>
+                            <p className={`uppercase font-medium text-xs ${item.tokenUsdValue.percentageChange > 0 ? 'text-green' : 'text-red'} `}>{item.tokenUsdValue.percentageChange}%</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div>
+                            <p className="uppercase font-medium text-xs text-whitish mb-1">
+                              {item.balanceUsd.amountChange > 0 && "+"}
+                              <NR value={item.balanceUsd.amountChange} />
+                            </p>
+                            <p className={`uppercase font-medium text-xs ${item.balanceUsd.percentageChange > 0 ? 'text-green' : 'text-red'}`}>{item.balanceUsd.percentageChange}%</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div>
+                            <p className="uppercase font-medium text-xs text-whitish mb-1">
+                              {item.tokenCount.amountChange > 0 && "+"}
+                              <NR value={item.tokenCount.amountChange} currency={false} />
+                            </p>
+                            <p className={`uppercase font-medium text-xs ${item.tokenCount.percentageChange > 0 ? 'text-green' : 'text-red'}`}>{item.tokenCount.percentageChange}%</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div>
-                      <p className="uppercase font-medium text-xs text-whitish mb-1">
-                        {"+"}
-                        <NR value={12348932} />
-                      </p>
-                      <p className="uppercase font-medium text-xs text-green">73.01%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                ))
+              }
             </div>
-
-          </div>
+            : (archiveData && !archiveData.result.name) || isArchiveDataError || !isArchiveDataLoading ? (
+              <EmptyCard name="Assets" />
+            ) : (
+              <div className="flex justify-center content-center h-[80%] items-center">
+                <SyncLoader color="#384555" size={20} />
+              </div>
+            )}
         </TabsContent>
       </Tabs>
     </div>
