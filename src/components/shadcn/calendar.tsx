@@ -4,7 +4,7 @@ import { DayPicker } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "./button"
-import { startDate } from "@utils/startDate"
+import { endDate, startDate } from "@utils/startDate"
 
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
@@ -18,7 +18,7 @@ function Calendar({
   return (
     <DayPicker
       fromDate={startDate()}
-      toDate={new Date()}
+      toDate={endDate()}
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
       defaultMonth={props.selected as Date}
