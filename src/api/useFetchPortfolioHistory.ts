@@ -12,7 +12,11 @@ type Response = {
       [key: string]: {
         totalTreasury: number;
         tokenBalances: {
-          [key: string]: number;
+          [key: string]: {
+            balanceUsd: number,
+            tokenCount: number,
+            tokenUsdValue: number
+          };
         };
         networkBalances: {
           [key: string]: number;
