@@ -51,7 +51,7 @@ function Portfolio() {
               </TableRow>
             </TableHeader>
             <TableBody className="[&>*:nth-child(odd)]:bg-foreground ">
-              <TableRow className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-2 *:text-nowrap">
+              <TableRow className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-2 *:text-nowrap border-b-0">
                 <TableCell className="rounded-l-[4px] overflow-hidden w-[140px] max-w-[140px] md:w-[180px] md:max-w-[180px] lg:w-[220px] lg:max-w-[220px]">
                   <div className="flex items-center gap-1">
                     <Avatar className="w-4 h-4 object-cover rounded-full">
