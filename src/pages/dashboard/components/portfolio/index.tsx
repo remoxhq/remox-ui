@@ -32,16 +32,11 @@ function Portfolio() {
   const archiveCalculation = useMemo(() => {
     if (!dateOne || !dateTwo) return undefined;
 
-    const assetDataMap = assetsData?.result.assets.reduce((assetMap: {}, item) => {
-      assetMap[item.symbol] = assetMap[item.symbol] || item
-      return assetMap;
-    }, {})
-
     const firstDateData = archiveData?.result.annual[dayjs(dateOne).format("YYYY-MM-DD")];
     const secondDateData = archiveData?.result.annual[dayjs(dateTwo).format("YYYY-MM-DD")];
     const changes = {};
 
-    if (firstDateData && secondDateData && assetDataMap) {
+    if (firstDateData && secondDateData) {
       for (const token in firstDateData.tokenBalances) {
         const tokenData1 = firstDateData.tokenBalances[token];
         const tokenData2 = secondDateData.tokenBalances[token];
@@ -51,9 +46,8 @@ function Portfolio() {
         changes[token] = {
           firstDateData: tokenData1,
           secondDateData: tokenData2,
-
           netChange: secondDateData.totalTreasury - firstDateData.totalTreasury,
-          assetLogo: assetDataMap[token]?.logo,
+          assetLogo: archiveData?.result.existingTokenLogos[token] ?? "",
           asset: token
         };
 
@@ -70,11 +64,6 @@ function Portfolio() {
         }
       }
     }
-    console.log({
-      firstDayTotalUsdValue: firstDateData?.totalTreasury,
-      secondDateTotalUsdValue: secondDateData?.totalTreasury,
-      data: Object.values(changes) as []
-    });
 
     return {
       firstDayTotalUsdValue: firstDateData?.totalTreasury,

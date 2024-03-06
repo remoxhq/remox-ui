@@ -8,6 +8,9 @@ type Response = {
     _id: string;
     name: string;
     addresses: string[];
+    existingTokenLogos: {
+      [key: string]: string;
+    };
     annual: {
       [key: string]: {
         totalTreasury: number;
