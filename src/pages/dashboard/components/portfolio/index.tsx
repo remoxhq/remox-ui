@@ -47,8 +47,8 @@ function Portfolio() {
           firstDateData: tokenData1,
           secondDateData: tokenData2,
           netChange: secondDateData.totalTreasury - firstDateData.totalTreasury,
-          assetLogo: archiveData?.result.existingTokenLogos[token] ?? "",
-          asset: token
+          assetLogo: archiveData?.result.existingTokens[token].logo ?? "",
+          asset: archiveData?.result.existingTokens[token].symbol ?? ""
         };
 
         for (const field in tokenData1) {
