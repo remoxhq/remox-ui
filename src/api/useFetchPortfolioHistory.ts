@@ -8,8 +8,11 @@ type Response = {
     _id: string;
     name: string;
     addresses: string[];
-    existingTokenLogos: {
-      [key: string]: string;
+    existingTokens: {
+      [key: string]: {
+        symbol: string,
+        logo: string
+      };
     };
     annual: {
       [key: string]: {
