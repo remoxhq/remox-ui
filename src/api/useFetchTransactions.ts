@@ -39,5 +39,5 @@ export const useFetchTransactions = (dashboardLink: IProps) =>
     staleTime: 10 * (60 * 1000), //10 mins
     enabled: !!dashboardLink,
     initialPageParam: "",
-    getNextPageParam: (lastPage, pages) => lastPage?.result.next ? lastPage?.result.next : undefined,
+    getNextPageParam: (lastPage) => lastPage?.result.next ? lastPage?.result.next : undefined,
   });
