@@ -5,17 +5,41 @@ import { Avatar, AvatarFallback, AvatarImage } from "@components/shadcn/avatar";
 import dayjs from "dayjs";
 import NR from "@utils/numberReducer";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@components/shadcn/accordion";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Calendar } from "@components/shadcn/calendar";
 import { CalendarIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@components/shadcn/popover";
 import { Button } from "@components/shadcn/button";
 import ND from "@utils/numberDecider";
 import { Separator } from "@components/shadcn/separator";
+import { useFetchSingleOrg } from "@/api/useFetchSingleOrg";
+import { useFetchAssets } from "@/api/useFetchAssets";
+import { useParams } from "react-router-dom";
+import { chainsKeyValue } from "@/constants";
+import EmptyCard from "@components/general/emptyCard";
+import SyncLoader from "react-spinners/SyncLoader";
+import { useFetchPortfolioHistory } from "@/api/useFetchPortfolioHistory";
+import { startDate } from "@utils/startDate";
 
 function Portfolio() {
-  const [dateOne, setDateOne] = useState<Date | undefined>();
-  const [dateTwo, setDateTwo] = useState<Date | undefined>();
+  const { slug } = useParams();
+  const { data } = useFetchSingleOrg(slug);
+  const { data: assetsData, isPending, isSuccess, isError, isLoading } = useFetchAssets(data?.result.accounts);
+  const { data: archiveData, isArchiveDataPending, isArchiveDataSuccess, isArchiveDataError, isArchiveDataLoading } = useFetchPortfolioHistory(slug);
+
+  const [dateOne, setDateOne] = useState<Date | undefined>(startDate());
+  const [dateTwo, setDateTwo] = useState<Date | undefined>(new Date());
+
+  const archiveCalculation = useMemo(() => {
+    if (!dateOne || !dateTwo) return undefined;
+    console.log(dateTwo.toLocaleString("en-US").split(",")[0].replaceAll("/", "-"));
+
+    const firstDateData = archiveData?.result.annual[dateOne?.toLocaleString()]
+    const secondDateData = archiveData?.result.annual[dateTwo?.toLocaleString()]
+
+
+  }, [archiveData, dateOne, dateTwo])
+
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="portfolio" className="w-full h-full">
@@ -40,670 +64,140 @@ function Portfolio() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="portfolio" className="w-full h-full">
-          <Table className="mt-3 mb-8 ">
-            <TableCaption className="hidden">A list of recent portfolio.</TableCaption>
-            <TableHeader>
-              <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
-                <TableHead>Asset</TableHead>
-                <TableHead className="text-left">Price</TableHead>
-                <TableHead className="text-left">Holdings</TableHead>
-                <TableHead className="text-right">Value</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody className="[&>*:nth-child(odd)]:bg-foreground ">
-              <TableRow className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-2 *:text-nowrap">
-                <TableCell className="rounded-l-[4px] overflow-hidden w-[140px] max-w-[140px] md:w-[180px] md:max-w-[180px] lg:w-[220px] lg:max-w-[220px]">
-                  <div className="flex items-center gap-1">
-                    <Avatar className="w-4 h-4 object-cover rounded-full">
-                      <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                      <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                    </Avatar>
-                    <p>USDC</p>
-                  </div>
-                </TableCell>
-                <TableCell className="text-left w-[240px] max-w-[240px] lg:w-[160px] lg:max-w-[160px] ">
-                  <NR value={1} currency short={false} />
-                </TableCell>
-                <TableCell className="text-left">42</TableCell>
-                <TableCell className="rounded-r-[4px] overflow-ellipsis overflow-hidden text-right">
-                  <NR value={42} currency short={false} />
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          {assetsData && !isPending && isSuccess && assetsData.result.assets.length > 0 ?
+            <Table className="mt-3 mb-8 ">
+              <TableCaption className="hidden">A list of recent portfolio.</TableCaption>
+              <TableHeader>
+                <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
+                  <TableHead>Asset</TableHead>
+                  <TableHead className="text-left">Price</TableHead>
+                  <TableHead className="text-left">Holdings</TableHead>
+                  <TableHead className="text-right">Value</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="[&>*:nth-child(odd)]:bg-foreground ">
+                {
+                  assetsData?.result.assets.map(asset => (
+                    <TableRow key={asset.uniqueKey} className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-2 *:text-nowrap">
+                      <TableCell className="rounded-l-[4px] overflow-hidden w-[140px] max-w-[140px] md:w-[180px] md:max-w-[180px] lg:w-[220px] lg:max-w-[220px]">
+                        <div className="flex items-center gap-1">
+                          <Avatar className="w-4 h-4 object-cover rounded-full">
+                            <AvatarImage src={asset.logo} alt="Organization Logo" className="object-cover" />
+                            <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                          </Avatar>
+                          <p>{asset.symbol}</p>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-left w-[240px] max-w-[240px] lg:w-[160px] lg:max-w-[160px] ">
+                        <NR value={asset.quote_rate} currency short={true} />
+                      </TableCell>
+                      <TableCell className="text-left">
+                        <NR value={asset.quote} currency short={true} />
+                      </TableCell>
+                      <TableCell className="rounded-r-[4px] overflow-ellipsis overflow-hidden text-right">
+                        <NR value={asset.balance} currency short={true} />
+                      </TableCell>
+                    </TableRow>
+                  ))
+                }
+              </TableBody>
+            </Table>
+            : (assetsData && assetsData.result.assets.length === 0) || isError || !isLoading ? (
+              <EmptyCard name="Assets" />
+            ) : (
+              <div className="flex justify-center content-center h-[80%] items-center">
+                <SyncLoader color="#384555" size={20} />
+              </div>
+            )}
         </TabsContent>
         <TabsContent value="holdings" className="overflow-auto h-full w-full ">
-          <div className="mt-3 mb-8 min-w-[350px]">
-            <div className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap border-none *:px-3 *:pb-2 flex items-center">
-              <p className="w-[220px]">Chain</p>
-              <p className="w-[160px]">Price</p>
-              <p className="w-[160px]">Top Holdings</p>
-              <p className="text-right w-[100px] ml-auto">Assets</p>
+          {assetsData && !isPending && isSuccess && assetsData.result.assetsByBlockchain.length > 0 ?
+            <div className="mt-3 mb-8 min-w-[350px]">
+              <div className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap border-none *:px-3 *:pb-2 flex items-center">
+                <p className="w-[220px]">Chain</p>
+                <p className="w-[160px]">Price</p>
+                <p className="w-[160px]">Top Holdings</p>
+                <p className="text-right w-[100px] ml-auto">Assets</p>
+              </div>
+              <Accordion type="single" collapsible>
+                {
+                  assetsData?.result.assetsByBlockchain.map(blockchain => (
+                    <AccordionItem value="item-1" className="group border-none">
+                      <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
+                        <div className="flex items-center w-full pl-3 py-2 ">
+                          <div className="flex items-center gap-1 w-[220px]">
+                            <Avatar className="w-4 h-4 object-cover rounded-full">
+                              <AvatarImage src={chainsKeyValue[blockchain.blockchain].logo} alt="Organization Logo" className="object-cover" />
+                              <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                            </Avatar>
+                            <p className="uppercase">{chainsKeyValue[blockchain.blockchain].name}</p>
+                          </div>
+                          <p className="text-left w-[160px]">
+                            <NR value={blockchain.totalAssetUsdValue} short={true} currency />
+                          </p>
+                          <div className="flex items-center gap-1 w-[160px]">
+                            <Avatar className="w-4 h-4 object-cover rounded-full">
+                              <AvatarImage src={blockchain.topHoldingUrl} alt="Organization Logo" className="object-cover" />
+                              <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                            </Avatar>
+                            <p className="uppercase">{blockchain.topHolding}</p>
+                          </div>
+                          <div className="flex items-center justify-end gap-[2px] ml-auto">
+                            {
+                              blockchain.top3HoldingsUrls.map(url => (
+                                <Avatar className="w-4 h-4 object-cover rounded-full">
+                                  <AvatarImage src={url} alt="Organization Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                                </Avatar>
+                              ))
+                            }
+                          </div>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="mt-2 pb-1">
+                        <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
+                          <p className="w-[220px]">Asset</p>
+                          <p className="w-[160px]">Price</p>
+                          <p className="w-[160px]">Holdings</p>
+                          <p className="text-right w-[100px] ml-auto">Value</p>
+                        </div>
+
+                        {
+                          blockchain.assets.map(asset => (
+                            <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
+                              <div className="flex items-center gap-1 w-[220px]">
+                                <Avatar className="w-4 h-4 object-cover rounded-full">
+                                  <AvatarImage src={asset.logo} alt="Coin Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                                </Avatar>
+                                <p className="uppercase">{asset.symbol}</p>
+                              </div>
+                              <p className="text-left w-[160px]">
+                                <NR value={asset.quote_rate} currency short={true} />
+                              </p>
+                              <div className="flex items-center gap-1 w-[160px]">
+                                <NR value={asset.quote} currency short={true} />
+                              </div>
+                              <div className="ml-auto">
+                                <NR value={asset.balance} currency short={true} />
+                              </div>
+                            </div>
+                          ))
+                        }
+
+                      </AccordionContent>
+                    </AccordionItem>
+                  ))
+                }
+              </Accordion>
             </div>
-            <Accordion type="single" collapsible>
-              <AccordionItem value="item-1" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-2" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-3" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-5" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-6" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-7" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-8" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-9" className="group border-none">
-                <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
-                  <div className="flex items-center w-full pl-3 py-2 ">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/chains/eth.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">Ethereum</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <div className="flex items-center justify-end gap-[2px] ml-auto">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Organization Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                    </div>
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent className="mt-2 pb-1">
-                  <div className="*:text-xs *:text-whitish *:text-nowrap border-none *:px-3 *:pb-1 flex items-center ">
-                    <p className="w-[220px]">Asset</p>
-                    <p className="w-[160px]">Price</p>
-                    <p className="w-[160px]">Holdings</p>
-                    <p className="text-right w-[100px] ml-auto">Value</p>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                  <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
-                    <div className="flex items-center gap-1 w-[220px]">
-                      <Avatar className="w-4 h-4 object-cover rounded-full">
-                        <AvatarImage src="/img/coin.png" alt="Coin Logo" className="object-cover" />
-                        <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                      </Avatar>
-                      <p className="uppercase">USDC</p>
-                    </div>
-                    <p className="text-left w-[160px]">
-                      <NR value={1223223} currency short={false} />
-                    </p>
-                    <div className="flex items-center gap-1 w-[160px]">42</div>
-                    <div className="ml-auto">
-                      <NR value={1223} currency short={false} />
-                    </div>
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
+            : (assetsData && assetsData.result.assetsByBlockchain.length === 0) || isError || !isLoading ? (
+              <EmptyCard name="Holding By Blockchain" />
+            ) : (
+              <div className="flex justify-center content-center h-[80%] items-center">
+                <SyncLoader color="#384555" size={20} />
+              </div>
+            )}
         </TabsContent>
         <TabsContent value="archive" className="overflow-auto h-full scrollbar-none w-full">
           <div className="mb-8 min-w-[630px]">
@@ -740,7 +234,7 @@ function Portfolio() {
                         className="rounded-[8px] bg-foreground text-whitish text-xs font-semibold p-0 h-auto py-1 px-1 w-[110px]"
                       >
                         <CalendarIcon className="mr-1 size-4" />
-                        {dateTwo ? dayjs(dateTwo).format("DD/M/YYYY"): <span>Pick a date</span>}
+                        {dateTwo ? dayjs(dateTwo).format("DD/M/YYYY") : <span>Pick a date</span>}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
@@ -806,7 +300,7 @@ function Portfolio() {
                   </div>
                 </div>
               </div>
-              <Separator orientation="vertical"/>
+              <Separator orientation="vertical" />
               <div className="w-[225.5px] px-2">
                 <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
                   <div className="flex items-center gap-1">
@@ -832,7 +326,7 @@ function Portfolio() {
                   </div>
                 </div>
               </div>
-              <Separator orientation="vertical"/>
+              <Separator orientation="vertical" />
               <div className="w-[calc(100%_-_439.5px)] pl-2 ">
                 <div className="flex items-center justify-between group-odd:bg-foreground rounded-[2px] p-1">
                   <div className="flex items-center gap-2">
@@ -865,7 +359,7 @@ function Portfolio() {
                 </div>
               </div>
             </div>
-            
+
           </div>
         </TabsContent>
       </Tabs>
