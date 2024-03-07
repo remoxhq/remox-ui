@@ -21,7 +21,7 @@ function Transactions() {
   const { data } = useFetchSingleOrg(slug);
 
   const { data: txs, isPending, isSuccess, isError, isLoading, fetchNextPage, hasNextPage } = useFetchTransactions(data?.result.dashboardLink);
-  
+
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="transactions" className="w-full h-full">
@@ -68,8 +68,8 @@ function Transactions() {
                             key={item.id}
                             as="tr"
                             onChange={(inView) => {
-                              if(inView && hasNextPage){
-                                fetchNextPage()
+                              if (inView && hasNextPage) {
+                                fetchNextPage();
                               }
                             }}
                             className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
@@ -94,8 +94,10 @@ function Transactions() {
                             <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                               <div className="flex items-center ">
                                 <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
-                                  <AvatarImage src={item.assetLogo} alt="Chain Logo" className="object-cover" />
-                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase">{item.assetName.substring(0, 2)}</AvatarFallback>
+                                  <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                                    <img src="/img/defaultToken.png" alt="Default" />
+                                  </AvatarFallback>
                                 </Avatar>
                                 <p className="text-red text-sm mr-3 xl:mr-1">
                                   <NR value={item.amount} short currency={false} />
@@ -132,8 +134,10 @@ function Transactions() {
                           <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                             <div className="flex items-center ">
                               <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
-                                <AvatarImage src={item.assetLogo} alt="Chain Logo" className="object-cover" />
-                                <AvatarFallback className="bg-avatarbg text-[6px] uppercase">{item.assetName.substring(0, 2)}</AvatarFallback>
+                                <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
+                                <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                                  <img src="/img/defaultToken.png" alt="Default" />
+                                </AvatarFallback>
                               </Avatar>
                               <p className="text-red text-sm mr-3 xl:mr-1">
                                 <NR value={item.amount} short currency={false} />
@@ -156,7 +160,7 @@ function Transactions() {
             </div>
           )}
         </TabsContent>
-        <TabsContent value="inflow" className="overflow-auto h-full w-full">
+        <TabsContent value="inflow" className="overflow-auto h-full w-full ">
           {txs && !isPending && isSuccess ? (
             <Table className="mt-3 mb-8">
               <TableCaption className="hidden">A list of recent transactions.</TableCaption>
@@ -171,18 +175,60 @@ function Transactions() {
               </TableHeader>
               <TableBody className="[&>*:nth-child(odd)]:bg-foreground [&>*:nth-child(odd):hover]:bg-foregroundHover [&>*]:transition-all [&>*]:duration-200 [&>*]:ease-in [&>*:nth-child(even):hover]:bg-transparentHover [&>*]:cursor-pointer">
                 {txs.pages.map((page, index) =>
-                  page?.result.txs.filter(x=> x.direction === "In").map((item, i) => {
-                    if (index === txs.pages.length - 1 && i === page.result.txs.length - 1) {
-                      return (
-                        <>
-                          <InView
+                  page?.result.txs
+                    .filter((x) => x.direction === "In")
+                    .map((item, i) => {
+                      if (index === txs.pages.length - 1 && i === page.result.txs.length - 1) {
+                        return (
+                          <>
+                            <InView
+                              key={item.id}
+                              as="tr"
+                              onChange={(inView) => {
+                                if (inView && hasNextPage) {
+                                  fetchNextPage();
+                                }
+                              }}
+                              className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
+                              onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
+                            >
+                              <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
+                                <Avatar className="w-4 h-4 object-cover rounded-full">
+                                  <AvatarImage src={chainsObj[item.chain]} alt="Chain Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                                </Avatar>
+                              </TableCell>
+                              <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
+                                <p className="text-xs">{dayjs(item.date).format("MMM DD")}</p>
+                                <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
+                              </TableCell>
+                              <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
+                                <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                              </TableCell>
+                              <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
+                                <AddressReducer address={item.to} dots={3} left={6} right={12} />
+                              </TableCell>
+                              <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
+                                <div className="flex items-center ">
+                                <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
+                                  <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                                    <img src="/img/defaultToken.png" alt="Default" />
+                                  </AvatarFallback>
+                                </Avatar>
+                                  <p className="text-red text-sm mr-3 xl:mr-1">
+                                    <NR value={item.amount} short currency={false} />
+                                  </p>
+                                  <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
+                                </div>
+                              </TableCell>
+                            </InView>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <TableRow
                             key={item.id}
-                            as="tr"
-                            onChange={(inView) => {
-                              if(inView && hasNextPage){
-                                fetchNextPage()
-                              }
-                            }}
                             className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
                             onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
                           >
@@ -204,9 +250,11 @@ function Transactions() {
                             </TableCell>
                             <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                               <div className="flex items-center ">
-                                <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
-                                  <AvatarImage src={item.assetLogo} alt="Chain Logo" className="object-cover" />
-                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase">{item.assetName.substring(0, 2)}</AvatarFallback>
+                              <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
+                                  <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                                    <img src="/img/defaultToken.png" alt="Default" />
+                                  </AvatarFallback>
                                 </Avatar>
                                 <p className="text-red text-sm mr-3 xl:mr-1">
                                   <NR value={item.amount} short currency={false} />
@@ -214,48 +262,10 @@ function Transactions() {
                                 <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
                               </div>
                             </TableCell>
-                          </InView>
-                        </>
-                      );
-                    } else {
-                      return (
-                        <TableRow
-                          key={item.id}
-                          className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
-                          onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
-                        >
-                          <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                            <Avatar className="w-4 h-4 object-cover rounded-full">
-                              <AvatarImage src={chainsObj[item.chain]} alt="Chain Logo" className="object-cover" />
-                              <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                            </Avatar>
-                          </TableCell>
-                          <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                            <p className="text-xs">{dayjs(item.date).format("MMM DD")}</p>
-                            <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
-                          </TableCell>
-                          <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                            <AddressReducer address={item.from} dots={3} left={6} right={12} />
-                          </TableCell>
-                          <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                            <AddressReducer address={item.to} dots={3} left={6} right={12} />
-                          </TableCell>
-                          <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                            <div className="flex items-center ">
-                              <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
-                                <AvatarImage src={item.assetLogo} alt="Chain Logo" className="object-cover" />
-                                <AvatarFallback className="bg-avatarbg text-[6px] uppercase">{item.assetName.substring(0, 2)}</AvatarFallback>
-                              </Avatar>
-                              <p className="text-red text-sm mr-3 xl:mr-1">
-                                <NR value={item.amount} short currency={false} />
-                              </p>
-                              <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    }
-                  })
+                          </TableRow>
+                        );
+                      }
+                    })
                 )}
               </TableBody>
             </Table>
@@ -267,7 +277,7 @@ function Transactions() {
             </div>
           )}
         </TabsContent>
-        <TabsContent value="outflow" className="overflow-auto h-full w-full">
+        <TabsContent value="outflow" className="overflow-auto h-full w-full ">
           {txs && !isPending && isSuccess ? (
             <Table className="mt-3 mb-8">
               <TableCaption className="hidden">A list of recent transactions.</TableCaption>
@@ -280,20 +290,62 @@ function Transactions() {
                   <TableHead>Amount</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody className="[&>*:nth-child(odd)]:bg-foreground [&>*:nth-child(odd):hover]:bg-foregroundHover [&>*]:transition-all [&>*]:duration-200 [&>*]:ease-in [&>*:nth-child(even):hover]:bg-transparentHover [&>*]:cursor-pointer">
+              <TableBody className="[&>*:nth-child(odd)]:bg-foreground [&>*:nth-child(odd):hover]:bg-foregroundHover [&>*]:transition-all [&>*]:duration-200 [&>*]:ease-in [&>*:nth-child(even):hover]:bg-transparentHover [&>*]:cursor-pointer ">
                 {txs.pages.map((page, index) =>
-                  page?.result.txs.filter(x=> x.direction === "Out").map((item, i) => {
-                    if (index === txs.pages.length - 1 && i === page.result.txs.length - 1) {
-                      return (
-                        <>
-                          <InView
+                  page?.result.txs
+                    .filter((x) => x.direction === "Out")
+                    .map((item, i) => {
+                      if (index === txs.pages.length - 1 && i === page.result.txs.length - 1) {
+                        return (
+                          <>
+                            <InView
+                              key={item.id}
+                              as="tr"
+                              onChange={(inView) => {
+                                if (inView && hasNextPage) {
+                                  fetchNextPage();
+                                }
+                              }}
+                              className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
+                              onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
+                            >
+                              <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
+                                <Avatar className="w-4 h-4 object-cover rounded-full">
+                                  <AvatarImage src={chainsObj[item.chain]} alt="Chain Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                                </Avatar>
+                              </TableCell>
+                              <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
+                                <p className="text-xs">{dayjs(item.date).format("MMM DD")}</p>
+                                <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
+                              </TableCell>
+                              <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
+                                <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                              </TableCell>
+                              <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
+                                <AddressReducer address={item.to} dots={3} left={6} right={12} />
+                              </TableCell>
+                              <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
+                                <div className="flex items-center ">
+                                <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
+                                  <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                                    <img src="/img/defaultToken.png" alt="Default" />
+                                  </AvatarFallback>
+                                </Avatar>
+                                  <p className="text-red text-sm mr-3 xl:mr-1">
+                                    <NR value={item.amount} short currency={false} />
+                                  </p>
+                                  <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
+                                </div>
+                              </TableCell>
+                            </InView>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <TableRow
                             key={item.id}
-                            as="tr"
-                            onChange={(inView) => {
-                              if(inView && hasNextPage){
-                                fetchNextPage()
-                              }
-                            }}
                             className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
                             onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
                           >
@@ -315,9 +367,11 @@ function Transactions() {
                             </TableCell>
                             <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                               <div className="flex items-center ">
-                                <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
-                                  <AvatarImage src={item.assetLogo} alt="Chain Logo" className="object-cover" />
-                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase">{item.assetName.substring(0, 2)}</AvatarFallback>
+                              <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
+                                  <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
+                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                                    <img src="/img/defaultToken.png" alt="Default" />
+                                  </AvatarFallback>
                                 </Avatar>
                                 <p className="text-red text-sm mr-3 xl:mr-1">
                                   <NR value={item.amount} short currency={false} />
@@ -325,48 +379,10 @@ function Transactions() {
                                 <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
                               </div>
                             </TableCell>
-                          </InView>
-                        </>
-                      );
-                    } else {
-                      return (
-                        <TableRow
-                          key={item.id}
-                          className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
-                          onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
-                        >
-                          <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
-                            <Avatar className="w-4 h-4 object-cover rounded-full">
-                              <AvatarImage src={chainsObj[item.chain]} alt="Chain Logo" className="object-cover" />
-                              <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
-                            </Avatar>
-                          </TableCell>
-                          <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                            <p className="text-xs">{dayjs(item.date).format("MMM DD")}</p>
-                            <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
-                          </TableCell>
-                          <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                            <AddressReducer address={item.from} dots={3} left={6} right={12} />
-                          </TableCell>
-                          <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                            <AddressReducer address={item.to} dots={3} left={6} right={12} />
-                          </TableCell>
-                          <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
-                            <div className="flex items-center ">
-                              <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
-                                <AvatarImage src={item.assetLogo} alt="Chain Logo" className="object-cover" />
-                                <AvatarFallback className="bg-avatarbg text-[6px] uppercase">{item.assetName.substring(0, 2)}</AvatarFallback>
-                              </Avatar>
-                              <p className="text-red text-sm mr-3 xl:mr-1">
-                                <NR value={item.amount} short currency={false} />
-                              </p>
-                              <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    }
-                  })
+                          </TableRow>
+                        );
+                      }
+                    })
                 )}
               </TableBody>
             </Table>
