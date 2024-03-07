@@ -1,7 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import instance from "./axiosInstance";
 import { SingleOrgProp } from "@typeDecleration/index";
-
 
 type AllOrgRes = {
   statusCode: number;
@@ -17,21 +16,34 @@ type AllOrgRes = {
 };
 
 type IProps = {
-  size: number;
+  pageParam: number;
   chain: string;
   search: string;
 };
 
-const fetch = async ({ size, chain, search}: IProps): Promise<AllOrgRes> => {
-  const response = await instance
-    .get<AllOrgRes>(`/organization?searchParam=${search}&chain=${chain}&pageSize=${size}`)
-    .then((res) => res.data);
+const fetch = async ({ pageParam, chain, search }: IProps): Promise<AllOrgRes> => {
+  const response = await instance.get<AllOrgRes>(`/organization?searchParam=${search}&chain=${chain}&pageSize=24&pageIndex=${pageParam}`).then((res) => res.data);
   return response;
 };
-export const useFetchOrgs = ({ size, chain, search}: IProps) =>
-  useQuery({
-    queryKey: ["useFetchOrgs", size, chain, search],
-    queryFn: () => fetch({ size, chain, search}),
+// export const useFetchOrgs = ({ size, chain, search}: IProps) =>
+//   useQuery({
+//     queryKey: ["useFetchOrgs", size, chain, search],
+//     queryFn: () => fetch({ size, chain, search}),
+//     staleTime: 10 * (60 * 1000), // 10 mins
+//     placeholderData: (previousData) => previousData,
+//   });
+
+export const useFetchOrgs = ( chain:string, search:string ) =>
+  useInfiniteQuery({
+    queryKey: ["useFetchOrgs", chain, search],
+    queryFn: ({pageParam}) => fetch({ pageParam, chain, search }),
     staleTime: 10 * (60 * 1000), // 10 mins
+    initialPageParam: 0,
     placeholderData: (previousData) => previousData,
+    getNextPageParam: (lastPage, pages) => {
+      const totalFetchedTx = pages.reduce((total, page) => total + page.result.pageSize, 0);
+      if (totalFetchedTx < lastPage.result.totalCount) {
+        return lastPage.result.pageIndex + 1;
+      } else return undefined;
+    },
   });
