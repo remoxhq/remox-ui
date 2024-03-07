@@ -10,6 +10,7 @@ import { AddressReducer } from "@utils/addressReducer";
 import SyncLoader from "react-spinners/SyncLoader";
 import { useFetchProposols } from "@/api/useFetchProposols";
 import dayjs from "dayjs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/shadcn/tooltip";
 // import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/shadcn/tooltip";
 
 function Governance() {
@@ -27,7 +28,6 @@ function Governance() {
     isLoading: proposolsLoading,
   } = useFetchProposols(data?.result.governanceSlug);
 
-  
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="proposals" className="w-full h-full">
@@ -65,7 +65,16 @@ function Governance() {
                     className="[&>*:not(:nth-child(4))]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap border-b-0"
                     onClick={() => openLink(`${item.adapter === "snapshot" ? item.externalUrl : `https://boardroom.io/${data?.result.governanceSlug}/proposal/${item.refId}`}`)}
                   >
-                    <TableCell className="rounded-l-[4px] w-[180px] max-w-[180px] overflow-ellipsis h-fit overflow-hidden">{item.title}</TableCell>
+                    <TableCell className="rounded-l-[4px] w-[180px] max-w-[180px]  overflow-hidden">
+                      <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                          <TooltipTrigger asChild className="text-nowrap overflow-ellipsis h-fit overflow-hidden">
+                            <p>{item.title}</p>
+                          </TooltipTrigger>
+                          <TooltipContent sideOffset={8} className="text-wrap text-center max-w-60 p-2 bg-darkBlue hidden lg:block">{item.title}</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </TableCell>
                     <TableCell className="text-right">{item.startTimestamp !== "0" ? dayjs(Number(item.startTimestamp) * 1000).format("DD MMM,YYYY, HH:mm") : "-"}</TableCell>
                     <TableCell className="text-right text-whitish">
                       {item.endTimestamp !== "0" ? dayjs(Number(item.endTimestamp) * 1000).format("DD MMM,YYYY, HH:mm") : "-"}
@@ -114,7 +123,10 @@ function Governance() {
               </TableHeader>
               <TableBody className="[&>*:nth-child(odd)]:bg-foreground ">
                 {voters.map((item) => (
-                  <TableRow key={item.address} className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap border-b-0">
+                  <TableRow
+                    key={item.address}
+                    className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap border-b-0"
+                  >
                     <TableCell className="rounded-l-[4px] w-[200px] max-w-[200px] overflow-ellipsis h-fit overflow-hidden">
                       <AddressReducer address={item.address} left={6} right={7} dots={3} />
                     </TableCell>
