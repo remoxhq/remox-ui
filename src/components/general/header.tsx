@@ -24,7 +24,7 @@ function Header() {
 
     if (!token && address) {
       (async () => {
-        console.log("Authing");
+        // console.log("Authing");
         const response = await auth({ address: address! });
         Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
         const userRole = jose.decodeJwt(response.result);
@@ -33,7 +33,7 @@ function Header() {
         queryClient.invalidateQueries();
       })();
     } else if (token && !address) {
-      console.log("Removed Cookie");
+      // console.log("Removed Cookie");
       Cookies.remove("JWT");
       setUser.role(undefined);
       setUser.address(undefined);
@@ -42,7 +42,7 @@ function Header() {
       const oldAddress = jose.decodeJwt(token).publicKey;
       if (oldAddress !== address) {
         (async () => {
-          console.log("Re-Authing");
+          // console.log("Re-Authing");
           const response = await auth({ address: address! });
           Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
           const userRole = jose.decodeJwt(response.result);
@@ -65,7 +65,7 @@ function Header() {
     socket.on("annualBalanceFetched", (a) => {
       if(typeof a !== 'undefined'){
         queryClient.invalidateQueries()
-        console.log(a)
+       
       }
     });
     return () => {

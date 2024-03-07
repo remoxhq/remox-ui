@@ -15,7 +15,7 @@ function Explore() {
   const search = useSearchFilter((state) => state.searchExplore);
 
   const { data, isPending, isSuccess, isFetching, isError,fetchNextPage,hasNextPage } = useFetchOrgs(chain, search);
-  console.log(data)
+ 
   return (
     <>
       <SearchBar title="Explore Communities" type="explore" />
