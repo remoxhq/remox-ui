@@ -111,7 +111,7 @@ function Portfolio() {
                 {
                   assetsData?.result.assets.map(asset => (
                     <TableRow key={asset.uniqueKey} className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-2 *:text-nowrap">
-                      <TableCell className="rounded-l-[4px] overflow-hidden w-[140px] max-w-[140px] md:w-[180px] md:max-w-[180px] lg:w-[220px] lg:max-w-[220px]">
+                      <TableCell className="rounded-l-[4px] overflow-hidden w-[140px]  max-w-[140px] md:w-[180px] md:max-w-[180px] lg:w-[220px] lg:max-w-[220px]">
                         <div className="flex items-center gap-1">
                           <Avatar className="w-4 h-4 object-cover rounded-full">
                             <AvatarImage src={asset.logo} alt="Organization Logo" className="object-cover" />
@@ -153,8 +153,8 @@ function Portfolio() {
               </div>
               <Accordion type="single" collapsible>
                 {
-                  assetsData?.result.assetsByBlockchain.map(blockchain => (
-                    <AccordionItem value="item-1" className="group border-none">
+                  assetsData?.result.assetsByBlockchain.map((blockchain,index) => (
+                    <AccordionItem value="item-1" key={index} className="group border-none">
                       <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
                         <div className="flex items-center w-full pl-3 py-2 ">
                           <div className="flex items-center gap-1 w-[220px]">
@@ -176,8 +176,8 @@ function Portfolio() {
                           </div>
                           <div className="flex items-center justify-end gap-[2px] ml-auto">
                             {
-                              blockchain.top3HoldingsUrls.map(url => (
-                                <Avatar className="w-4 h-4 object-cover rounded-full">
+                              blockchain.top3HoldingsUrls.map((url,index) => (
+                                <Avatar key={index} className="w-4 h-4 object-cover rounded-full">
                                   <AvatarImage src={url} alt="Organization Logo" className="object-cover" />
                                   <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                                 </Avatar>
@@ -195,8 +195,8 @@ function Portfolio() {
                         </div>
 
                         {
-                          blockchain.assets.map(asset => (
-                            <div className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
+                          blockchain.assets.map((asset,index) => (
+                            <div key={index} className="flex items-center w-full px-3 *:text-[10px] *:font-medium *:text-whitish *:text-nowrap">
                               <div className="flex items-center gap-1 w-[220px]">
                                 <Avatar className="w-4 h-4 object-cover rounded-full">
                                   <AvatarImage src={asset.logo} alt="Coin Logo" className="object-cover" />
