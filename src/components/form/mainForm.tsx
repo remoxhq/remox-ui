@@ -435,7 +435,7 @@ function MainForm({ dialogOpener, update = false, id, item }: IProps) {
                   render={({ field }) => (
                     <FormItem className="basis-1/3 relative">
                       <FormLabel className="text-xs font-medium text-whitish">Choose Chain</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value} disabled={form.formState.isSubmitting ? true : false}>
+                      <Select onValueChange={field.onChange} value={field.value} disabled={form.formState.isSubmitting ? true : false} >
                         <FormControl>
                           <SelectTrigger className="text-whitish font-medium text-sm data-[placeholder]:text-muted-foreground cursor-pointer">
                             <SelectValue placeholder="Choose Chain" />
