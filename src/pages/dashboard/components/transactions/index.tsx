@@ -99,10 +99,12 @@ function Transactions() {
                                     <img src="/img/defaultToken.png" alt="Default" />
                                   </AvatarFallback>
                                 </Avatar>
-                                <p className="text-red text-sm mr-3 xl:mr-1">
-                                  <NR value={item.amount} short currency={false} />
+                                <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
+                                  <span className="text-red ">
+                                    <NR value={item.amount} short currency={false} />
+                                  </span>
+                                  <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
                                 </p>
-                                <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
                               </div>
                             </TableCell>
                           </InView>
@@ -131,7 +133,7 @@ function Transactions() {
                           <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
                             <AddressReducer address={item.to} dots={3} left={6} right={12} />
                           </TableCell>
-                          <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
+                          <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px]  h-fit overflow-hidden">
                             <div className="flex items-center ">
                               <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
                                 <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
@@ -139,10 +141,12 @@ function Transactions() {
                                   <img src="/img/defaultToken.png" alt="Default" />
                                 </AvatarFallback>
                               </Avatar>
-                              <p className="text-red text-sm mr-3 xl:mr-1">
-                                <NR value={item.amount} short currency={false} />
+                              <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
+                                <span className="text-red ">
+                                  <NR value={item.amount} short currency={false} />
+                                </span>
+                                <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
                               </p>
-                              <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
                             </div>
                           </TableCell>
                         </TableRow>
@@ -210,16 +214,18 @@ function Transactions() {
                               </TableCell>
                               <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                                 <div className="flex items-center ">
-                                <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
-                                  <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
-                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
-                                    <img src="/img/defaultToken.png" alt="Default" />
-                                  </AvatarFallback>
-                                </Avatar>
-                                  <p className="text-red text-sm mr-3 xl:mr-1">
-                                    <NR value={item.amount} short currency={false} />
+                                  <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
+                                    <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
+                                    <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                                      <img src="/img/defaultToken.png" alt="Default" />
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
+                                    <span className="text-red ">
+                                      <NR value={item.amount} short currency={false} />
+                                    </span>
+                                    <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
                                   </p>
-                                  <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
                                 </div>
                               </TableCell>
                             </InView>
@@ -250,16 +256,18 @@ function Transactions() {
                             </TableCell>
                             <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                               <div className="flex items-center ">
-                              <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
+                                <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
                                   <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
                                   <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
                                     <img src="/img/defaultToken.png" alt="Default" />
                                   </AvatarFallback>
                                 </Avatar>
-                                <p className="text-red text-sm mr-3 xl:mr-1">
-                                  <NR value={item.amount} short currency={false} />
+                                <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
+                                  <span className="text-red ">
+                                    <NR value={item.amount} short currency={false} />
+                                  </span>
+                                  <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
                                 </p>
-                                <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
                               </div>
                             </TableCell>
                           </TableRow>
@@ -327,16 +335,18 @@ function Transactions() {
                               </TableCell>
                               <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                                 <div className="flex items-center ">
-                                <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
-                                  <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
-                                  <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
-                                    <img src="/img/defaultToken.png" alt="Default" />
-                                  </AvatarFallback>
-                                </Avatar>
-                                  <p className="text-red text-sm mr-3 xl:mr-1">
-                                    <NR value={item.amount} short currency={false} />
+                                  <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
+                                    <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
+                                    <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                                      <img src="/img/defaultToken.png" alt="Default" />
+                                    </AvatarFallback>
+                                  </Avatar>
+                                  <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
+                                    <span className="text-red ">
+                                      <NR value={item.amount} short currency={false} />
+                                    </span>
+                                    <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
                                   </p>
-                                  <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
                                 </div>
                               </TableCell>
                             </InView>
@@ -367,16 +377,18 @@ function Transactions() {
                             </TableCell>
                             <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                               <div className="flex items-center ">
-                              <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
+                                <Avatar className="w-4 h-4 object-cover rounded-full mr-1">
                                   <AvatarImage src={item.assetLogo} alt="Token Logo" className="object-cover" />
                                   <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
                                     <img src="/img/defaultToken.png" alt="Default" />
                                   </AvatarFallback>
                                 </Avatar>
-                                <p className="text-red text-sm mr-3 xl:mr-1">
-                                  <NR value={item.amount} short currency={false} />
+                                <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
+                                  <span className="text-red ">
+                                    <NR value={item.amount} short currency={false} />
+                                  </span>
+                                  <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
                                 </p>
-                                <span className="text-sm block">{item.assetName.substring(0, 10)}</span>
                               </div>
                             </TableCell>
                           </TableRow>
