@@ -1,6 +1,5 @@
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@components/shadcn/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/shadcn/tabs";
-// import EmptyCard from "@components/general/emptyCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@components/shadcn/avatar";
 import dayjs from "dayjs";
 import NR from "@utils/numberReducer";
@@ -110,7 +109,7 @@ function Portfolio() {
               <TableBody className="[&>*:nth-child(odd)]:bg-foreground ">
                 {
                   assetsData?.result.assets.map(asset => (
-                    <TableRow key={asset.uniqueKey} className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-2 *:text-nowrap">
+                    <TableRow key={asset.uniqueKey} className="[&>*]:text-whitish *:font-semibold *:text-xs border-transparent *:px-3 *:py-2 *:text-nowrap border-b-0 ">
                       <TableCell className="rounded-l-[4px] overflow-hidden w-[140px]  max-w-[140px] md:w-[180px] md:max-w-[180px] lg:w-[220px] lg:max-w-[220px]">
                         <div className="flex items-center gap-1">
                           <Avatar className="w-4 h-4 object-cover rounded-full">
