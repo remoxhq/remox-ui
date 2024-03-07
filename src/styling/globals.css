@@ -67,6 +67,7 @@
   }
   body {
     @apply bg-background text-foreground min-h-dvh bg-pattern leading-normal w-screen overflow-x-hidden selection:bg-sky-900/80;
+    padding-right: calc(0 - var(--removed-body-scroll-bar-size)) !important;
   }
   h1,
   h2,

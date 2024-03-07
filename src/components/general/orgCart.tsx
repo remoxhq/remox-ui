@@ -126,7 +126,7 @@ function OrgCart({ name, balance, image, isActive, isFav, isVerify, link, id, cr
           <Tooltip>
             <TooltipTrigger asChild>
               <span tabIndex={0} className="cursor-pointer absolute right-3 bottom-1 lg:bottom-2 z-10">
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className=" p-0 m-0 w-7 h-7 hover:bg-transparent" disabled={!settingAccess}>
                       <MoreHorizontal className="w-full h-full object-cover cursor-pointer hover:text-brand transition-all duration-200 ease-linear" />
