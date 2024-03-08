@@ -19,7 +19,7 @@ function OrgInfo() {
   const { slug } = useParams();
   const { data, isPending, isSuccess, error } = useFetchSingleOrg(slug);
 
-  console.log(error);
+  
   useEffect(() => {
     if (error && error.isAxiosError && error.response?.status === 403) {
       toast({
