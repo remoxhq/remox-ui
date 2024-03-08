@@ -11,7 +11,8 @@ type Response = {
     existingTokens: {
       [key: string]: {
         symbol: string,
-        logo: string
+        logo: string,
+        chain: string
       };
     };
     annual: {

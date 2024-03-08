@@ -27,7 +27,8 @@ export interface AssetDto {
     quote: number,
     quote_rate: number,
     balance: number
-    uniqueKey: string
+    uniqueKey: string,
+    chain: string
 }
 
 type AllResponse = undefined | Response
