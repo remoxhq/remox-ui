@@ -65,7 +65,7 @@ function Transactions() {
                       return (
                         <>
                           <InView
-                            key={item.id}
+                            key={i}
                             as="tr"
                             onChange={(inView) => {
                               if (inView && hasNextPage) {
@@ -100,7 +100,7 @@ function Transactions() {
                                   </AvatarFallback>
                                 </Avatar>
                                 <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
-                                  <span className="text-red ">
+                                  <span className={`${item.direction === "In" ? "text-green" :"text-red"}`}>
                                     <NR value={item.amount} short currency={false} />
                                   </span>
                                   <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
@@ -113,7 +113,7 @@ function Transactions() {
                     } else {
                       return (
                         <TableRow
-                          key={item.id}
+                          key={i}
                           className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
                           onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
                         >
@@ -142,7 +142,7 @@ function Transactions() {
                                 </AvatarFallback>
                               </Avatar>
                               <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
-                                <span className="text-red ">
+                                <span className={`${item.direction === "In" ? "text-green" :"text-red"}`}>
                                   <NR value={item.amount} short currency={false} />
                                 </span>
                                 <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
@@ -186,7 +186,7 @@ function Transactions() {
                         return (
                           <>
                             <InView
-                              key={item.id}
+                              key={i}
                               as="tr"
                               onChange={(inView) => {
                                 if (inView && hasNextPage) {
@@ -221,7 +221,7 @@ function Transactions() {
                                     </AvatarFallback>
                                   </Avatar>
                                   <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
-                                    <span className="text-red ">
+                                    <span className="text-green ">
                                       <NR value={item.amount} short currency={false} />
                                     </span>
                                     <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
@@ -234,7 +234,7 @@ function Transactions() {
                       } else {
                         return (
                           <TableRow
-                            key={item.id}
+                            key={i}
                             className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
                             onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
                           >
@@ -263,7 +263,7 @@ function Transactions() {
                                   </AvatarFallback>
                                 </Avatar>
                                 <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
-                                  <span className="text-red ">
+                                  <span className="text-green ">
                                     <NR value={item.amount} short currency={false} />
                                   </span>
                                   <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
@@ -307,7 +307,7 @@ function Transactions() {
                         return (
                           <>
                             <InView
-                              key={item.id}
+                              key={i}
                               as="tr"
                               onChange={(inView) => {
                                 if (inView && hasNextPage) {
@@ -342,7 +342,7 @@ function Transactions() {
                                     </AvatarFallback>
                                   </Avatar>
                                   <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
-                                    <span className="text-red ">
+                                    <span className="text-red">
                                       <NR value={item.amount} short currency={false} />
                                     </span>
                                     <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
@@ -355,7 +355,7 @@ function Transactions() {
                       } else {
                         return (
                           <TableRow
-                            key={item.id}
+                            key={i}
                             className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
                             onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
                           >
@@ -384,7 +384,7 @@ function Transactions() {
                                   </AvatarFallback>
                                 </Avatar>
                                 <p className="text-sm overflow-ellipsis h-fit overflow-hidden text-nowrap">
-                                  <span className="text-red ">
+                                  <span className="text-red">
                                     <NR value={item.amount} short currency={false} />
                                   </span>
                                   <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
