@@ -71,7 +71,6 @@ function Portfolio() {
 
         const tokenData1 = firstDateData.tokenBalances[token];
         const tokenData2 = secondDateData.tokenBalances[token];
-        console.log(tokenData2);
 
         if (tokenData1 && tokenData1.balanceUsd && tokenData2 && tokenData2.balanceUsd) {
 
