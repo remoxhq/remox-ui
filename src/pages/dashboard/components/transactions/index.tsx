@@ -65,7 +65,7 @@ function Transactions() {
                       return (
                         <>
                           <InView
-                            key={i}
+                            key={item.id}
                             as="tr"
                             onChange={(inView) => {
                               if (inView && hasNextPage) {
@@ -113,7 +113,7 @@ function Transactions() {
                     } else {
                       return (
                         <TableRow
-                          key={i}
+                          key={item.id}
                           className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
                           onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
                         >
@@ -186,7 +186,7 @@ function Transactions() {
                         return (
                           <>
                             <InView
-                              key={i}
+                              key={item.id}
                               as="tr"
                               onChange={(inView) => {
                                 if (inView && hasNextPage) {
@@ -234,7 +234,7 @@ function Transactions() {
                       } else {
                         return (
                           <TableRow
-                            key={i}
+                            key={item.id}
                             className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
                             onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
                           >
@@ -307,7 +307,7 @@ function Transactions() {
                         return (
                           <>
                             <InView
-                              key={i}
+                              key={item.id}
                               as="tr"
                               onChange={(inView) => {
                                 if (inView && hasNextPage) {
@@ -355,7 +355,7 @@ function Transactions() {
                       } else {
                         return (
                           <TableRow
-                            key={i}
+                            key={item.id}
                             className="[&>*]:text-whitish *:font-semibold *:text-xs border-b-0 *:px-3 *:py-1 *:text-nowrap"
                             onClick={() => openLink(`${scans[item.chain]}${item.hash}`)}
                           >
