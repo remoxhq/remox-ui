@@ -7,10 +7,9 @@ import OrgCartSkeleton from "@components/general/orgCartSkeleton";
 import SearchBar from "@components/general/searchBar";
 import { Button } from "@components/shadcn/button";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
 
 function Explore() {
-  const [size, setSize] = useState(24);
+  // const [size, setSize] = useState(24);
   const chain = useChainFilter((state) => state.chainExplore);
   const search = useSearchFilter((state) => state.searchExplore);
 
