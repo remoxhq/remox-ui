@@ -28,7 +28,14 @@ function OrgInfo() {
         description: "You don't have access to this organization",
         duration: 50000,
       });
-    } else if(error) {
+    } else if (error && error.isAxiosError && error.response?.status === 404) {
+      toast({
+        variant: "destructive",
+        title: "404! Not Found",
+        description: "There is no such organization.",
+        duration: 50000,
+      });
+    } else if (error) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
