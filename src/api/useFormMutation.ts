@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import instance from "./axiosInstance";
 import { useToast } from "@components/shadcn/use-toast";
-import { isAxiosError } from "axios";
 
 type Response = {
   statusCode: number;
@@ -31,16 +30,12 @@ const useFormMutation = () => {
       });
     },
     onError(error) {
-      if (isAxiosError(error)) {
-        const serverErrorMessage = error.response?.data.error || "Something went wrong: Organization can't created";
-        toast({
-          title: serverErrorMessage,
-          duration: 2000,
-          variant: "destructive",
-        });
-      } else {
-        console.log(error);
-      }
+      toast({
+        title: "Something went wrong: Organization can't created",
+        duration: 2000,
+        variant: "destructive",
+      });
+      console.log(error)
     },
   });
 
@@ -57,16 +52,12 @@ const useFormMutation = () => {
       });
     },
     onError(error) {
-      if (isAxiosError(error)) {
-        const serverErrorMessage = error.response?.data.error || "Something went wrong: Organization can't updated";
-        toast({
-          title: serverErrorMessage,
-          duration: 2000,
-          variant: "destructive",
-        });
-      } else {
-        console.log(error);
-      }
+      toast({
+        title: "Something went wrong: Organization can't updated",
+        duration: 2000,
+        variant: "destructive",
+      });
+      console.log(error)
     },
   });
 
