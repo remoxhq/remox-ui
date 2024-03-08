@@ -11,12 +11,34 @@ import { useToast } from "@components/shadcn/use-toast";
 import ND from "@utils/numberDecider";
 import NR from "@utils/numberReducer";
 import { BadgeCheck, Share2 } from "lucide-react";
+import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
 function OrgInfo() {
   const { toast } = useToast();
   const { slug } = useParams();
-  const { data, isPending, isSuccess } = useFetchSingleOrg(slug);
+  const { data, isPending, isSuccess, error } = useFetchSingleOrg(slug);
+
+  console.log(error);
+  useEffect(() => {
+    if (error && error.isAxiosError && error.response?.status === 403) {
+      toast({
+        variant: "destructive",
+        title: "Access denied!",
+        description: "You don't have access to this organization",
+        duration: 50000,
+      });
+    } else if(error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+        duration: 50000,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error]);
+
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);

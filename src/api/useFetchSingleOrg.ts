@@ -1,7 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import instance from "./axiosInstance";
 import { SingleOrgProp } from "@typeDecleration/index";
+import '@tanstack/react-query'
+import { AxiosError } from "axios";
 
+declare module '@tanstack/react-query' {
+  interface Register {
+    defaultError: AxiosError
+  }
+}
 
 type Response = {
   statusCode: number;
