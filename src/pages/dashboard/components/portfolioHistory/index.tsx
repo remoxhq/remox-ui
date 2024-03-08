@@ -1,6 +1,6 @@
 import ReactECharts from "echarts-for-react";
-import { graphic } from "echarts";
-import { useState } from "react";
+import { EChartsOption, graphic } from "echarts";
+import { useMemo, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@components/shadcn/radio-group";
 import { Label } from "@components/shadcn/label";
 import dayjs from "dayjs";
@@ -13,23 +13,37 @@ import EmptyCard from "@components/general/emptyCard";
 function PortfolioHistory() {
   const { slug } = useParams();
   const { data } = useFetchSingleOrg(slug);
-  const { data: portfolioData, isPending, isSuccess, isError,isLoading } = useFetchPortfolioHistory(data?.result.dashboardLink);
+  const { data: portfolioData, isPending, isSuccess, isError, isLoading } = useFetchPortfolioHistory(data?.result.dashboardLink);
 
- 
   const [chartFilter, setChartFilter] = useState<"7" | "30" | "90" | "365">("7");
 
-  const formattedData = portfolioData && !isPending && isSuccess ? Object.entries(portfolioData?.result.annual) : [];
-  const portfolioHistory = {
+  const calculatedData = useMemo(() => {
+    const result = {
+      "7": [],
+      "30": [],
+      "90": [],
+      "365": [],
+    };
+    if (portfolioData && !isPending && isSuccess) {
+      const rawData = Object.entries(portfolioData?.result.annual);
+      Object.keys(result).forEach((key) => {
+        result[key] = rawData.slice(Math.max(rawData.length - Number(key), 0)).map(([key, value]) => [key, value.totalTreasury]);
+      });
+    }
+    return result;
+  }, [isPending, isSuccess, portfolioData]);
+
+  const portfolioHistory: EChartsOption = {
     tooltip: {
       backgroundColor: "#15202B",
       borderColor: "#384555",
       axisPointer: {
-        type: "shadow",
+        type: "line",
       },
       textStyle: {
         color: "#F8F8F8",
         fontFamily: "Geist Sans,system-ui",
-        fontWeight: "600",
+        fontWeight: "bold",
       },
       trigger: "axis",
 
@@ -59,21 +73,17 @@ function PortfolioHistory() {
       show: false,
     },
     xAxis: {
-      type: "time",
+      type: "category",
       axisLine: {
         show: false,
       },
       axisLabel: {
         fontSize: 10,
         margin: 14,
-
-        // interval: 5,
         align: "center",
         showMinLabel: true,
-        showMaxLabel: true,
-        hideOverlap: true,
-
-        formatter: function (value: string) {
+        interval: chartFilter === "7" ? 0 : chartFilter === "30" ? 3 : chartFilter === "90" ? 9 : "auto",
+        formatter(value) {
           if (chartFilter === "7") {
             return dayjs(value).format("ddd");
           }
@@ -83,6 +93,7 @@ function PortfolioHistory() {
           return dayjs(value).format("MMM,YY");
         },
       },
+      boundaryGap: false,
     },
     yAxis: {
       splitNumber: 5,
@@ -136,7 +147,7 @@ function PortfolioHistory() {
             },
           ]),
         },
-        data: formattedData.slice(Math.max(formattedData.length - Number(chartFilter), 0)).map(([key, value]) => [key, value.totalTreasury]),
+        data: calculatedData[chartFilter],
         // markPoint: {
         //   data: events,
         //   symbol: "diamond",
@@ -169,7 +180,7 @@ function PortfolioHistory() {
     grid: {
       show: false,
       top: "20",
-      left: "40",
+      left: "45",
       right: "5",
       bottom: "30",
     },
@@ -188,7 +199,11 @@ function PortfolioHistory() {
         },
       },
     ],
+    animationEasing: "linear",
+    animationDurationUpdate: 0,
+    // animationEasingUpdate:"backOut"
   };
+
   const handleRadioChange = (value: "7" | "30" | "90" | "365") => {
     setChartFilter(value);
   };
@@ -238,7 +253,9 @@ function PortfolioHistory() {
           </RadioGroup>
           <ReactECharts lazyUpdate={true} opts={{ renderer: "svg" }} option={portfolioHistory} className="w-full h-full object-cover" />
         </>
-      ) :(portfolioData?.result.annual && !isPending && isSuccess && Object.entries(portfolioData?.result.annual).length < 7) || isError || !isLoading ? <EmptyCard name="portfolio history" />:(
+      ) : (portfolioData?.result.annual && !isPending && isSuccess && Object.entries(portfolioData?.result.annual).length < 7) || isError || !isLoading ? (
+        <EmptyCard name="portfolio history" />
+      ) : (
         <div className="flex justify-center content-center h-[80%] items-center">
           <SyncLoader color="#384555" size={20} />
         </div>
