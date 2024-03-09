@@ -4,9 +4,15 @@ import { SingleOrgProp } from "@typeDecleration/index";
 import '@tanstack/react-query'
 import { AxiosError } from "axios";
 
+interface ErrorType {
+  error:string 
+  success:boolean
+  statusCode:number
+}
+
 declare module '@tanstack/react-query' {
   interface Register {
-    defaultError: AxiosError
+    defaultError: AxiosError<ErrorType>
   }
 }
 

@@ -30,12 +30,21 @@ const useFormMutation = () => {
       });
     },
     onError(error) {
-      toast({
-        title: "Something went wrong: Organization can't created",
-        duration: 2000,
-        variant: "destructive",
-      });
-      console.log(error)
+      if (error.response?.data.error) {
+        toast({
+          title: `${error.response?.data.error}`,
+          duration: 2000,
+          variant: "destructive",
+        });
+        console.log(error);
+      } else {
+        toast({
+          title: "Something went wrong: Organization can't created",
+          duration: 2000,
+          variant: "destructive",
+        });
+        console.log(error);
+      }
     },
   });
 
@@ -52,12 +61,21 @@ const useFormMutation = () => {
       });
     },
     onError(error) {
-      toast({
-        title: "Something went wrong: Organization can't updated",
-        duration: 2000,
-        variant: "destructive",
-      });
-      console.log(error)
+      if (error.response?.data.error) {
+        toast({
+          title: `${error.response?.data.error}`,
+          duration: 2000,
+          variant: "destructive",
+        });
+        console.log(error);
+      } else {
+        toast({
+          title: "Something went wrong: Organization can't updated",
+          duration: 2000,
+          variant: "destructive",
+        });
+        console.log(error);
+      }
     },
   });
 
