@@ -1,6 +1,6 @@
 export const startDate = () => {
     const newDate = new Date();
-    newDate.setDate(newDate.getDate() - 366);
+    newDate.setDate(newDate.getDate() - 365);
     return newDate;
 }
 
