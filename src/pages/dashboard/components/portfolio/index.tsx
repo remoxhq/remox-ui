@@ -291,7 +291,7 @@ function Portfolio() {
         </TabsContent>
         <TabsContent value="archive" className="overflow-auto h-full scrollbar-none w-full">
           {archiveData && !isArchiveDataPending && isArchiveDataSuccess && archiveData.result.name && archiveCalculation ? (
-            <div className="mb-8 min-w-[630px]">
+            <div className="mb-8 2xl:min-w-0 min-w-[650px]">
               <div className="flex items-center border-b *:pb-2 *:overflow-hidden w-full sticky top-0 pt-2 left-0 bg-darkBlue z-10">
                 <div className="w-[214px] pr-3 border-r ">
                   <div className="flex items-center gap-2 h-[26px] mb-4">
@@ -331,7 +331,7 @@ function Portfolio() {
                     <NR value={archiveCalculation?.secondDateTotalUsdValue ?? 0} />
                   </span>
                 </div>
-                <div className="w-[88px] ml-3 ">
+                <div className="w-[calc(100%-460px)] ml-3 ">
                   <div className="flex items-center gap-2  h-[26px] mb-4">
                     <p className="font-semibold text-xs text-whitish">NET CHANGE</p>
                   </div>
