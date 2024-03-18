@@ -81,8 +81,13 @@ function PortfolioHistory() {
         fontSize: 10,
         margin: 14,
         align: "center",
+        hideOverlap:true,
+        // overflow:"truncate",
+        // width:"10px",
+        // alignMaxLabel:"right",
         showMinLabel: true,
-        interval: chartFilter === "7" ? 0 : chartFilter === "30" ? 3 : chartFilter === "90" ? 9 : "auto",
+        // showMaxLabel:true,
+        interval: chartFilter === "7" ? 0 : chartFilter === "30" ? 2 : chartFilter === "90" ? 10 : "auto",
         formatter(value) {
           if (chartFilter === "7") {
             return dayjs(value).format("ddd");
@@ -90,7 +95,7 @@ function PortfolioHistory() {
           if (chartFilter === "30" || chartFilter === "90") {
             return dayjs(value).format("D MMM");
           }
-          return dayjs(value).format("MMM,YY");
+          return dayjs(value).format("M/YY");
         },
       },
       boundaryGap: false,
@@ -178,10 +183,11 @@ function PortfolioHistory() {
       },
     ],
     grid: {
+      // containLabel:true,
       show: false,
       top: "20",
       left: "45",
-      right: "5",
+      right: "10",
       bottom: "30",
     },
     media: [
