@@ -16,7 +16,7 @@ function MyCreations() {
       <SearchBar title="My Creations" type="my" />
       <section
         className={`${
-          !isPending && isSuccess && data.result.items.length === 0
+          (!isPending && isSuccess && data.result.items.length === 0) || isError
             ? "flex items-center justify-center"
             : "my-8 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 grid gap-3 md:gap-4 lg:gap-5 xl:gap-6 min-h-[calc(100vh-280px)] auto-rows-max"
         }`}
