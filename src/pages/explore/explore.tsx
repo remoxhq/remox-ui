@@ -20,7 +20,7 @@ function Explore() {
       <SearchBar title="Explore Communities" type="explore" />
       <section
         className={`${
-          !isPending && isSuccess && data.pages[0].result.items.length === 0
+          (!isPending && isSuccess && data.pages[0].result.items.length === 0) || isError
             ? "flex items-center justify-center"
             : "my-8 grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 grid gap-3 md:gap-4 lg:gap-5 xl:gap-6 min-h-[calc(100vh-280px)] auto-rows-max"
         }`}
@@ -56,7 +56,7 @@ function Explore() {
           </>
         )}
       </section>
-      <section className={`flex justify-center items-center ${data && data.pages[0].result.items.length === 0 ? "hidden" :"block"}`}>
+      <section className={`flex justify-center items-center ${(data && data.pages[0].result.items.length === 0) || isError ? "hidden" :"block"}`}>
         <Button
           className="w-32 h-9 lg:w-36 lg:h-11 text-sm lg:text-base font-medium rounded-[28px] text-whitish bg-brand hover:bg-brand/80 disabled:text-whitish/80 "
           onClick={() => fetchNextPage()}
