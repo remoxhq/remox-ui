@@ -23,7 +23,7 @@ function MobileMenu() {
     <SheetContent className="lg:hidden">
       <SheetHeader>
         <SheetTitle>
-          <div className="max-w-36 mx-auto overflow-hidden ">
+          <div className="max-w-32 xxxs:max-w-36 mx-auto overflow-hidden ">
             <NavLink to={"/"}>
               <img src="/img/logo.png" alt="Remox Logo" className="w-full h-full object-cover" />
             </NavLink>
