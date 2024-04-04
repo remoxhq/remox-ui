@@ -22,6 +22,7 @@ function Transactions() {
 
   const { data: txs, isPending, isSuccess, isError, isLoading, fetchNextPage, hasNextPage } = useFetchTransactions(data?.result.dashboardLink);
 
+  
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="transactions" className="w-full h-full">
@@ -103,7 +104,7 @@ function Transactions() {
                                   <span className={`${item.direction === "In" ? "text-green" :"text-red"}`}>
                                     <NR value={item.amount} short currency={false} />
                                   </span>
-                                  <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
+                                  <span className="pl-[6px] text-whitish">{item.assetName && item.assetName.substring(0, 10)}</span>
                                 </p>
                               </div>
                             </TableCell>
@@ -145,7 +146,7 @@ function Transactions() {
                                 <span className={`${item.direction === "In" ? "text-green" :"text-red"}`}>
                                   <NR value={item.amount} short currency={false} />
                                 </span>
-                                <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
+                                <span className="pl-[6px] text-whitish">{item.assetName && item.assetName.substring(0, 10)}</span>
                               </p>
                             </div>
                           </TableCell>
@@ -224,7 +225,7 @@ function Transactions() {
                                     <span className="text-green ">
                                       <NR value={item.amount} short currency={false} />
                                     </span>
-                                    <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
+                                    <span className="pl-[6px] text-whitish">{item.assetName && item.assetName.substring(0, 10)}</span>
                                   </p>
                                 </div>
                               </TableCell>
@@ -266,7 +267,7 @@ function Transactions() {
                                   <span className="text-green ">
                                     <NR value={item.amount} short currency={false} />
                                   </span>
-                                  <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
+                                  <span className="pl-[6px] text-whitish">{item.assetName && item.assetName.substring(0, 10)}</span>
                                 </p>
                               </div>
                             </TableCell>
@@ -345,7 +346,7 @@ function Transactions() {
                                     <span className="text-red">
                                       <NR value={item.amount} short currency={false} />
                                     </span>
-                                    <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
+                                    <span className="pl-[6px] text-whitish">{item.assetName && item.assetName.substring(0, 10)}</span>
                                   </p>
                                 </div>
                               </TableCell>
@@ -387,7 +388,7 @@ function Transactions() {
                                   <span className="text-red">
                                     <NR value={item.amount} short currency={false} />
                                   </span>
-                                  <span className="pl-[6px] text-whitish">{item.assetName.substring(0, 10)}</span>
+                                  <span className="pl-[6px] text-whitish">{item.assetName && item.assetName.substring(0, 10)}</span>
                                 </p>
                               </div>
                             </TableCell>
