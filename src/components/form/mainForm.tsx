@@ -99,7 +99,7 @@ export const formSchema = z.object({
         chain: z.string().min(1, { message: "Choose Chain" }),
       })
     )
-    .max(5),
+    .max(10),
   isPrivate: z.boolean().default(true).optional(),
   isVerified: z.boolean().default(false).optional(),
 });
@@ -137,6 +137,10 @@ function MainForm({ dialogOpener, update = false, id, item }: IProps) {
       isVerified: false,
     },
   });
+  const { fields, append, remove,replace } = useFieldArray({
+    control: form.control,
+    name: "accounts",
+  });
 
   useEffect(() => {
     if (item && update) {
@@ -153,15 +157,15 @@ function MainForm({ dialogOpener, update = false, id, item }: IProps) {
         accounts: item.accounts,
         isPrivate: item.isPrivate,
         isVerified: item.isVerified,
-      });
+      },{ keepValues: false, keepDefaultValues: true });
+      // replace(item.accounts)
       setSelectedImage(item.image);
+    }else {
+      form.reset()
     }
-  }, [form, id, item, update]);
+  }, [form, id, item, replace, update]);
 
-  const { fields, append, remove } = useFieldArray({
-    control: form.control,
-    name: "accounts",
-  });
+  
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const formData = new FormData();
@@ -199,9 +203,10 @@ function MainForm({ dialogOpener, update = false, id, item }: IProps) {
 
   const resetOnClose = () => {
     dialogOpener(false);
-    // form.reset(form.formState.defaultValues);
+    // form.reset();
   };
 
+ 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 xs:space-y-4">

@@ -20,7 +20,7 @@ function Layout() {
       <Header />
       <main className="container my-8">
         <AnimatePresence>
-          <LazyMotion  features={domAnimation}>
+          <LazyMotion features={domAnimation}>
             <m.div
               key={location.pathname}
               initial={{ opacity: 0 }}
