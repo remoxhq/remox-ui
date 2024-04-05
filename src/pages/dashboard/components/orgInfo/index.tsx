@@ -104,20 +104,31 @@ function OrgInfo() {
               </p>
               <ND newValue={data.result.balance} oldValue={data.result.lastDayBalance} className="font-medium text-sm " />
             </div>
-            <div className="py-1 px-5 border-l border-r flex items-center gap-3">
-              <Link to={data.result.website} target="_blank" title="Website" className="group">
+            {
+              (data.result.website.length > 1 || data.result.twitter.length > 1 || data.result.website.length > 1 || data.result.github.length > 1) && 
+              <div className="py-1 px-5 border-l border-r flex items-center gap-3">
+              {
+                data.result.website.length > 1 && <Link to={data.result.website} target="_blank" title="Website" className="group">
                 <Web className="w-4 h-4 object-cover lg:group-hover:scale-110 transition-all duration-200 ease-in" />
               </Link>
-              <Link to={data.result.twitter} title="Twitter" target="_blank" className="group">
+              }
+              {
+                data.result.twitter.length > 1 && <Link to={data.result.twitter} title="Twitter" target="_blank" className="group">
                 <Twitter className="w-4 h-4 object-cover  lg:group-hover:scale-110 transition-all duration-200 ease-in" />
               </Link>
-              <Link to={data.result.github} title="Github" target="_blank" className="group">
+              }
+              {
+                data.result.github.length > 1 && <Link to={data.result.github} title="Github" target="_blank" className="group">
                 <Github className="w-4 h-4 object-cover  lg:group-hover:scale-110 transition-all duration-200 ease-in" />
               </Link>
-              <Link to={data.result.discord} title="Discord" target="_blank" className="group">
+              }
+              {
+                data.result.discord.length > 1 && <Link to={data.result.discord} title="Discord" target="_blank" className="group">
                 <Discord className="w-4 h-4 object-cover lg:group-hover:scale-110 transition-all duration-200 ease-in" />
               </Link>
+              }
             </div>
+            }
             <Button
               type="button"
               className="py-1 px-2 w-auto h-auto border border-brand bg-transparent rounded-[14px] font-semibold text-xs text-brand hover:bg-brand/10"
