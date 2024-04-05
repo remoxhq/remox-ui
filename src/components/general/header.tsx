@@ -63,9 +63,8 @@ function Header() {
   useEffect(() => {
     const socket = io(import.meta.env.VITE_Socket_API);
     socket.on("annualBalanceFetched", (a) => {
-      if(typeof a !== 'undefined'){
+      if(typeof a !== 'undefined' && typeof address !== "undefined" && a.message === address){
         queryClient.invalidateQueries()
-       
       }
     });
     return () => {
