@@ -82,7 +82,7 @@ function SelectWithSearch({ type, disabled = false, value, setValue,  }: IProps)
                   value={item.cname}
                   className="cursor-pointer focus:bg-black/20 hover:bg-black/20 hover:text-whitish focus:text-whitish text-whitish font-medium text-sm aria-selected:bg-black/20 aria-selected:text-whitish"
                   onSelect={(currentValue) => {
-                    setValue("governanceSlug", currentValue);
+                    setValue("governanceSlug", currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
                 >

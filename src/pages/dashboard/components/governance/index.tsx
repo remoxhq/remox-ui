@@ -11,7 +11,7 @@ import SyncLoader from "react-spinners/SyncLoader";
 import { useFetchProposols } from "@/api/useFetchProposols";
 import dayjs from "dayjs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/shadcn/tooltip";
-// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/shadcn/tooltip";
+import { staticProposals } from "@/constants";
 
 function Governance() {
   const openLink = (url: string) => {
@@ -27,6 +27,8 @@ function Governance() {
     isError: proposalsError,
     isLoading: proposolsLoading,
   } = useFetchProposols(data?.result.governanceSlug);
+
+  const staticGovernance = staticProposals[slug!];
 
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
@@ -71,7 +73,9 @@ function Governance() {
                           <TooltipTrigger asChild className="text-nowrap overflow-ellipsis h-fit overflow-hidden">
                             <p>{item.title}</p>
                           </TooltipTrigger>
-                          <TooltipContent sideOffset={8} className="text-wrap text-center max-w-60 p-2 bg-darkBlue hidden lg:block">{item.title}</TooltipContent>
+                          <TooltipContent sideOffset={8} className="text-wrap text-center max-w-60 p-2 bg-darkBlue hidden lg:block">
+                            {item.title}
+                          </TooltipContent>
                         </Tooltip>
                       </TooltipProvider>
                     </TableCell>
@@ -79,6 +83,61 @@ function Governance() {
                     <TableCell className="text-right text-whitish">
                       {item.endTimestamp !== "0" ? dayjs(Number(item.endTimestamp) * 1000).format("DD MMM,YYYY, HH:mm") : "-"}
                     </TableCell>
+                    <TableCell
+                      className={`text-right ${
+                        item.currentState === "active"
+                          ? "text-purple"
+                          : item.currentState === "executed"
+                          ? "text-green"
+                          : item.currentState === "failed" || item.currentState === "canceled"
+                          ? "text-red"
+                          : item.currentState === "closed"
+                          ? "text-orange-500"
+                          : "text-yellow"
+                      }`}
+                    >
+                      {item.currentState}
+                    </TableCell>
+                    <TableCell className="text-right rounded-r-[4px] w-[200px]">
+                      {(item.currentState === "active" || item.currentState === "pending") && item.totalVotes === 0 ? "-" : <NR value={item.totalVotes} short currency={false} />}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : ((data && data?.result.governanceSlug === "") || (proposols && proposols.data.length < 0)) && staticGovernance ? (
+            <Table className="mt-3 mb-8">
+              <TableCaption className="hidden">A list of recent proposals.</TableCaption>
+              <TableHeader>
+                <TableRow className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap hover:bg-transparent border-none *:h-auto *:px-3 *:pb-2">
+                  <TableHead className="">Title</TableHead>
+                  <TableHead className="text-right">Start</TableHead>
+                  <TableHead className="text-right">End</TableHead>
+                  <TableHead className="text-right">State</TableHead>
+                  <TableHead className="text-right">Votes</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody className="[&>*:nth-child(odd)]:bg-foreground [&>*:nth-child(odd):hover]:bg-foregroundHover [&>*]:transition-all [&>*]:duration-200 [&>*]:ease-in [&>*:nth-child(even):hover]:bg-transparentHover [&>*]:cursor-pointer ">
+                {staticGovernance.map((item) => (
+                  <TableRow
+                    key={item.id}
+                    className="[&>*:not(:nth-child(4))]:text-whitish *:font-semibold *:text-xs border-transparent [&>*:nth-child(4)]:uppercase *:px-3 *:py-2 *:text-nowrap border-b-0"
+                    onClick={() => openLink(`${item.url}`)}
+                  >
+                    <TableCell className="rounded-l-[4px] w-[180px] max-w-[180px]  overflow-hidden">
+                      <TooltipProvider delayDuration={100}>
+                        <Tooltip>
+                          <TooltipTrigger asChild className="text-nowrap overflow-ellipsis h-fit overflow-hidden">
+                            <p>{item.title}</p>
+                          </TooltipTrigger>
+                          <TooltipContent sideOffset={8} className="text-wrap text-center max-w-60 p-2 bg-darkBlue hidden lg:block">
+                            {item.title}
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </TableCell>
+                    <TableCell className="text-right">{item.start}</TableCell>
+                    <TableCell className="text-right text-whitish">{item.end}</TableCell>
                     <TableCell
                       className={`text-right ${
                         item.currentState === "active"
