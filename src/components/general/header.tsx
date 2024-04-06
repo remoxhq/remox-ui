@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import MobileMenu from "@components/core/mobileMenu";
 import DesktopMenu from "@components/core/desktopMenu";
 import WalletButtons from "@components/core/walletButtons";
-import { useAccount } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 import { useUserInfo } from "@/zustand/userInfo";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
@@ -10,27 +10,39 @@ import Cookies from "js-cookie";
 import auth from "@/api/auth";
 import * as jose from "jose";
 import { io } from "socket.io-client";
+import { useToast } from "@components/shadcn/use-toast";
 
 function Header() {
   const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const { toast } = useToast();
   const setUser = useUserInfo((state) => ({
     role: state.setRole,
     address: state.setAddress,
   }));
   const queryClient = useQueryClient();
-  
+
   useEffect(() => {
     const token = Cookies.get("JWT");
-
     if (!token && address) {
       (async () => {
         // console.log("Authing");
         const response = await auth({ address: address! });
-        Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
-        const userRole = jose.decodeJwt(response.result);
-        setUser.role(userRole.role as string);
-        setUser.address(userRole.publicKey as string);
-        queryClient.invalidateQueries();
+        if (response && response.status === 200) {
+          Cookies.set("JWT", response.data.result, { expires: 7, secure: true, sameSite: "strict" });
+          const userRole = jose.decodeJwt(response.data.result);
+          setUser.role(userRole.role as string);
+          setUser.address(userRole.publicKey as string);
+          queryClient.invalidateQueries();
+        } else {
+          disconnect();
+          toast({
+            title: "Something went wrong: Failed to log in",
+            duration: 2000,
+            variant: "destructive",
+          });
+          queryClient.invalidateQueries();
+        }
       })();
     } else if (token && !address) {
       // console.log("Removed Cookie");
@@ -44,11 +56,22 @@ function Header() {
         (async () => {
           // console.log("Re-Authing");
           const response = await auth({ address: address! });
-          Cookies.set("JWT", response.result, { expires: 7, secure: true, sameSite: "strict" });
-          const userRole = jose.decodeJwt(response.result);
-          setUser.role(userRole.role as string);
-          setUser.address(userRole.publicKey as string);
-          queryClient.invalidateQueries();
+          if (response && response.status === 200) {
+            Cookies.set("JWT", response.data.result, { expires: 7, secure: true, sameSite: "strict" });
+            const userRole = jose.decodeJwt(response.data.result);
+            setUser.role(userRole.role as string);
+            setUser.address(userRole.publicKey as string);
+            queryClient.invalidateQueries();
+          } else {
+            Cookies.remove("JWT");
+            disconnect();
+            toast({
+              title: "Something went wrong: Failed to log in",
+              duration: 2000,
+              variant: "destructive",
+            });
+            queryClient.invalidateQueries();
+          }
         })();
       } else {
         const userRole = jose.decodeJwt(token);
@@ -63,14 +86,14 @@ function Header() {
   useEffect(() => {
     const socket = io(import.meta.env.VITE_Socket_API);
     socket.on("annualBalanceFetched", (a) => {
-      if(typeof a !== 'undefined' && typeof address !== "undefined" && a.message === address){
-        queryClient.invalidateQueries()
+      if (typeof a !== "undefined" && typeof address !== "undefined" && a.message === address) {
+        queryClient.invalidateQueries();
       }
     });
     return () => {
       socket.disconnect();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
@@ -79,7 +102,7 @@ function Header() {
           <div className="flex items-center">
             <div className="max-w-28 md:max-w-32 lg:max-w-36 overflow-hidden mr-0 md:mr-3 lg:mr-4 h-10 lg:h-[47.31px]">
               <NavLink to={"/"} title="Remox.IO">
-                <img src="/img/logo.png" alt="Remox Logo"  className="w-full h-full object-contain" />
+                <img src="/img/logo.png" alt="Remox Logo" className="w-full h-full object-contain" />
               </NavLink>
             </div>
             <DesktopMenu />
