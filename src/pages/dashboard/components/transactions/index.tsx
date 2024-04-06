@@ -22,7 +22,7 @@ function Transactions() {
 
   const { data: txs, isPending, isSuccess, isError, isLoading, fetchNextPage, hasNextPage } = useFetchTransactions(data?.result.dashboardLink);
 
-  
+  console.log(data)
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="transactions" className="w-full h-full">
@@ -62,6 +62,10 @@ function Transactions() {
               <TableBody className="[&>*:nth-child(odd)]:bg-foreground [&>*:nth-child(odd):hover]:bg-foregroundHover [&>*]:transition-all [&>*]:duration-200 [&>*]:ease-in [&>*:nth-child(even):hover]:bg-transparentHover [&>*]:cursor-pointer">
                 {txs.pages.map((page, index) =>
                   page?.result.txs.map((item, i) => {
+                    const fromNameFinder = data?.result.accounts.find(account => account.address.toLowerCase() === item.from)
+                    const fromName = fromNameFinder ? fromNameFinder.name : <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                    const toNameFinder = data?.result.accounts.find(account => account.address.toLowerCase() === item.to)
+                    const toName = toNameFinder ? toNameFinder.name : <AddressReducer address={item.to} dots={3} left={6} right={12} />
                     if (index === txs.pages.length - 1 && i === page.result.txs.length - 1) {
                       return (
                         <>
@@ -87,10 +91,11 @@ function Transactions() {
                               <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
                             </TableCell>
                             <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                              <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                              
+                              {fromName}
                             </TableCell>
                             <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                              <AddressReducer address={item.to} dots={3} left={6} right={12} />
+                              {toName}
                             </TableCell>
                             <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                               <div className="flex items-center ">
@@ -129,10 +134,10 @@ function Transactions() {
                             <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
                           </TableCell>
                           <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                            <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                            {fromName}
                           </TableCell>
                           <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                            <AddressReducer address={item.to} dots={3} left={6} right={12} />
+                            {toName }
                           </TableCell>
                           <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px]  h-fit overflow-hidden">
                             <div className="flex items-center ">
@@ -183,6 +188,10 @@ function Transactions() {
                   page?.result.txs
                     .filter((x) => x.direction === "In")
                     .map((item, i) => {
+                      const fromNameFinder = data?.result.accounts.find(account => account.address.toLowerCase() === item.from)
+                    const fromName = fromNameFinder ? fromNameFinder.name : <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                    const toNameFinder = data?.result.accounts.find(account => account.address.toLowerCase() === item.to)
+                    const toName = toNameFinder ? toNameFinder.name : <AddressReducer address={item.to} dots={3} left={6} right={12} />
                       if (index === txs.pages.length - 1 && i === page.result.txs.length - 1) {
                         return (
                           <>
@@ -208,10 +217,10 @@ function Transactions() {
                                 <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
                               </TableCell>
                               <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                                <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                                {fromName}
                               </TableCell>
                               <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                                <AddressReducer address={item.to} dots={3} left={6} right={12} />
+                                {toName}
                               </TableCell>
                               <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                                 <div className="flex items-center ">
@@ -250,10 +259,10 @@ function Transactions() {
                               <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
                             </TableCell>
                             <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                              <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                              {fromName}
                             </TableCell>
                             <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                              <AddressReducer address={item.to} dots={3} left={6} right={12} />
+                              {toName}
                             </TableCell>
                             <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                               <div className="flex items-center ">
@@ -304,6 +313,10 @@ function Transactions() {
                   page?.result.txs
                     .filter((x) => x.direction === "Out")
                     .map((item, i) => {
+                      const fromNameFinder = data?.result.accounts.find(account => account.address.toLowerCase() === item.from)
+                    const fromName = fromNameFinder ? fromNameFinder.name : <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                    const toNameFinder = data?.result.accounts.find(account => account.address.toLowerCase() === item.to)
+                    const toName = toNameFinder ? toNameFinder.name : <AddressReducer address={item.to} dots={3} left={6} right={12} />
                       if (index === txs.pages.length - 1 && i === page.result.txs.length - 1) {
                         return (
                           <>
@@ -329,10 +342,10 @@ function Transactions() {
                                 <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
                               </TableCell>
                               <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                                <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                                {fromName}
                               </TableCell>
                               <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                                <AddressReducer address={item.to} dots={3} left={6} right={12} />
+                                {toName}
                               </TableCell>
                               <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                                 <div className="flex items-center ">
@@ -371,10 +384,10 @@ function Transactions() {
                               <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM")}</span>
                             </TableCell>
                             <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                              <AddressReducer address={item.from} dots={3} left={6} right={12} />
+                              {fromName}
                             </TableCell>
                             <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">
-                              <AddressReducer address={item.to} dots={3} left={6} right={12} />
+                              {toName}
                             </TableCell>
                             <TableCell className="rounded-r-[4px] w-[150px] max-w-[150px] overflow-ellipsis h-fit overflow-hidden">
                               <div className="flex items-center ">
