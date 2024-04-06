@@ -18,7 +18,7 @@ const auth = async ({address}:IProps): Promise<Auth> => {
   const typ = "JWT"
   const jwt = await new jose.SignJWT({ address:address })
     .setProtectedHeader({ alg,typ })
-    .setExpirationTime('10secs')
+    .setExpirationTime('1hr')
     .sign(secret);
     
   const response = await axios.post<Auth>(`${import.meta.env.VITE_Base_API}/auth/signin`,{}, {
