@@ -26,3 +26,15 @@ export interface SingleOrgProp {
     governanceSlug:string
     lastDayBalance:number
   }
+
+export type StaticProposalsType = {
+   [key:string]:{
+      id:number 
+      title:string 
+      start:string 
+      end:string 
+      currentState:string 
+      totalVotes:number 
+      url:string
+}[]
+}

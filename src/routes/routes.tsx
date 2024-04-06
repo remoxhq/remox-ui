@@ -4,7 +4,7 @@ import Dashboard from "@pages/dashboard/dashboard";
 import Explore from "@pages/explore/explore";
 import Favorites from "@pages/favorites/favorites";
 import MyCreations from "@pages/my-creations/myCreations";
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 
 export const routes  = createBrowserRouter([
     {
@@ -15,7 +15,8 @@ export const routes  = createBrowserRouter([
             {path:"about",element:<About/>},
             {path:"favorites",element:<Favorites/>},
             {path:"my-creations",element:<MyCreations/>},
-            {path:"community/:slug",element:<Dashboard/>}
+            {path:"community/:slug",element:<Dashboard/>},
+            {path:"*",element:<Navigate to={'/'} replace/>}
         ]
     }
 ])
