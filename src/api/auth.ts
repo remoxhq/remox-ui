@@ -31,7 +31,7 @@ const auth = async ({ address }: IProps): Promise<Auth> => {
   const response = await axios.post<AuthResponse>(`${import.meta.env.VITE_Base_API}/auth/signin`, {}, {
     headers: { AccessKey: jwt },
   }).then(res=>res).catch(error=> error.resp);
-  console.log(response)
+  
   return response;
 };
 
