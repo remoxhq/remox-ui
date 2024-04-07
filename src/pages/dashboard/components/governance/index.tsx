@@ -9,9 +9,9 @@ import { useFetchVoters } from "@/api/useFetchVoters";
 import { AddressReducer } from "@utils/addressReducer";
 import SyncLoader from "react-spinners/SyncLoader";
 import { useFetchProposols } from "@/api/useFetchProposols";
-import dayjs from "dayjs";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@components/shadcn/tooltip";
 import { staticProposals } from "@/constants";
+import { formatInTimeZone } from "date-fns-tz";
 
 function Governance() {
   const openLink = (url: string) => {
@@ -79,9 +79,11 @@ function Governance() {
                         </Tooltip>
                       </TooltipProvider>
                     </TableCell>
-                    <TableCell className="text-right">{item.startTimestamp !== "0" ? dayjs(Number(item.startTimestamp) * 1000).format("DD MMM,YYYY, HH:mm") : "-"}</TableCell>
+                    <TableCell className="text-right">
+                      {item.startTimestamp !== "0" ? formatInTimeZone(new Date(Number(item.startTimestamp) * 1000), "UTC", "dd MMM, yyyy, HH:mm ") : "-"}
+                    </TableCell>
                     <TableCell className="text-right text-whitish">
-                      {item.endTimestamp !== "0" ? dayjs(Number(item.endTimestamp) * 1000).format("DD MMM,YYYY, HH:mm") : "-"}
+                      {item.endTimestamp !== "0" ? formatInTimeZone(new Date(Number(item.endTimestamp) * 1000), "UTC", "dd MMM, yyyy, HH:mm ") : "-"}
                     </TableCell>
                     <TableCell
                       className={`text-right ${
