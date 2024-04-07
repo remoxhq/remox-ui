@@ -2,7 +2,6 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@components/shadcn/tabs";
 import EmptyCard from "@components/general/emptyCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@components/shadcn/avatar";
-import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
 import { useFetchSingleOrg } from "@/api/useFetchSingleOrg";
 import { useFetchTransactions } from "@/api/useFetchTransactions";
@@ -12,6 +11,8 @@ import NR from "@utils/numberReducer";
 import { chainsObj, scans } from "@/constants";
 import { Button } from "@components/shadcn/button";
 import { Loader2 } from "lucide-react";
+import { formatInTimeZone } from 'date-fns-tz'
+
 
 function Transactions() {
   const openLink = (url: string) => {
@@ -22,6 +23,7 @@ function Transactions() {
 
   const { data: txs, isPending, isSuccess, isError, isLoading, fetchNextPage, hasNextPage, isFetching } = useFetchTransactions(data?.result.dashboardLink);
 
+  
   return (
     <div className="bg-darkBlue rounded-xl p-3 w-full h-[360px] border overflow-hidden">
       <Tabs defaultValue="transactions" className="w-full h-full">
@@ -93,8 +95,15 @@ function Transactions() {
                         </Avatar>
                       </TableCell>
                       <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                        <p className="text-xs">{dayjs(item.date).format("MMM DD")}</p>
-                        <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM | YYYY")}</span>
+                        <p className="text-xs">{
+                          formatInTimeZone(new Date(item.date),'UTC','MMM dd ')
+                        }</p>
+                        <span className="text-[8px] leading-[10px]">
+                          {
+
+                          formatInTimeZone(new Date(item.date),'UTC','HH:mm | yyyy')
+                          
+                          }</span>
                       </TableCell>
                       <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">{fromName}</TableCell>
                       <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">{toName}</TableCell>
@@ -177,8 +186,15 @@ function Transactions() {
                           </Avatar>
                         </TableCell>
                         <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                          <p className="text-xs">{dayjs(item.date).format("MMM DD")}</p>
-                          <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM | YYYY")}</span>
+                        <p className="text-xs">{
+                          formatInTimeZone(new Date(item.date),'UTC','MMM dd ')
+                        }</p>
+                        <span className="text-[8px] leading-[10px]">
+                          {
+
+                          formatInTimeZone(new Date(item.date),'UTC','HH:mm | yyyy')
+                          
+                          }</span>
                         </TableCell>
                         <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">{fromName}</TableCell>
                         <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">{toName}</TableCell>
@@ -261,8 +277,15 @@ function Transactions() {
                           </Avatar>
                         </TableCell>
                         <TableCell className="flex flex-col justify-center w-[70px] max-w-[70px]">
-                          <p className="text-xs">{dayjs(item.date).format("MMM DD")}</p>
-                          <span className="text-[8px] leading-[10px]">{dayjs(item.date).format("HH:MM | YYYY")}</span>
+                        <p className="text-xs">{
+                          formatInTimeZone(new Date(item.date),'UTC','MMM dd ')
+                        }</p>
+                        <span className="text-[8px] leading-[10px]">
+                          {
+
+                          formatInTimeZone(new Date(item.date),'UTC','HH:mm | yyyy')
+                          
+                          }</span>
                         </TableCell>
                         <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">{fromName}</TableCell>
                         <TableCell className="w-[190px] max-w-[190px] overflow-ellipsis h-fit overflow-hidden">{toName}</TableCell>
