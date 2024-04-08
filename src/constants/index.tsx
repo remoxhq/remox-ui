@@ -130,7 +130,7 @@ export const chainsKeyValue = {
     value: "base-mainnet",
     logo: "https://altcoinsbox.com/wp-content/uploads/2023/02/base-logo-300x300.webp",
   },
-  ["fatom-mainnet"]: {
+  ["fantom-mainnet"]: {
     id: 10,
     name: "Fantom",
     value: "fantom-mainnet",
