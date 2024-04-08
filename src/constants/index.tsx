@@ -100,6 +100,12 @@ export const chainsKeyValue = {
     value: "gnosis-mainnet",
     logo: "/img/chains/gnosis.png",
   },
+   ["cronos-mainnet"]: {
+    id: 7,
+    name: "Cronos",
+    value: "cronos-mainnet",
+    logo: "https://cryptologos.cc/logos/cronos-cro-logo.svg?v=029",
+  },
 };
 
 export const chainsObj = {
@@ -111,6 +117,7 @@ export const chainsObj = {
   "matic-mainnet": "/img/chains/matic.png",
   "optimism-mainnet": "/img/chains/op.png",
   "gnosis-mainnet": "/img/chains/gnosis.png",
+  "cronos-mainnet": "https://cryptologos.cc/logos/cronos-cro-logo.svg?v=029",
 };
 
 export const scans = {
@@ -122,6 +129,7 @@ export const scans = {
   "matic-mainnet": "https://polygonscan.com/tx/",
   "optimism-mainnet": "https://optimistic.etherscan.io/tx/",
   "gnosis-mainnet": "https://gnosisscan.io/tx/",
+  "cronos-mainnet": "https://cronoscan.com/tx/",
 };
 
 export const staticProposals: StaticProposalsType = {
