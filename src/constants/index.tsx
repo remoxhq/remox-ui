@@ -49,6 +49,24 @@ export const chains = [
     value: "gnosis-mainnet",
     logo: "/img/chains/gnosis.png",
   },
+  //  {
+  //   id: 8,
+  //   name: "Cronos",
+  //   value: "cronos-mainnet",
+  //   logo: "https://assets.coingecko.com/coins/images/7310/standard/cro_token_logo.png?1696507599",
+  // },
+  //  {
+  //   id: 9,
+  //   name: "Base",
+  //   value: "base-mainnet",
+  //   logo: "https://altcoinsbox.com/wp-content/uploads/2023/02/base-logo-300x300.webp",
+  // },
+  //  {
+  //   id: 10,
+  //   name: "Fantom",
+  //   value: "fantom-mainnet",
+  //   logo: "https://assets.coingecko.com/coins/images/4001/standard/Fantom_round.png?1696504642",
+  // },
 ];
 
 export const chainsKeyValue = {
@@ -101,10 +119,22 @@ export const chainsKeyValue = {
     logo: "/img/chains/gnosis.png",
   },
    ["cronos-mainnet"]: {
-    id: 7,
+    id: 8,
     name: "Cronos",
     value: "cronos-mainnet",
-    logo: "https://cryptologos.cc/logos/cronos-cro-logo.svg?v=029",
+    logo: "https://assets.coingecko.com/coins/images/7310/standard/cro_token_logo.png?1696507599",
+  },
+  ["base-mainnet"]: {
+    id: 9,
+    name: "Base",
+    value: "base-mainnet",
+    logo: "https://altcoinsbox.com/wp-content/uploads/2023/02/base-logo-300x300.webp",
+  },
+  ["fatom-mainnet"]: {
+    id: 10,
+    name: "Fantom",
+    value: "fantom-mainnet",
+    logo: "https://assets.coingecko.com/coins/images/4001/standard/Fantom_round.png?1696504642",
   },
 };
 
@@ -117,7 +147,9 @@ export const chainsObj = {
   "matic-mainnet": "/img/chains/matic.png",
   "optimism-mainnet": "/img/chains/op.png",
   "gnosis-mainnet": "/img/chains/gnosis.png",
-  "cronos-mainnet": "https://cryptologos.cc/logos/cronos-cro-logo.svg?v=029",
+  "cronos-mainnet": "https://assets.coingecko.com/coins/images/7310/standard/cro_token_logo.png?1696507599", 
+  "base-mainnet": "https://altcoinsbox.com/wp-content/uploads/2023/02/base-logo-300x300.webp",
+  "fantom-mainnet": "https://assets.coingecko.com/coins/images/4001/standard/Fantom_round.png?1696504642",
 };
 
 export const scans = {
@@ -130,6 +162,8 @@ export const scans = {
   "optimism-mainnet": "https://optimistic.etherscan.io/tx/",
   "gnosis-mainnet": "https://gnosisscan.io/tx/",
   "cronos-mainnet": "https://cronoscan.com/tx/",
+  "base-mainnet": "https://basescan.org/tx/",
+  "fantom-mainnet": "https://ftmscan.com/tx/",
 };
 
 export const staticProposals: StaticProposalsType = {
