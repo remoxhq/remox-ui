@@ -53,19 +53,19 @@ export const chains = [
   //   id: 8,
   //   name: "Cronos",
   //   value: "cronos-mainnet",
-  //   logo: "https://assets.coingecko.com/coins/images/7310/standard/cro_token_logo.png?1696507599",
+  //   logo: "/img/chains/cronos.webp",
   // },
   //  {
   //   id: 9,
   //   name: "Base",
   //   value: "base-mainnet",
-  //   logo: "https://altcoinsbox.com/wp-content/uploads/2023/02/base-logo-300x300.webp",
+  //   logo: "/img/chains/base.webp",
   // },
   //  {
   //   id: 10,
   //   name: "Fantom",
   //   value: "fantom-mainnet",
-  //   logo: "https://assets.coingecko.com/coins/images/4001/standard/Fantom_round.png?1696504642",
+  //   logo: "/img/chains/fantom.webp",
   // },
 ];
 
@@ -118,39 +118,25 @@ export const chainsKeyValue = {
     value: "gnosis-mainnet",
     logo: "/img/chains/gnosis.png",
   },
-   ["cronos-mainnet"]: {
+  ["cronos-mainnet"]: {
     id: 8,
     name: "Cronos",
     value: "cronos-mainnet",
-    logo: "https://assets.coingecko.com/coins/images/7310/standard/cro_token_logo.png?1696507599",
+    logo: "/img/chains/cronos.webp",
   },
   ["base-mainnet"]: {
     id: 9,
     name: "Base",
     value: "base-mainnet",
-    logo: "https://altcoinsbox.com/wp-content/uploads/2023/02/base-logo-300x300.webp",
+    logo: "/img/chains/base.webp",
   },
   ["fantom-mainnet"]: {
     id: 10,
     name: "Fantom",
     value: "fantom-mainnet",
-    logo: "https://assets.coingecko.com/coins/images/4001/standard/Fantom_round.png?1696504642",
+    logo: "/img/chains/fantom.webp",
   },
-};
-
-export const chainsObj = {
-  "eth-mainnet": "/img/chains/eth.png",
-  "celo-mainnet": "/img/chains/celo.png",
-  "arbitrum-mainnet": "/img/chains/arb.png",
-  "avalanche-mainnet": "/img/chains/avax.png",
-  "bsc-mainnet": "/img/chains/bnb.png",
-  "matic-mainnet": "/img/chains/matic.png",
-  "optimism-mainnet": "/img/chains/op.png",
-  "gnosis-mainnet": "/img/chains/gnosis.png",
-  "cronos-mainnet": "https://assets.coingecko.com/coins/images/7310/standard/cro_token_logo.png?1696507599", 
-  "base-mainnet": "https://altcoinsbox.com/wp-content/uploads/2023/02/base-logo-300x300.webp",
-  "fantom-mainnet": "https://assets.coingecko.com/coins/images/4001/standard/Fantom_round.png?1696504642",
-};
+} as const;
 
 export const scans = {
   "eth-mainnet": "https://etherscan.io/tx/",
@@ -226,6 +212,5 @@ export const staticProposals: StaticProposalsType = {
       totalVotes: 80,
       url: "https://celo.stake.id/#/proposal/61",
     },
-    
   ],
 } as const;

@@ -8,7 +8,7 @@ import { useFetchTransactions } from "@/api/useFetchTransactions";
 import SyncLoader from "react-spinners/SyncLoader";
 import { AddressReducer } from "@utils/addressReducer";
 import NR from "@utils/numberReducer";
-import { chainsObj, scans } from "@/constants";
+import { chainsKeyValue, scans } from "@/constants";
 import { Button } from "@components/shadcn/button";
 import { Loader2 } from "lucide-react";
 import { formatInTimeZone } from 'date-fns-tz'
@@ -90,7 +90,7 @@ function Transactions() {
                     >
                       <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                         <Avatar className="w-4 h-4 object-cover rounded-full">
-                          <AvatarImage src={chainsObj[item.chain]} alt="Chain Logo" className="object-cover" />
+                          <AvatarImage src={chainsKeyValue[item.chain].logo} alt="Chain Logo" className="object-cover" />
                           <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                         </Avatar>
                       </TableCell>
@@ -181,7 +181,7 @@ function Transactions() {
                       >
                         <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                           <Avatar className="w-4 h-4 object-cover rounded-full">
-                            <AvatarImage src={chainsObj[item.chain]} alt="Chain Logo" className="object-cover" />
+                            <AvatarImage src={chainsKeyValue[item.chain].logo} alt="Chain Logo" className="object-cover" />
                             <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                           </Avatar>
                         </TableCell>
@@ -272,7 +272,7 @@ function Transactions() {
                       >
                         <TableCell className="rounded-l-[4px] w-[30px] max-w-[30px] overflow-hidden">
                           <Avatar className="w-4 h-4 object-cover rounded-full">
-                            <AvatarImage src={chainsObj[item.chain]} alt="Chain Logo" className="object-cover" />
+                            <AvatarImage src={chainsKeyValue[item.chain].logo} alt="Chain Logo" className="object-cover" />
                             <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
                           </Avatar>
                         </TableCell>
