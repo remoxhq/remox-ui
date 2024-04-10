@@ -435,13 +435,13 @@ function Portfolio() {
                     </div>
                     <Separator orientation="vertical" />
                     <div className="w-[calc(100%_-_439.5px)] pl-2">
-                      <div className="flex items-center justify-between w-full group-odd:bg-foreground rounded-[2px] p-1 *:w-1/3 *:overflow-hidden">
+                      <div className="flex items-center justify-between w-full group-odd:bg-foreground rounded-[2px] p-1 *:w-1/3 space-x-3">
                         <div className="text-left">
                           <p className="uppercase font-medium text-xs text-whitish mb-1">
                             {item.tokenUsdValue.amountChange > 0 && "+"}
                             <NR value={item.tokenUsdValue.amountChange} />
                           </p>
-                          <p className={`uppercase font-medium text-xs ${item.tokenUsdValue.percentageChange > 0 ? "text-green" : "text-red"} `}>
+                          <p className={`uppercase font-medium text-xs truncate ${item.tokenUsdValue.percentageChange > 0 ? "text-green" : "text-red"} `}>
                             {item.tokenUsdValue.percentageChange}%
                           </p>
                         </div>
@@ -450,7 +450,7 @@ function Portfolio() {
                             {item.balanceUsd.amountChange > 0 && "+"}
                             <NR value={item.balanceUsd.amountChange} />
                           </p>
-                          <p className={`uppercase font-medium text-xs ${item.balanceUsd.percentageChange > 0 ? "text-green" : "text-red"}`}>{item.balanceUsd.percentageChange}%</p>
+                          <p className={`uppercase font-medium text-xs truncate ${item.balanceUsd.percentageChange > 0 ? "text-green" : "text-red"}`}>{item.balanceUsd.percentageChange}%</p>
                         </div>
                         <div className="text-right">
                           <p className="uppercase font-medium text-xs text-whitish mb-1">
@@ -458,7 +458,7 @@ function Portfolio() {
                             <NR value={item.tokenCount.amountChange} currency={false} />
                           </p>
                           <p
-                            className={`uppercase font-medium text-xs ${
+                            className={`uppercase font-medium text-xs truncate ${
                               item.tokenCount.percentageChange > 0 ? "text-green" : +item.tokenCount.percentageChange === 0 ? "text-whitish" : "text-red"
                             }`}
                           >
