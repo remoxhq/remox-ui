@@ -61,7 +61,7 @@ function Portfolio() {
     isLoading: isArchiveDataLoading,
   } = useFetchPortfolioHistory(slug);
 
-  const [dateOne, setDateOne] = useState<Date | undefined>(startDate());
+  const [dateOne, setDateOne] = useState<Date | undefined>(startDate(32));
   const [dateTwo, setDateTwo] = useState<Date | undefined>(endDate());
 
   const archiveCalculation = useMemo(() => {
@@ -203,7 +203,7 @@ function Portfolio() {
             <div className="mt-3 mb-8 min-w-[350px]">
               <div className="*:text-xs *:font-semibold *:text-whitish *:text-nowrap border-none *:px-3 *:pb-2 flex items-center">
                 <p className="w-[220px]">Chain</p>
-                <p className="w-[160px]">Price</p>
+                <p className="w-[160px]">Total Amount</p>
                 <p className="w-[160px]">Top Holdings</p>
                 <p className="text-right w-[100px] ml-auto">Assets</p>
               </div>
@@ -225,7 +225,9 @@ function Portfolio() {
                         <div className="flex items-center gap-1 w-[160px]">
                           <Avatar className="w-4 h-4 object-cover rounded-full">
                             <AvatarImage src={blockchain.topHoldingUrl} alt="Organization Logo" className="object-cover" />
-                            <AvatarFallback className="bg-avatarbg border-2"></AvatarFallback>
+                            <AvatarFallback className="bg-avatarbg text-[6px] uppercase" asChild>
+                              <img src="/img/defaultToken.png" alt="Default" />
+                            </AvatarFallback>
                           </Avatar>
                           <p className="uppercase">{blockchain.topHolding}</p>
                         </div>
