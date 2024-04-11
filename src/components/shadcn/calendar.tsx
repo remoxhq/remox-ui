@@ -17,7 +17,7 @@ function Calendar({
 }: CalendarProps) {
   return (
     <DayPicker
-      fromDate={startDate()}
+      fromDate={startDate(364)}
       toDate={endDate()}
       disabled={props.selected}
       showOutsideDays={showOutsideDays}
