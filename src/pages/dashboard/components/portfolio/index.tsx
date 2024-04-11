@@ -209,7 +209,7 @@ function Portfolio() {
               </div>
               <Accordion type="single" collapsible>
                 {assetsData?.result.assetsByBlockchain.map((blockchain) => (
-                  <AccordionItem value="item-1" key={blockchain.blockchain} className="group border-none">
+                  <AccordionItem value={blockchain.blockchain} key={blockchain.blockchain} className="group border-none">
                     <AccordionTrigger className="p-0 group-odd:bg-foreground group-odd:hover:bg-foregroundHover group-even:bg-transparent group-even:hover:bg-transparentHover transition-all duration-200 ease-in rounded-[4px] [&>*]:text-whitish *:font-semibold *:text-xs border-transparent border *:text-nowrap overflow-hidden ">
                       <div className="flex items-center w-full pl-3 py-2 ">
                         <div className="flex items-center gap-1 w-[220px]">
