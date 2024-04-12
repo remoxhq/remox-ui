@@ -49,24 +49,24 @@ export const chains = [
     value: "gnosis-mainnet",
     logo: "/img/chains/gnosis.png",
   },
-  //  {
-  //   id: 8,
-  //   name: "Cronos",
-  //   value: "cronos-mainnet",
-  //   logo: "/img/chains/cronos.webp",
-  // },
-  //  {
-  //   id: 9,
-  //   name: "Base",
-  //   value: "base-mainnet",
-  //   logo: "/img/chains/base.webp",
-  // },
-  //  {
-  //   id: 10,
-  //   name: "Fantom",
-  //   value: "fantom-mainnet",
-  //   logo: "/img/chains/fantom.webp",
-  // },
+  {
+    id: 8,
+    name: "Cronos",
+    value: "cronos-mainnet",
+    logo: "/img/chains/cronos.webp",
+  },
+  {
+    id: 9,
+    name: "Base",
+    value: "base-mainnet",
+    logo: "/img/chains/base.png",
+  },
+  {
+    id: 10,
+    name: "Fantom",
+    value: "fantom-mainnet",
+    logo: "/img/chains/fantom.webp",
+  },
 ];
 
 export const chainsKeyValue = {
@@ -128,7 +128,7 @@ export const chainsKeyValue = {
     id: 9,
     name: "Base",
     value: "base-mainnet",
-    logo: "/img/chains/base.webp",
+    logo: "/img/chains/base.png",
   },
   ["fantom-mainnet"]: {
     id: 10,
