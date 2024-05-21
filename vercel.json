@@ -3,22 +3,6 @@
 		{
 			"source": "/(.*)",
 			"destination": "/"
-		},
-		{
-			"source": "/aave",
-			"destination": "https://risk.remox.io/aave"
-		},
-		{
-			"source": "/uniswap",
-			"destination": "https://risk.remox.io/uniswap"
-		},
-		{
-			"source": "/lido",
-			"destination": "https://risk.remox.io/lido"
-		},
-		{
-			"source": "/optimism",
-			"destination": "https://risk.remox.io/optimism"
 		}
 	]
 }
