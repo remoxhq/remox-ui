@@ -1,6 +1,10 @@
 {
 	"rewrites": [
 		{
+			"source": "/(.*)",
+			"destination": "/"
+		},
+		{
 			"source": "/aave",
 			"destination": "https://risk.remox.io/aave"
 		},
@@ -15,10 +19,6 @@
 		{
 			"source": "/optimism",
 			"destination": "https://risk.remox.io/optimism"
-		},
-		{
-			"source": "/(.*)",
-			"destination": "/"
 		}
 	]
 }
