@@ -9,8 +9,8 @@ const nextConfig = {
         destination: `https://risk.remox.io/aave`,
       },
       {
-        source: "/:/*",
-        destination: `/:/*`,
+        source: "/:path/*",
+        destination: `/:path/*`,
       }
     ];
   },
