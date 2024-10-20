@@ -108,7 +108,7 @@ function Portfolio() {
 
             changes[token][field] = {
               amountChange: changeAmount,
-              percentageChange: changePercent.toFixed(2),
+              percentageChange: changePercent?.toFixed(2),
             };
           });
         }
